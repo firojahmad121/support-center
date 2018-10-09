@@ -1,0 +1,24 @@
+Webkul\UVDesk\SupportCenterBundle\Entity\TranslatedArticleHistory:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        
+        translatedArticleId:
+            type: integer
+            column: translated_article_id
+        userId:
+            type: integer
+            column: user_id
+        content:
+            type: text
+        dateAdded:
+            type: datetime
+            column: date_added
+    lifecycleCallbacks: 
+        prePersist: [ setCreatedAtValue ]

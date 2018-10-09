@@ -1,0 +1,29 @@
+{% extends "@UVDeskSupportCenter/Front/layout.html.twig" %}
+{% block title %}{% trans %}Helpdesk Search{% endtrans %}{% endblock %}
+{% block ogtitle %}{% trans %}Helpdesk Search{% endtrans %}{% endblock %}
+{% block twtitle %}{% trans %}Helpdesk Search{% endtrans %}{% endblock %}
+{% block metaDescription %}{% trans %}search.metaDescription{% endtrans %}{% endblock %}
+{% block metaKeywords %}{% trans %}search.metaKeywords{% endtrans %}{% endblock %}
+
+{% block body %}
+	<div class="uv-paper-article">
+		<div class="uv-paper-section">
+			<section>
+				<h1 class="uv-folder-title" data-count="{{articles|length}} {{"Articles"|trans}}">{{ "Search results for %search%"|trans({ "%search%": search }) }}</h1>
+			</section>
+			<section class="uv-margin-top-30">
+				{% if articles %}
+					<ul>
+						{% for article in articles %}
+							<li> {% if article.stared %}<span class="uv-icon-star uv-pre"></span>{% endif %} <a href="{{path('webkul_support_center_front_solution_article_slug', {'slug': article.slug})}}">{{ article.translatedName is defined and article.translatedName ? article.translatedName : article.name }}</a></li>
+						{% endfor %}
+					</ul>
+				{% else %}
+					<p>{{"No Article Found!"|trans}}</p>
+				{% endif %}
+			</section>
+		</div>
+		{% include "@UVDeskSupportCenter//Front//popularArticle.html.twig" %}
+	</div>
+	{{parent()}}
+{% endblock %}

@@ -1,0 +1,17 @@
+Webkul\UVDesk\SupportCenterBundle\Entity\ArticleCategory:
+    type: entity
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        articleId:
+            type: integer
+            column: article_id
+        categoryId:
+            type: integer
+            column: category_id
+    lifecycleCallbacks: {  }

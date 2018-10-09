@@ -1,0 +1,31 @@
+Webkul\UVDesk\SupportCenterBundle\Entity\ArticleFeedback:
+    type: entity
+    manyToOne:
+        article:
+            targetEntity: Webkul\UVDesk\SupportCenterBundle\Entity\Article
+            joinColumn:
+                name: article_id
+                referencedColumnName: id
+                onDelete: cascade
+        ratedCustomer:
+            targetEntity: Webkul\UVDesk\CoreBundle\Entity\User
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+                onDelete: cascade
+    table: null
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        isHelpful:
+            type: boolean
+        description:
+            type: text
+            nullable: true
+        createdAt:
+            type: datetime
+    lifecycleCallbacks: {  }

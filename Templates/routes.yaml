@@ -1,0 +1,8 @@
+# This file is the entry point to configure the routes for your dependencies.
+uvdesk_support_center_bundle_routing_resources:
+    resource: "@UVDeskSupportCenterBundle/Resources/config/routing.yaml"
+    prefix:   /{_locale}/
+    requirements:
+        _locale: %app_locales%
+    defaults:
+        _locale: %locale%

@@ -1,0 +1,50 @@
+<!--Footer-->
+<div class="uv-container">
+	<div class="uv-footer">
+		<div class="uv-footer-wrapper">
+			<div class="uv-footer-lt">
+				<select class="uv-select uv-select-custom" name="_locale" onchange="window.location = this.value">
+					{# {% for localeCode, localeName in default_service.getLocales() %}
+						<option value="{{ default_service.getLocaleUrl(localeCode) }}" {% if app.request.locale == localeCode %}selected{% endif %}>{{ localeName }}</option>
+					{% endfor %} #}
+				</select>
+
+				{# {% if support_service.isAppInstalled('Google Translate') %}
+					<div id="google_translate_element"></div>
+					<script type="text/javascript">
+						function googleTranslateElementInit() {
+							new google.translate.TranslateElement({pageLanguage: '{{ app.request.get("_locale") }}', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false}, 'google_translate_element');
+							$(document).click(function(e) {
+								if($('.goog-te-menu-frame.skiptranslate').is(':visible') ) {
+									$('.skiptranslate.goog-te-gadget').addClass('uv-no-pointer-events');
+								} else {
+									$('.skiptranslate.goog-te-gadget').removeClass('uv-no-pointer-events');
+								}
+							});
+							$($('.goog-te-menu-frame.skiptranslate').contents()[0], window).find('body').bind("focusout", function(e) {
+									$('.skiptranslate.goog-te-gadget').removeClass('uv-no-pointer-events');
+							});
+						}
+					</script>
+					<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async="async"></script>
+				{% endif %} #}
+
+				<ul>
+				<li><a href="{{path('webkul_support_center_front_solution')}}">{{"Home"|trans}}</a></li>
+				<li><a href="#" class="uv-open-popup" data-target="cookie-dialog-modal">{{ 'Cookie Policy'|trans }}</a></li>
+				{% for footerLink in websiteConfiguration.footerLinks %}
+					<li><a href="{{footerLink.url}}" target="_blank">{{footerLink.label}}</a></li>
+				{% endfor %}
+				</ul>
+			</div>
+            <div class="uv-footer-rt">
+                <p>&copy; {{"Copyright 2018 UVdesk, All rights reserved."|trans}}</p>
+            </div>
+		</div>
+        <div class="uv-footer-credit">
+            <a href="https://uvdesk.com" class="uv-credit-logo" target="_blank"></a>
+            <span class="uv-credit-text">{{"Powered by"|trans}} <a href="https://uvdesk.com" target="_blank">UVdesk</a></span>
+        </div>
+	</div>
+</div>
+<!--//Footer-->
