@@ -1,7 +1,6 @@
-{% extends "@UVDeskCommunity/BackSupport/layout.html.twig" %}
+{% extends "@UVDeskCore/BackSupport/layout.html.twig" %}
 
-
-{% block title %}
+{% block title %} 
 	{{ 'Articles'|trans }}
 {% endblock %}
 
@@ -14,125 +13,51 @@
 		}
 	</style>
 	<div class="uv-inner-section">
-        <div class="uv-aside uv-category">
-		    <div class="uv-main-info-block">
-				<div class="uv-aside-head">
-					<div class="uv-aside-title">
-						<h6>{{ 'FOLDER'|trans }}</h6>
-					</div>
-					<div class="uv-aside-back">
-						<span onclick="window.location = '{{path('webkul_support_center_solution')}}'"> {{ 'Back'|trans }}</span>
-					</div>
-				</div>
-				{% set defaultImage = asset('bundles/webkuldefault/images/knowledgebase-splash.png') %}
-				<div class="uv-aside-brick">
-					<div class="uv-aside-customer-block">
-						<div class="uv-aside-avatar">
-							{# <img src="{{solution.solutionImage ? solution.solutionImage : defaultImage}}"> #}
-							<img src="https://s3-ap-southeast-1.amazonaws.com/cdn.uvdesk.com/website/183/im%2Cas.png">
-						</div>
-						<div class="uv-aside-customer-info">
-							<span class="uv-customize"></span>
-							<span class="uv-bold">{{solution.name}}</span>
-							<span>{{solutionCategoryCount}} {{'Categories'|trans }}</span>
-							<span>{{solutionArticleCount}} {{'Articles'|trans }}</span>
-						</div>
-					</div>
-					<div class="uv-aside-ticket-block">
-						<div class="uv-aside-ticket-brick">
-							<span>{{solution.description}}</span>
-						</div>
-					</div>
-					<!--//Ticket Info-->
-				</div>
+        <div class="uv-aside uv-article-view " {% if app.request.cookies and app.request.cookies.get('uv-asideView') %}style="display: none;"{% endif %}>
+            <div class="uv-aside-head">
+                <div class="uv-aside-title">
+                    <h6>{{ 'FOLDERS'|trans }}</h6>
+                </div>
+                <div class="uv-aside-back">
+                    <span onclick="window.location = '{{path('webkul_support_center_solution')}}'"> {{ 'Back'|trans }}</span>
+                </div>
             </div>
 
-			<!--Aside Customer Info Update Brick-->
-			<div class="uv-main-info-update-block" style="display: none">
-				<div class="uv-aside-head">
-					<div class="uv-aside-title">
-						<h6>{{ 'Edit Folder'|trans }}</h6>
-					</div>
-					<div class="uv-aside-back">
-						<span>{{ 'Back'|trans }}</span>
-					</div>
-				</div>
-
-				<div class="uv-aside-brick">
-					<form method="post">
-						<input class="uv-field" name="id" type="hidden" value="{{ solution.id }}">
-						<!-- Field -->
-						<div class="uv-element-block">
-							<label class="uv-field-label">{{ 'Name'|trans }}</label>
-							<div class="uv-field-block">
-								<input class="uv-field" name="name" type="text" value="{{ solution.name }}">
-							</div>
-						</div>
-						<!-- //Field -->
-
-						<!-- Field -->
-						<div class="uv-element-block">
-							<label class="uv-field-label">{{ 'Description'|trans }}</label>
-							<div class="uv-field-block">
-								<textarea class="uv-field" name="description">{{ solution.description }}</textarea>
-							</div>
-						</div>
-						<!-- //Field -->
-
-						<!-- Field -->
-						<div class="uv-action-buttons">
-							<a class="uv-btn update-btn" href="#">
-								{{ 'Update'|trans }}
-							</a>
-							<a class="uv-btn cancel-btn" href="#">
-								{{ 'Cancel'|trans }}
-							</a>
-						</div>
-						<!-- //Field -->
-
-						<!-- CSRF token Field -->
-						{# <input type="hidden" name="_token" value="{{ default_service.generateCsrfToken('') }}"/> #}
-						<!-- //CSRF token Field -->
-					</form>
-				</div>
-			</div>
-
-
-			<!--Aside Brick-->
-			<div class="uv-aside-brick">
-				<!--Ticket Actions-->
-				<div class="uv-aside-ticket-actions">
-
-					<div class="uv-aside-select">
-						<label class="uv-aside-select-label">{{ 'Status'|trans }}</label>
-						<div>
-							<span class="uv-aside-select-value uv-dropdown-other uv-aside-drop-icon" data-id="{{ solution.visibility }}">
-								{{ solution.visibility == 'public' ? 'Published'|trans : 'Draft'|trans  }}
-							</span>
-							<div class="uv-dropdown-list uv-bottom-left">
-								<div class="uv-dropdown-container">
-									<label>{{ 'Status'|trans }}</label>
-									<ul class="status" data-action="status">
-										<li data-index="public"><a href="#">{{ 'Published'|trans }}</a></li>
-										<li data-index="private"><a href="#">{{ 'Draft'|trans }}</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="uv-aside-brick">
-				<a href="{{path('webkul_support_center_front_solution', {'solution': solution.id })}}" target="_blank"  type="button" class="uv-btn-action">
-					{{'preview'|trans}}
-				</a>
-			</div>
+            <div class="uv-aside-nav">
+				<ul>
+					{% if solutions|length %}
+						{% for solution in solutions %}
+							<li>
+								<a class="uv-cursor"><span class="uv-icon-expand"></span> <span class="uv-icon-folder"></span> {{ solution.name }} <span class="uv-flag-gray">{{solution.categories|length}}</span></a>
+								<ul class="uv-transition uv-no-height">
+									{% if solution.categories %}
+										{% for category in solution.categories %}
+											<li>
+												{# <a class="" href="{{path('webkul_support_center_category_articles', {'category': category.id} )}}">{{ category.name }}
+													<span class="uv-flag-gray">{{category.articleCount}}</span>
+												</a> #}
+											</li>
+										{% endfor %}
+									{% else %}
+										<li>
+											<a>{{ 'No Categories Added'|trans}}</a>
+										</li>
+									{% endif %}
+								</ul>
+							</li>
+						{% endfor %}
+					{% else %}
+						<li>
+							<a class="uv-aside-nav-active" href="{{ path('folder_add_action') }}">{{ 'New Folder'|trans }}</a>
+						</li>
+					{% endif %}
+				</ul>
+            </div>
         </div>
 
 		<div class="uv-view {% if app.request.cookies and app.request.cookies.get('uv-asideView') %}uv-aside-view{% endif %}">
 			<h1>
-				{{ 'Articles'|trans }}
+				{{ 'All Articles'|trans }}
 			</h1>
 			<div class="uv-action-bar">
                 <!-- Select all checkbox -->
@@ -155,7 +80,7 @@
 							</div>
 							<div class="uv-dropdown-list uv-bottom-left">
 								<div class="uv-dropdown-container">
-									<label>{{ 'Sort By'|trans }}</label>
+									<label> {{ 'Sort By'|trans }}</label>
 									<ul>
 									</ul>
 								</div>
@@ -211,11 +136,12 @@
 						</div>
 						<!-- //Mass action -->
 					</div>
-
+				
 					<div class="uv-action-bar-col-rt">
 						<input type="text" class="uv-search-inline uv-vertical-align uv-margin-right-15" placeholder="{{ 'Search'|trans }}">
 						<!-- Add Button -->
-						<a href="{{ path('article_add_action') }}" type="button" class="uv-btn-action">
+						{# {% set resources = user_service.getCompanyLeftResources() %} #}
+						<a href="{{ path('article_add_action') }}" type="button" class="uv-btn-action" id="uv-add-article">
 							<span class="uv-icon-add"></span>
 							{{ "New Article"|trans }}
 						</a>
@@ -224,16 +150,22 @@
 				</div>
             </div>
             <!--//Action Bar-->
-
+			{# {% set resources = user_service.getCompanyLeftResources() %}
+			{% if resources %}
+				<div class="uv-message-wrapper" id="upgrade-plan-message"  {% if not(resources and resources.articles.showAlert) %} style="display: none;"{% endif %}>
+					<p>	{{ resources.articles.alertMessage |  raw }}</p>
+					<a href="{{path('webkul_admin_subscription_plan')}}" class="uv-btn-small">{{ 'Upgrade Plan'|trans }}</a>
+				</div>
+			{% endif %} #}
             <div class="uv-table uv-list-view">
                 <table>
                     <thead>
                         <tr>
 							<th style="width: 1px;"></th>
-                            <th></th>
                             <th>{{ "Id"|trans }}</th>
+                            <th>{{ "Category"|trans }}</th>
                             <th>{{ "Article"|trans }}</th>
-	                        <th>{{ "Viewed"|trans }}</th>
+                            <th>{{ "Viewed"|trans }}</th>
                             <th>{{ "Created"|trans }}</th>
                             <th>{{ "Status"|trans }}</th>
                             <th class="uv-last">{{ "Action"|trans }}</th>
@@ -292,15 +224,18 @@
                 </div>
             </label>
         </td>
-		<td data-value="{{ 'popularity'|trans }}" class="uv-text-center">
-			<% if(viewed > 100){ %>
-				<span class="uv-icon-popular uv-icon-popular-active"></span>
-			<% }else{ %>
-				<span class="uv-icon-popular"></span>
-			<% } %>
-		</td>
 		<td data-value="{{ 'Id'|trans }}">
 			<%- id %>
+		</td>
+		<td data-value="{{ 'Category'|trans }}" class="uv-width-300">
+			<% if(categories) { %>
+				<% _.each(categories, function(category, key){ %>
+					<% if(key > 0){ %>
+						/ 
+					<% } %>
+					<%- category.name %>
+				<% }) %>
+			<% } %>
 		</td>
 		<td data-value="{{ 'Article'|trans }}"><%- name %></td>
 		<td data-value="{{ 'Viewed'|trans }}"><%- viewed ? viewed : 0 %></td>
@@ -325,7 +260,7 @@
 
 	<script type="text/javascript">
 		var path = "{{ path('article_edit_action', {'id': 'replaceId' }) }}";
-		var pathPreview = "{{ path('webkul_support_center_front_solution_article_slug', {'slug': 'replaceId' }) }}";
+    	var pathPreview = "{{ path('webkul_support_center_front_solution_article_slug', {'slug': 'replaceId' }) }}";
 
 		$(function () {
 			var globalMessageResponse = "";
@@ -336,7 +271,7 @@
 
 			var ArticleCollection = AppCollection.extend({
 				model : ArticleModel,
-				url : "{{ path('article_solution_xhr_actions', {solution: solution.id}) }}",
+				url : "{{ path('article_xhr_actions') }}",
 				filterParameters : {
 					"isActive" : "",
 					"search" : ""
@@ -348,7 +283,7 @@
 					app.appView.showLoader();
 					this.fetch({
 						data : this.getValidParameters(),
-						reset: true,
+						reset: true,               
 						success: function(model, response) {
 							app.appView.hideLoader();
 							var articleListView = new ArticleList();
@@ -371,8 +306,9 @@
 					});
 				},
                 batchOperation : function(data) {
-					if(!data.ids.length) return;
-                    var self = this;
+   					if(!data.ids.length) return;
+
+					var self = this;
                     app.appView.showLoader();
                     $.ajax({
                         url : "{{ path('article_mass_action') }}",
@@ -380,6 +316,9 @@
                         data : {data : data},
                         dataType : 'json',
                         success : function(response) {
+							if('delete' == data.actionType) {
+								$('#uv-add-article').show();
+							}
                             app.appView.hideLoader();
                             globalMessageResponse = response;
                             self.syncData();
@@ -390,7 +329,7 @@
                             var response = warningResponse;
                             if(xhr.responseJSON)
                                 response = xhr.responseJSON;
-
+                            
                             app.appView.hideLoader();
                             app.appView.renderResponseAlert(response);
                             $('.mass-action-checkbox').prop('checked', false);
@@ -433,7 +372,7 @@
                         $('.select-all-checkbox').prop('checked', true);
                     else
                         $('.select-all-checkbox').prop('checked', false);
-
+					
                     if(count) {
                         $('.uv-action-bar-col-lt').eq(0).hide();
                         $('.uv-action-bar-col-lt').eq(1).show();
@@ -474,14 +413,14 @@
                     //if(!parseInt(Backbone.$(e.currentTarget).attr('data-index'))) return;
                     var data = {};
                     data['actionType'] = Backbone.$(e.currentTarget).parents('ul').attr('data-action') ? Backbone.$(e.currentTarget).parents('ul').attr('data-action') : Backbone.$(e.currentTarget).attr('data-action');
-                    data['targetId'] = Backbone.$(e.currentTarget).attr('data-index');
+                    data['targetId'] = Backbone.$(e.currentTarget).attr('data-index'); 
                     data['ids'] = this.getCheckedIds();
                     articleCollection.batchOperation(data);
                     this.hideBulkOptions();
                 },
                 removeItem: function(e) {
                     var data = {};
-
+                    
                     if(Backbone.$(this.currentEvent.currentTarget).is("#mass-delete"))
                         data['actionType'] = "delete";
 
@@ -502,7 +441,7 @@
                 confirmRemove: function(e) {
                     e.preventDefault();
                     this.currentEvent = e;
-
+                    
                     app.appView.openConfirmModal(this)
                 },
                 hideBulkOptions : function() {
@@ -514,126 +453,16 @@
                 }
             });
 
-			var FolderForm = Backbone.View.extend({
-				events : {
-					'click .uv-btn.update-btn' : "saveFolder",
-					'blur input': 'formChanegd',
-                    'click .cancel-btn': 'backToInfo',
-                    'click .uv-aside-back': 'backToInfo'
-				},
-				initialize : function() {
-					Backbone.Validation.bind(this);
-				},
-				formChanegd: function(e) {
-			    	this.model.set(Backbone.$(e.currentTarget).attr('name'), Backbone.$(e.currentTarget).val())
-			    	this.model.isValid([Backbone.$(e.currentTarget).attr('name')])
-			    },
-				saveFolder: function (e) {
-					e.preventDefault();
-                    currentElement = Backbone.$(e.currentTarget);
-                    this.model.clear();
-			        this.model.set(this.$el.find('form').serializeObject());
-                    self = this;
-			        if(this.model.isValid(true)) {
-                        app.appView.showLoader();
-						currentElement.attr('disabled', 'disabled');
-                        this.model.save({}, {
-                            success: function (model, response, options) {
-                                app.appView.hideLoader();
-                                currentElement.removeAttr("disabled");
-                                if(response.alertClass == "success") {
-                                    app.appView.renderResponseAlert(response);
-                                    $('.uv-aside-customer-info .uv-bold').text(self.model.attributes.name);
-                                    $('.uv-aside-ticket-brick span').text(self.model.attributes.description);
-                                    self.backToInfo();
-                                } else
-                                    self.addErrors(JSON.parse(response.errors));
-                            },
-                            error: function (model, xhr, options) {
-                                if(url = xhr.getResponseHeader('Location'))
-                                    window.location = url;
-
-                                app.appView.hideLoader();
-                                app.appView.renderResponseAlert(warningResponse);
-                            }
-                        });
-			        }
-				},
-                addErrors: function(jsonContext) {
-		    		for (var field in jsonContext) {
-		    			Backbone.Validation.callbacks.invalid(this, field, jsonContext[field], 'input');
-					}
-                },
-                backToInfo: function(e) {
-                    if(e) e.preventDefault();
-
-                    $('.uv-main-info-update-block').hide()
-                    $('.uv-main-info-block').show()
-                },
-			});
-
-            var FolderModel = Backbone.Model.extend({
-				validation: {
-					'name': {
-                        required: true,
-                        msg: '{{ "This field is mandatory"|trans }}'
-                    }
-				},
-                urlRoot : "{{ path('folder_ajax_action') }}"
-			});
-
-			var foldermodel = new FolderModel({
-                id : "{{ solution.id }}",
-                name : "{{ solution.name }}",
-				visibility: "{{ solution.visibility }}",
-				description: "{{ solution.description }}",
-			})
-
-			FolderForm = new FolderForm({
-				el : $(".uv-main-info-update-block"),
-				model : foldermodel
-			});
-
             var PageView = Backbone.View.extend({
                 el: '.uv-paper',
                 events : {
                     'change .select-all-checkbox' : 'selectAll',
-                    'click .uv-aside-customer-info .uv-customize': 'showUpdateBlock',
-                    'click .uv-aside-ticket-actions .uv-aside-select .uv-dropdown-list li': 'editSolutionProperty',
-                },
-                editSolutionProperty: function(e) {
-                    var currentElement = Backbone.$(e.currentTarget);
-                    var uvSelect = currentElement.parents('.uv-aside-select');
-                    var field = currentElement.parent().attr('data-action');
-                    var value = currentElement.attr('data-index');
-                    if(uvSelect.find('.uv-aside-select-value').attr('data-id') != value) {
-                        var name = currentElement.text().trim();
-                        app.appView.showLoader();
-                        this.model.save({editType: field, value: value, id: this.model.id}, {
-                            patch: true,
-                            success: function (model, response, options) {
-                                uvSelect.find('.uv-aside-select-value').attr('data-id', value).text(name)
-                                app.appView.hideLoader();
-                                app.appView.renderResponseAlert(response);
-                            },
-                            error: function (model, xhr, options) {
-                                if(url = xhr.getResponseHeader('Location'))
-                                    window.location = url;
-                                var response = warningResponse;
-                                if(xhr.responseJSON)
-                                    response = xhr.responseJSON;
-
-                                app.appView.hideLoader();
-                                app.appView.renderResponseAlert(response);
-                            }
-                        });
-                    }
                 },
                 selectAll : function(e) {
                     if(Backbone.$(e.currentTarget).is(':checked')) {
 						if($('.mass-action-checkbox').length){
 							$('.mass-action-checkbox').prop('checked', true);
-
+							
 							$('.uv-action-bar-col-lt').eq(0).hide();
 							$('.uv-action-bar-col-lt').eq(1).show();
 							$('.uv-action-bar-col-rt').hide()
@@ -654,15 +483,9 @@
                         }
                     }
                 },
-                showUpdateBlock: function() {
-                    $('.uv-main-info-update-block').show()
-                    $('.uv-main-info-block').hide()
-                },
             });
 
-			var pageView = new PageView({
-				model : foldermodel
-			});
+			var pageView = new PageView();
             var bulkAction = new BulkActionView();
 
 			var Filter = app.Filter.extend({
@@ -718,10 +541,18 @@
 					articleCollection.filterParameters.search = query;
 					$(".uv-search-inline").val(query);
 				}
-			});
+			});     
 
 			router = new Router();
 			Backbone.history.start({push_state:true});
-		});
+
+			$('.uv-cursor').on('click', function(){
+				$(this).find('span.uv-icon-expand')[0].classList.toggle('uv-icon-expand-active');
+
+				let ele = $(this).next('ul')[0];
+				ele.style.height = ((ele.scrollHeight + 10) + 'px');
+				ele.classList.toggle('uv-no-height');
+			})
+		}); 	
 	</script>
 {% endblock %}

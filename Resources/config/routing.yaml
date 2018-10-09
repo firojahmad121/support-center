@@ -1,7 +1,0 @@
-helpdesk_support_center_member_routing_resources:
-    resource: "@UVDeskSupportCenterBundle/Resources/config/route/routing.yml"
-    prefix:   /member/
-
-webkul_support_center_front:
-    resource: "@UVDeskSupportCenterBundle/Resources/config/route/front.yml"
-    prefix:   /

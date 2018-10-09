@@ -1,4 +1,4 @@
-{% extends "@UVDeskCommunity/BackSupport/layout.html.twig" %}
+{% extends "@UVDeskCore/BackSupport/layout.html.twig" %}
 
 {% block title %}
 	{{ 'Folders'|trans }}
@@ -46,7 +46,7 @@
 	</style>
 
 	<div class="uv-inner-section">
-		{{ include('@UVDeskCommunity/BackSupport/panel-sidebar.html.twig') }}
+		{{ include('@UVDeskCore/BackSupport/panel-sidebar.html.twig') }}
 
 		<div class="uv-view {% if app.request.cookies and app.request.cookies.get('uv-asideView') %}uv-aside-view{% endif %}">
 			<h1>
@@ -140,7 +140,7 @@
 		<a href="<%- path.replace('replaceId', id) %>"
 			<% if(solutionImage){ %>
 				<div class="uv-app-list-brick-lt">
-					<img src="{{ asset('../bundles/uvdeskcommunity/images/folder-default.png') }}"/>
+					<img src="{{ asset('../bundles/UVDeskCore/images/folder-default.png') }}"/>
 					
 				</div>
 			<% }else{ %>
@@ -165,7 +165,7 @@
 	<script id="no_result_tmp" type="text/template">
         <div class="uv-app-screen">
 			<div class="uv-app-splash" style="text-align: center;">
-				<img class="uv-app-splash-image" src="{{ asset('../../bundles/uvdeskcommunity/images/knowledgebase-splash.png') }}" alt="Folders">
+				<img class="uv-app-splash-image" src="{{ asset('../../bundles/UVDeskCore/images/knowledgebase-splash.png') }}" alt="Folders">
 				<% if(!window.location.hash) { %>
 					<h2 class="uv-margin-top-10">{{"Create Knowledgebase Folder"|trans}}</h2>
 					<p>{{"You didn't add any folder to your Knowledgebase yet, Create your first Folder and start adding Categories/Articles to make your customers help themselves."|trans}}</p>

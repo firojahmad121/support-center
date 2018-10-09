@@ -1,0 +1,68 @@
+default_exception:
+    path:     /exception
+    defaults: { _controller: WebkulDefaultBundle:Default:exceptionDefault }
+
+webkul_support_center_front_header:
+    path:     /header/{searchDisable}
+    defaults: { _controller: UVDeskSupportCenterBundle:Customer:header, searchDisable: false }
+
+webkul_support_center_front_solutions:
+    path:     /
+    defaults: { _controller: UVDeskSupportCenterBundle:Front:SolutionList }
+
+webkul_support_center_front_solution:
+    path:     /folder/{solution}
+    defaults: { _controller: UVDeskSupportCenterBundle:Front:Solution, solution: 0 }
+
+webkul_support_center_front_solution_articles:
+    path:     /folder/{solution}/articles
+    defaults: { _controller: UVDeskSupportCenterBundle:Front:SolutionArticle, solution: 0 }
+
+webkul_support_center_front_solution_category:
+    path:     /category/{category}
+    defaults: { _controller: UVDeskSupportCenterBundle:Front:Category, category: 0 }
+
+webkul_support_center_front_solution_category_article:
+    path:     /article/{article}
+    defaults: { _controller: UVDeskSupportCenterBundle:Front:Article, article: 0 }
+
+webkul_support_center_front_solution_article_slug:
+    path:     /blog/{slug}
+    defaults: { _controller: UVDeskSupportCenterBundle:Front:Article, slug: '' }
+
+webkul_support_center_front_solution_categories:
+    path:     /categories
+    defaults: { _controller: UVDeskSupportCenterBundle:Front:CategoryListing }
+
+
+webkul_support_center_front_solution_article:
+    path:     /folder/{solution}/article/{article}
+    defaults: { _controller: UVDeskSupportCenterBundle:Front:Article, solution: 0, category: 0, article: 0 }
+
+webkul_support_center_front_solution_article_history:
+    path:     /folder/{solution}/article/{article}/{history}
+    defaults: { _controller: UVDeskSupportCenterBundle:Front:Article, solution: 0, category: 0, article: 0, history: 0 }
+
+webkul_support_center_front_solution_article_rating:
+    path:     /rating/{articleId}
+    defaults: { _controller: UVDeskSupportCenterBundle:Front:RateArticle }
+
+webkul_support_center_front_search:
+    path:     /search/{s}
+    defaults: { _controller: UVDeskSupportCenterBundle:Front:Search, s: '' }
+
+webkul_support_center_front_tag:
+    path:     /tag/{tag}/{name}
+    defaults: { _controller: UVDeskSupportCenterBundle:Front:Tag, tag: '', name: '' }
+
+# user_account_validation:
+#     path:     /user-account-confirmation/{email}/{key}
+#     defaults: { _controller: WebkulUserBundle:User:AccountValidation, email:0, key:0}
+
+webkul_support_center_front_account_validation:
+    path:     /account-confirmation/{email}/{key}
+    defaults: { _controller: UVDeskSupportCenterBundle:Customer:AccountValidation, email:0, key:0}
+
+webkul_support_center_front_account_verification:
+    path:     /account-verification/{email}/{key}
+    defaults: { _controller: UVDeskSupportCenterBundle:Customer:AccountVerification, email:0, key:0}

@@ -1,0 +1,127 @@
+webkul_support_center_front_login:
+    path:     /login
+    defaults: { _controller: UVDeskSupportCenterBundle:Customer:login}
+
+webkul_support_center_front_social_login:
+    path:     /login/{applicationRouteName}
+    defaults: { _controller: UVDeskSupportCenterBundle:Customer:socialLogin }
+
+webkul_support_center_front_google_login:
+    path:     /login-google
+    defaults: { _controller: UVDeskSupportCenterBundle:Customer:googleLogin }
+
+webkul_support_center_front_linkedin_login:
+    path:     /login-linkedin
+    defaults: { _controller: UVDeskSupportCenterBundle:Customer:linkedinLogin }
+
+webkul_support_center_front_forgot_password:
+    path:     /forgot-password
+    defaults: { _controller: UVDeskSupportCenterBundle:Customer:forgotPassword }
+
+webkul_support_center_front_login_post:
+    path:     /check
+    defaults: { _controller: UVDeskSupportCenterBundle:Customer:check }
+
+webkul_support_center_front_logout:
+    path:     /logout
+    defaults: { _controller: UVDeskSupportCenterBundle:Customer:logout}
+
+webkul_support_center_front_account:
+    path:     /account
+    defaults: { _controller: UVDeskSupportCenterBundle:Customer:Account}
+
+webkul_support_center_front_account_merge:
+    path:     /account/merge-social
+    defaults: { _controller: UVDeskSupportCenterBundle:Customer:mergeSocialAccount}
+
+webkul_support_center_front_account_connect_platform:
+    path:     /account/connect/{platform}
+    defaults: { _controller: UVDeskSupportCenterBundle:Customer:connectPlatform }
+
+webkul_support_center_front_tickets:
+    path:     /tickets
+    defaults: { _controller: UVDeskSupportCenterBundle:Ticket:Tickets}
+
+webkul_support_center_front_tickets_xhr:
+    path:     /tickets/xhr
+    defaults: { _controller: UVDeskSupportCenterBundle:Ticket:ticketListXhr}
+
+webkul_support_center_front_ticket_view:
+    path:     /ticket/view/{id}
+    defaults: { _controller: UVDeskSupportCenterBundle:Ticket:ticketView,id:0}
+
+webkul_support_center_front_custom_fields_xhr:
+    path:     /ticket/custom-field/update
+    defaults: { _controller: WebkulCoreBundle:CustomFields:ticketCustomFieldXHR }
+
+webkul_support_center_front_custom_fields_decrypt_xhr:
+    path:     /ticket/custom-field/view/{ticketId}
+    defaults: { _controller: WebkulCoreBundle:CustomFields:decryptCustomFieldXHR }
+
+# webkul_support_center_front_custom_field_sibling_request:
+#     path:     /ticket/{id}/field/siblings
+#     defaults: { _controller: UVDeskSupportCenterBundle:Ticket:siblingCustomField, id: 0 }
+
+webkul_support_center_front_thread_list_xhr:
+    path:     /threads/ajax/{id}
+    defaults: { _controller: UVDeskSupportCenterBundle:Ticket:threadListXhr,id:0}
+
+webkul_support_center_front_thread_save:
+    path:     /thread/save/{id}
+    defaults: { _controller: UVDeskSupportCenterBundle:Ticket:saveReply ,id: 0}
+
+customer_thread_encoded_image_uploader:
+    path:     /thread/encoded-images/save/{ticketId}
+    defaults: { _controller: WebkulCoreBundle:Thread:base64ImageUpload }
+
+webkul_support_center_front_rate_ticket:
+    path:     /ticket/rate/{id}
+    defaults: { _controller: UVDeskSupportCenterBundle:Ticket:rateTicket ,id: 0}
+
+webkul_support_center_front_ticket_save_draft:
+    path:     /ticket/draft-save/{id}
+    defaults: { _controller: UVDeskSupportCenterBundle:Ticket:saveDraft ,id: 0}
+
+webkul_support_center_front_ticket_collaborator_action_xhr:
+    path:     /ticket/collaborator/{id}
+    defaults: { _controller: UVDeskSupportCenterBundle:Ticket:ticketCollaboratorXhr ,id: 0}
+
+download_customer_resources_trigger:
+    path:     /resources/backup/confirm
+    defaults: { _controller: UVDeskSupportCenterBundle:Customer:initiateCustomerBackup }
+
+download_customer_resources_retrieve:
+    path:     /resources/backup/{confirmationToken}
+    defaults: { _controller: UVDeskSupportCenterBundle:Customer:downloadCustomerBackup }
+
+ajax_file_upload_customer:
+    path:     /file-upload
+    defaults: { _controller: WebkulDefaultBundle:Default:ajaxFileUpload }
+
+ajax_url_file_customer:
+    path:     /url-upload
+    defaults: { _controller: WebkulDefaultBundle:Default:ajaxUrlFileUpload }
+
+ajax_file_remove_customer:
+    path:     /file-remove
+    defaults: { _controller: WebkulDefaultBundle:Default:ajaxFileRemove }
+
+webkul_support_center_front_ticket_generate:
+    path:     /create-ticket/
+    defaults: { _controller: UVDeskSupportCenterBundle:Ticket:ticketAdd }
+    
+webkul_support_center_front_ticket_generate_success:
+    path:     /ticket/success/{email}/{flag}
+    defaults: { _controller: UVDeskSupportCenterBundle:Ticket:ticketSuccess,email: '',flag: 0 }
+
+webkul_support_center_front_download_ticket_attachment:
+    path:     /ticket/download/{id}
+    defaults: { _controller: UVDeskSupportCenterBundle:Ticket:downloadAttachment,id: 0}
+
+webkul_support_center_front_download_ticket_attachment_zip:
+    path:     /ticket/download-ticket-zip/{threadId}
+    defaults: { _controller: UVDeskSupportCenterBundle:Ticket:downloadAttachmentZip,threadId: 0}
+
+webkul_support_center_front_view_ticket_attachment:
+    path: /attachment/{id}/view
+    defaults: { _controller: WebkulCoreBundle:AttachmentViewer:attachmentView }

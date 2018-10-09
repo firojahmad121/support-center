@@ -1,4 +1,5 @@
-{% extends "@UVDeskCommunity/BackSupport/layout.html.twig" %}
+{% extends "@UVDeskCore/BackSupport/layout.html.twig" %}
+
 
 {% block title %}
 	{{ 'Categories'|trans }}
@@ -6,38 +7,128 @@
 
 {% block pageContent %}
 	<style>
-		@media only screen and (max-width: 900px) {
-			.uv-table.uv-list-view table tbody td.uv-last-170{
-				width: 100%;
-			}
+	.uv-inner-section .uv-aside .uv-aside-brick .uv-aside-customer-block .uv-aside-customer-info{
+		width: 140px;
+		max-width: 164px;
+	}
+	@media only screen and (max-width: 900px) {
+		.uv-table.uv-list-view table tbody td.uv-last-170{
+			width: 100%;
 		}
+	}
 	</style>
 	<div class="uv-inner-section">
-        <div class="uv-aside" {% if app.request.cookies and app.request.cookies.get('uv-asideView') %}style="display: none;"{% endif %}>
-            <div class="uv-aside-head">
-                <div class="uv-aside-title">
-                    <h6>{{ 'FOLDERS'|trans }}</h6>
-                </div>
-                <div class="uv-aside-back">
-                    <span onclick="window.location = '{{path('webkul_support_center_solution')}}'"> {{ 'Back'|trans }}</span>
-                </div>
+        <div class="uv-aside uv-category">
+		    <div class="uv-main-info-block">
+				<div class="uv-aside-head">
+					<div class="uv-aside-title">
+						<h6>{{ 'FOLDER'|trans }}</h6>
+					</div>
+					<div class="uv-aside-back">
+						<span onclick="window.location = '{{path('webkul_support_center_category')}}'"> {{ 'Back'|trans }}</span>
+					</div>
+				</div>
+				{% set defaultImage = asset('bundles/webkuldefault/images/knowledgebase-splash.png') %}
+				<div class="uv-aside-brick">
+					<div class="uv-aside-customer-block">
+						<div class="uv-aside-avatar">
+							{# <img src="{{solution.solutionImage ? solution.solutionImage : defaultImage}}"> #}
+							<img src="https://s3-ap-southeast-1.amazonaws.com/cdn.uvdesk.com/website/183/im%2Cas.png">
+						</div>
+						<div class="uv-aside-customer-info">
+							<span class="uv-customize"></span>
+							<span class="uv-bold">{{solution.name}}</span>
+							<span>{{solutionCategoryCount}} {{'Categories'|trans }}</span>
+							<span>{{solutionArticleCount}} {{'Articles'|trans }}</span>
+						</div>
+					</div>
+					<div class="uv-aside-ticket-block">
+						<div class="uv-aside-ticket-brick">
+							<span>{{solution.description}}</span>
+						</div>
+					</div>
+					<!--//Ticket Info-->
+				</div>
             </div>
 
-            <div class="uv-aside-nav">
-                <ul>
-					{% if solutions|length %}				
-						{% for solution in solutions %}
-							<li>
-								<a class="" href="{{path('webkul_support_center_solution_category', {'solution': solution.id} )}}"><span class="uv-icon-folder"></span> {{ solution.name }} <span class="uv-flag-gray">{{solution.categoriesCount}}</span></a>
-							</li>
-						{% endfor %}
-					{% else %}
-						<li>
-							<a class="uv-aside-nav-active" href="{{ path('folder_add_action') }}">{{ 'New Folder'|trans }}</a>
-						</li>
-					{% endif %}						
-                </ul>
-            </div>
+			<!--Aside Customer Info Update Brick-->
+			<div class="uv-main-info-update-block" style="display: none">
+				<div class="uv-aside-head">
+					<div class="uv-aside-title">
+						<h6>{{ 'Edit Folder'|trans }}</h6>
+					</div>
+					<div class="uv-aside-back">
+						<span>{{ 'Back'|trans }}</span>
+					</div>
+				</div>
+
+				<div class="uv-aside-brick">
+					<form method="post">
+						<input class="uv-field" name="id" type="hidden" value="{{ solution.id }}">
+						<!-- Field -->
+						<div class="uv-element-block">
+							<label class="uv-field-label">{{ 'Name'|trans }}</label>
+							<div class="uv-field-block">
+								<input class="uv-field" name="name" type="text" value="{{ solution.name }}">
+							</div>
+						</div>
+						<!-- //Field -->
+
+						<!-- Field -->
+						<div class="uv-element-block">
+							<label class="uv-field-label">{{ 'Description'|trans }}</label>
+							<div class="uv-field-block">
+								<textarea class="uv-field" name="description">{{ solution.description }}</textarea>
+							</div>
+						</div>
+						<!-- //Field -->
+
+						<!-- Field -->
+						<div class="uv-action-buttons">
+							<a class="uv-btn update-btn" href="#">
+								{{ 'Update'|trans }}
+							</a>
+							<a class="uv-btn cancel-btn" href="#">
+								{{ 'Cancel'|trans }}
+							</a>
+						</div>
+					
+					</form>
+				</div>
+			</div>
+
+
+			<!--Aside Brick-->
+			<div class="uv-aside-brick">
+				<!--Ticket Actions-->
+				<div class="uv-aside-ticket-actions">
+
+					<div class="uv-aside-select">
+						<label class="uv-aside-select-label">{{ 'Status'|trans }}</label>
+						<div>
+							<span class="uv-aside-select-value uv-dropdown-other uv-aside-drop-icon" data-id="{{ solution.visibility }}">
+								{{ solution.visibility == 'public' ? 'Published'|trans : 'Draft'|trans  }}
+							</span>
+							<div class="uv-dropdown-list uv-bottom-left">
+								<div class="uv-dropdown-container">
+									<label>{{ 'Status'|trans }}</label>
+									<ul class="status" data-action="status">
+										<li data-index="public"><a href="#">{{ 'Published'|trans }}</a></li>
+										<li data-index="private"><a href="#">{{ 'Draft'|trans }}</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="uv-aside-brick">
+				<a href="{{path('webkul_support_center_front_solution', {'solution': solution.id })}}" target="_blank" type="button" class="uv-btn-action">
+					{{'preview'|trans}}
+				</a>
+			</div>
+
         </div>
 
 		<div class="uv-view {% if app.request.cookies and app.request.cookies.get('uv-asideView') %}uv-aside-view{% endif %}">
@@ -83,8 +174,8 @@
 									<label>{{ 'Status'|trans }}</label>
 									<ul>
 										<li class="uv-drop-list-active"><a href="#">{{ 'All'|trans }}</a></li>
-										<li><a href="#" data-id="1">{{ 'Publish'|trans }}</a></li>
-										<li><a href="#" data-id="0">{{ 'Draft'|trans }}</a></li>
+										<li><a href="#" data-id="1">{{ 'Active'|trans }}</a></li>
+										<li><a href="#" data-id="0">{{ 'Disabled'|trans }}</a></li>
 									</ul>
 								</div>
 							</div>
@@ -103,7 +194,7 @@
 										<div class="uv-dropdown-container">
 											<label>{{ 'Status'|trans }}</label>
 											<ul class="status" data-action="status">
-												<li data-index="1"><a href="#">{{ 'Publish'|trans }}</a></li>
+												<li data-index="1"><a href="#">{{ 'Published'|trans }}</a></li>
 												<li data-index="0"><a href="#">{{ 'Draft'|trans }}</a></li>
 											</ul>
 										</div>
@@ -125,8 +216,7 @@
 					<div class="uv-action-bar-col-rt">
 						<input type="text" class="uv-search-inline uv-vertical-align uv-margin-right-15" placeholder="{{ 'Search'|trans }}">
 						<!-- Add Button -->
-						{# {% set resources = user_service.getCompanyLeftResources() %}						 #}
-						<a href="{{ path('category_add_action') }}" type="button" class="uv-btn-action" id="uv-add-category">
+						<a href="{{ path('category_add_action') }}" type="button" class="uv-btn-action">
 							<span class="uv-icon-add"></span>
 							{{ "New Category"|trans }}
 						</a>
@@ -135,19 +225,15 @@
 				</div>
             </div>
             <!--//Action Bar-->
-			{# {% if resources %}
-				<div class="uv-message-wrapper" id="upgrade-plan-message"  {% if not(resources and resources.categories.showAlert) %} style="display: none;"{% endif %}>
-					<p>	{{ resources.categories.alertMessage |  raw }}</p>
-					<a href="{{path('webkul_admin_subscription_plan')}}" class="uv-btn-small">{{ 'Upgrade Plan'|trans }}</a>
-				</div>
-			{% endif %} #}
+
             <div class="uv-table uv-list-view">
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 1px;"></th>
+							<th style="width: 1px;"></th>
+							<th style="width: 1px;"></th>
+                            <th>{{ "Sort Order"|trans }}</th>
                             <th>{{ "Id"|trans }}</th>
-                            <th>{{ "Folder"|trans }}</th>
                             <th>{{ "Category"|trans }}</th>
                             <th>{{ "Articles"|trans }}</th>
                             <th>{{ "Created"|trans }}</th>
@@ -208,18 +294,14 @@
                 </div>
             </label>
         </td>
+		<td data-value="{{ 'Sorting'|trans }}">
+			<span class="uv-icon-drag"></span>
+		</td>
+		<td data-value="{{ 'Sort Order'|trans }}">
+			<%- sortOrder ? sortOrder : 0 %>
+		</td>
 		<td data-value="{{ 'Id'|trans }}">
 			<%- id %>
-		</td>
-		<td data-value="{{ 'Folder'|trans }}">
-			<% if(solutions) { %>
-				<% _.each(solutions, function(solution, key){ %>
-					<% if(key > 0){ %>
-						/
-					<% } %>
-          			<%- solution.name %>
-				<% }) %>
-        	<% } %>
 		</td>
 		<td data-value="{{ 'Category'|trans }}">
 			<%- name %>
@@ -234,7 +316,7 @@
         	<% } %>
 		</td>
 		<td data-value="{{ 'Action'|trans }}" class="uv-last-170">
-			<a href="<%- path.replace('replaceId', id) %>" class="uv-btn-stroke edit-category">
+			<a href="<%- path.replace('replaceId', id) %>" class="uv-btn-stroke edit-category" data-value="<%- id %>">
 				{{ "Edit"|trans }}
 			</a>
 			<a class="uv-btn-stroke preview-category" href="<%- pathPreview.replace('replaceId', id) %>" target="_blank" <%- status ? '' : 'disabled="disabled"' %>>
@@ -246,9 +328,25 @@
 
 	<script type="text/javascript">
 		var path = "{{ path('category_edit_action', {'id': 'replaceId' }) }}";
-		var pathPreview = "{{ path('webkul_support_center_front_solution_category', {'category': 'replaceId' }) }}";
+    	var pathPreview = "{{ path('webkul_support_center_front_solution_category', {'category': 'replaceId' }) }}";
 
 		$(function () {
+		
+
+			$('.uv-table.uv-list-view tbody').on("sortupdate", function(event, ui){
+				var data = {'ids': new Array()};
+				$('.uv-table.uv-list-view tbody tr').each(function(key, value){
+					var modelKey = $(value).find('.edit-category').attr('data-value');
+					if(modelKey){
+						//data.ids[modelKey] = key+1;
+						data.ids[parseInt(key)+1] = modelKey;
+					}
+				});
+				data['actionType'] = 'sortUpdate';
+				//, ($('.uv-drop-list-active a').attr('data-field') == 'a.sortOrder' ? false : true)
+				categoryCollection.batchOperation(data);
+			});
+
 			var globalMessageResponse = "";
 
 			var CategoryModel = Backbone.Model.extend({
@@ -257,7 +355,7 @@
 
 			var CategoryCollection = AppCollection.extend({
 				model : CategoryModel,
-				url : "{{ path('category_xhr_actions') }}",
+				url : "{{ path('category_solution_xhr_actions', {solution: solution.id}) }}",
 				filterParameters : {
 					"isActive" : "",
 					"search" : ""
@@ -267,7 +365,6 @@
 				},
 				syncData : function() {
 					app.appView.showLoader();
-					$('.select-all-checkbox').prop('checked', false);
 					this.fetch({
 						data : this.getValidParameters(),
 						reset: true,
@@ -291,8 +388,8 @@
 								window.location = url;
 						}
 					});
-				} ,
-                batchOperation : function(data) {
+				},
+                batchOperation : function(data, callSyncData = true) {
 					if(!data.ids.length) return;
                     var self = this;
                     app.appView.showLoader();
@@ -302,13 +399,10 @@
                         data : {data : data},
                         dataType : 'json',
                         success : function(response) {
-							if(typeof(response.allowedToAdd) != 'undefined' && response.allowedToAdd) {
-								$('#upgrade-plan-message').hide();
-								$('#uv-add-article').show();
-							}
                             app.appView.hideLoader();
-                            globalMessageResponse = response;
-                            self.syncData();
+                            app.appView.renderResponseAlert(response);
+							if(callSyncData)
+                            	self.syncData();
                         },
                         error: function (xhr) {
                             if(url = xhr.getResponseHeader('Location'))
@@ -337,7 +431,7 @@
 						categoryCollection.syncData();
 						app.appView.renderResponseAlert(response)
 					}
-				}
+				},
 			});
 
 			var CategoryList = Backbone.View.extend({
@@ -377,7 +471,7 @@
 							this.renderCategory(item);
 						}, this);
 					} else {
-						this.$el.append("<tr style='text-align: center;'><td colspan='8'>{% trans %}No Record Found{% endtrans %}</td></tr>")
+						this.$el.append("<tr style='text-align: center;'><td colspan='9'>{% trans %}No Record Found{% endtrans %}</td></tr>")
 					}
 				},
 				renderCategory : function (item) {
@@ -407,7 +501,6 @@
                 },
                 removeItem: function(e) {
                     var data = {};
-
                     if(Backbone.$(this.currentEvent.currentTarget).is("#mass-delete"))
                         data['actionType'] = "delete";
 
@@ -438,10 +531,120 @@
                 }
             });
 
+			var FolderForm = Backbone.View.extend({
+				events : {
+					'click .uv-btn.update-btn' : "saveFolder",
+					'blur input': 'formChanegd',
+                    'click .cancel-btn': 'backToInfo',
+                    'click .uv-aside-back': 'backToInfo'
+				},
+				initialize : function() {
+					Backbone.Validation.bind(this);
+				},
+				formChanegd: function(e) {
+			    	this.model.set(Backbone.$(e.currentTarget).attr('name'), Backbone.$(e.currentTarget).val())
+			    	this.model.isValid([Backbone.$(e.currentTarget).attr('name')])
+			    },
+				saveFolder: function (e) {
+					e.preventDefault();
+                    currentElement = Backbone.$(e.currentTarget);
+                    this.model.clear();
+			        this.model.set(this.$el.find('form').serializeObject());
+                    self = this;
+			        if(this.model.isValid(true)) {
+                        app.appView.showLoader();
+						currentElement.attr('disabled', 'disabled');
+                        this.model.save({}, {
+                            success: function (model, response, options) {
+                                app.appView.hideLoader();
+                                currentElement.removeAttr("disabled");
+                                if(response.alertClass == "success") {
+                                    app.appView.renderResponseAlert(response);
+                                    $('.uv-aside-customer-info .uv-bold').text(self.model.attributes.name);
+                                    $('.uv-aside-ticket-brick span').text(self.model.attributes.description);
+                                    self.backToInfo();
+                                } else
+                                    self.addErrors(JSON.parse(response.errors));
+                            },
+                            error: function (model, xhr, options) {
+                                if(url = xhr.getResponseHeader('Location'))
+                                    window.location = url;
+
+                                app.appView.hideLoader();
+                                app.appView.renderResponseAlert(warningResponse);
+                            }
+                        });
+			        }
+				},
+                addErrors: function(jsonContext) {
+		    		for (var field in jsonContext) {
+		    			Backbone.Validation.callbacks.invalid(this, field, jsonContext[field], 'input');
+					}
+                },
+                backToInfo: function(e) {
+                    if(e) e.preventDefault();
+
+                    $('.uv-main-info-update-block').hide()
+                    $('.uv-main-info-block').show()
+                },
+			});
+
+            var FolderModel = Backbone.Model.extend({
+				validation: {
+					'name': {
+                        required: true,
+                        msg: '{{ "This field is mandatory"|trans }}'
+                    }
+				},
+                urlRoot : "{{ path('folder_ajax_action') }}"
+			});
+
+			var foldermodel = new FolderModel({
+                id : "{{ solution.id }}",
+                name : "{{ solution.name }}",
+				visibility: "{{ solution.visibility }}",
+				description: "{{ solution.description }}",
+			})
+
+			FolderForm = new FolderForm({
+				el : $(".uv-main-info-update-block"),
+				model : foldermodel
+			});
+
             var PageView = Backbone.View.extend({
                 el: '.uv-paper',
                 events : {
                     'change .select-all-checkbox' : 'selectAll',
+                    'click .uv-aside-customer-info .uv-customize': 'showUpdateBlock',
+                    'click .uv-aside-ticket-actions .uv-aside-select .uv-dropdown-list li': 'editSolutionProperty',
+                },
+                editSolutionProperty: function(e) {
+                    var currentElement = Backbone.$(e.currentTarget);
+                    var uvSelect = currentElement.parents('.uv-aside-select');
+                    var field = currentElement.parent().attr('data-action');
+                    var value = currentElement.attr('data-index');
+                    if(uvSelect.find('.uv-aside-select-value').attr('data-id') != value) {
+                        var name = currentElement.text().trim();
+                        app.appView.showLoader();
+                        this.model.save({editType: field, value: value, id: this.model.id}, {
+                            patch: true,
+                            success: function (model, response, options) {
+                                uvSelect.find('.uv-aside-select-value').attr('data-id', value).text(name)
+                                app.appView.hideLoader();
+                                app.appView.renderResponseAlert(response);
+                            },
+                            error: function (model, xhr, options) {
+                                if(url = xhr.getResponseHeader('Location'))
+                                    window.location = url;
+                                var response = warningResponse;
+                                if(xhr.responseJSON)
+                                    response = xhr.responseJSON;
+
+                                app.appView.hideLoader();
+                                app.appView.renderResponseAlert(response);
+                            }
+                        });
+                    }
                 },
                 selectAll : function(e) {
                     if(Backbone.$(e.currentTarget).is(':checked')) {
@@ -468,9 +671,15 @@
                         }
                     }
                 },
+                showUpdateBlock: function() {
+                    $('.uv-main-info-update-block').show()
+                    $('.uv-main-info-block').hide()
+                },
             });
 
-			var pageView = new PageView();
+			var pageView = new PageView({
+				model : foldermodel
+			});
             var bulkAction = new BulkActionView();
 
 			var Filter = app.Filter.extend({

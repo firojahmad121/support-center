@@ -1,21 +1,17 @@
-{% extends "@UVDeskCommunity/BackSupport/layout.html.twig" %}
+{% extends "@UVDeskCore/BackSupport/layout.html.twig" %}
 
 
 {% block title %}
-	{{ 'Categories'|trans }}
+	{{ 'Articles'|trans }}
 {% endblock %}
 
 {% block pageContent %}
 	<style>
-	.uv-inner-section .uv-aside .uv-aside-brick .uv-aside-customer-block .uv-aside-customer-info{
-		width: 140px;
-		max-width: 164px;
-	}
-	@media only screen and (max-width: 900px) {
-		.uv-table.uv-list-view table tbody td.uv-last-170{
-			width: 100%;
+		@media only screen and (max-width: 900px) {
+			.uv-table.uv-list-view table tbody td.uv-last-170{
+				width: 100%;
+			}
 		}
-	}
 	</style>
 	<div class="uv-inner-section">
         <div class="uv-aside uv-category">
@@ -25,7 +21,7 @@
 						<h6>{{ 'FOLDER'|trans }}</h6>
 					</div>
 					<div class="uv-aside-back">
-						<span onclick="window.location = '{{path('webkul_support_center_category')}}'"> {{ 'Back'|trans }}</span>
+						<span onclick="window.location = '{{path('webkul_support_center_solution')}}'"> {{ 'Back'|trans }}</span>
 					</div>
 				</div>
 				{% set defaultImage = asset('bundles/webkuldefault/images/knowledgebase-splash.png') %}
@@ -92,7 +88,11 @@
 								{{ 'Cancel'|trans }}
 							</a>
 						</div>
-					
+						<!-- //Field -->
+
+						<!-- CSRF token Field -->
+						{# <input type="hidden" name="_token" value="{{ default_service.generateCsrfToken('') }}"/> #}
+						<!-- //CSRF token Field -->
 					</form>
 				</div>
 			</div>
@@ -124,16 +124,15 @@
 			</div>
 
 			<div class="uv-aside-brick">
-				<a href="{{path('webkul_support_center_front_solution', {'solution': solution.id })}}" target="_blank" type="button" class="uv-btn-action">
+				<a href="{{path('webkul_support_center_front_solution', {'solution': solution.id })}}" target="_blank"  type="button" class="uv-btn-action">
 					{{'preview'|trans}}
 				</a>
 			</div>
-
         </div>
 
 		<div class="uv-view {% if app.request.cookies and app.request.cookies.get('uv-asideView') %}uv-aside-view{% endif %}">
 			<h1>
-				{{ 'Categories'|trans }}
+				{{ 'Articles'|trans }}
 			</h1>
 			<div class="uv-action-bar">
                 <!-- Select all checkbox -->
@@ -216,9 +215,9 @@
 					<div class="uv-action-bar-col-rt">
 						<input type="text" class="uv-search-inline uv-vertical-align uv-margin-right-15" placeholder="{{ 'Search'|trans }}">
 						<!-- Add Button -->
-						<a href="{{ path('category_add_action') }}" type="button" class="uv-btn-action">
+						<a href="{{ path('article_add_action') }}" type="button" class="uv-btn-action">
 							<span class="uv-icon-add"></span>
-							{{ "New Category"|trans }}
+							{{ "New Article"|trans }}
 						</a>
 						<!--// Add Button -->
 					</div>
@@ -231,11 +230,10 @@
                     <thead>
                         <tr>
 							<th style="width: 1px;"></th>
-							<th style="width: 1px;"></th>
-                            <th>{{ "Sort Order"|trans }}</th>
+                            <th></th>
                             <th>{{ "Id"|trans }}</th>
-                            <th>{{ "Category"|trans }}</th>
-                            <th>{{ "Articles"|trans }}</th>
+                            <th>{{ "Article"|trans }}</th>
+	                        <th>{{ "Viewed"|trans }}</th>
                             <th>{{ "Created"|trans }}</th>
                             <th>{{ "Status"|trans }}</th>
                             <th class="uv-last">{{ "Action"|trans }}</th>
@@ -254,7 +252,7 @@
 	{{ parent() }}
 
 	<!-- Sorting Template -->
-	<script id="category_list_sorting_tmp" type="text/template">
+	<script id="article_list_sorting_tmp" type="text/template">
         <li class="<% if(sort == 'a.createdAt') { %>uv-drop-list-active<% } %>">
             <a href="#<% if(queryString != '') { %><%- queryString %>/<% } %><% if(page) { %>page/<%- page %><% } else { %>page/1<% } %>/sort/a.createdAt/<% if(sort == 'a.createdAt') { %><% if(direction) { %>direction/<%- direction %><% } else { %>direction/desc<% } %><% } else { %>direction/asc<% } %>" data-field="a.createdAt">
 				{% trans %}Created At{% endtrans %}
@@ -273,10 +271,10 @@
 			</a>
         </li>
 
-	    <li class="<% if(sort == 'a.sortOrder') { %>uv-drop-list-active<% } %>">
-            <a href="#<% if(queryString != '') { %><%- queryString %>/<% } %><% if(page) { %>page/<%- page %><% } else { %>page/1<% } %>/sort/a.sortOrder/<% if(sort == 'a.sortOrder') { %><% if(direction) { %>direction/<%- direction %><% } else { %>direction/desc<% } %><% } else { %>direction/asc<% } %>" data-field="a.sortOrder">
-				{% trans %}Sort Order{% endtrans %}
-				<% if(sort == 'a.sortOrder') { %>
+	    <li class="<% if(sort == 'a.viewed') { %>uv-drop-list-active<% } %>">
+            <a href="#<% if(queryString != '') { %><%- queryString %>/<% } %><% if(page) { %>page/<%- page %><% } else { %>page/1<% } %>/sort/a.viewed/<% if(sort == 'a.viewed') { %><% if(direction) { %>direction/<%- direction %><% } else { %>direction/desc<% } %><% } else { %>direction/asc<% } %>" data-field="a.viewed">
+				{% trans %}Viewed{% endtrans %}
+				<% if(sort == 'a.viewed') { %>
 					<span class="uv-sorting <% if(direction == 'asc') { %> descend <% } else { %> ascend <% } %>"></span>
 				<% } %>
 			</a>
@@ -284,8 +282,8 @@
 	</script>
 	<!-- //Sorting Template -->
 
-	<!-- Category list item template -->
-	<script id="category_list_item_tmp" type="text/template">
+	<!-- Article list item template -->
+	<script id="article_list_item_tmp" type="text/template">
 		<td>
             <label class="uv-vertical-align uv-margin-left-17">
                 <div class="uv-checkbox">
@@ -294,19 +292,18 @@
                 </div>
             </label>
         </td>
-		<td data-value="{{ 'Sorting'|trans }}">
-			<span class="uv-icon-drag"></span>
-		</td>
-		<td data-value="{{ 'Sort Order'|trans }}">
-			<%- sortOrder ? sortOrder : 0 %>
+		<td data-value="{{ 'popularity'|trans }}" class="uv-text-center">
+			<% if(viewed > 100){ %>
+				<span class="uv-icon-popular uv-icon-popular-active"></span>
+			<% }else{ %>
+				<span class="uv-icon-popular"></span>
+			<% } %>
 		</td>
 		<td data-value="{{ 'Id'|trans }}">
 			<%- id %>
 		</td>
-		<td data-value="{{ 'Category'|trans }}">
-			<%- name %>
-		</td>
-		<td data-value="{{ 'Articles'|trans }}"><%- articleCount %></td>
+		<td data-value="{{ 'Article'|trans }}"><%- name %></td>
+		<td data-value="{{ 'Viewed'|trans }}"><%- viewed ? viewed : 0 %></td>
 		<td data-value="{{ 'Created'|trans }}"><%- dateAdded %></td>
 		<td data-value="{{ 'Status'|trans }}">
 			<% if(status) { %>
@@ -316,46 +313,30 @@
         	<% } %>
 		</td>
 		<td data-value="{{ 'Action'|trans }}" class="uv-last-170">
-			<a href="<%- path.replace('replaceId', id) %>" class="uv-btn-stroke edit-category" data-value="<%- id %>">
+			<a href="<%- path.replace('replaceId', id) %>" class="uv-btn-stroke edit-article">
 				{{ "Edit"|trans }}
 			</a>
-			<a class="uv-btn-stroke preview-category" href="<%- pathPreview.replace('replaceId', id) %>" target="_blank" <%- status ? '' : 'disabled="disabled"' %>>
+			<a class="uv-btn-stroke preview-article" href="<%- pathPreview.replace('replaceId', slug) %>" target="_blank" <%- status ? '' : 'disabled="disabled"' %>>
 				{{ "Preview"|trans }}
 			</a>
 		</td>
     </script>
-	<!-- //Category list item template -->
+	<!-- //Article list item template -->
 
 	<script type="text/javascript">
-		var path = "{{ path('category_edit_action', {'id': 'replaceId' }) }}";
-    	var pathPreview = "{{ path('webkul_support_center_front_solution_category', {'category': 'replaceId' }) }}";
+		var path = "{{ path('article_edit_action', {'id': 'replaceId' }) }}";
+		var pathPreview = "{{ path('webkul_support_center_front_solution_article_slug', {'slug': 'replaceId' }) }}";
 
 		$(function () {
-		
-
-			$('.uv-table.uv-list-view tbody').on("sortupdate", function(event, ui){
-				var data = {'ids': new Array()};
-				$('.uv-table.uv-list-view tbody tr').each(function(key, value){
-					var modelKey = $(value).find('.edit-category').attr('data-value');
-					if(modelKey){
-						//data.ids[modelKey] = key+1;
-						data.ids[parseInt(key)+1] = modelKey;
-					}
-				});
-				data['actionType'] = 'sortUpdate';
-				//, ($('.uv-drop-list-active a').attr('data-field') == 'a.sortOrder' ? false : true)
-				categoryCollection.batchOperation(data);
-			});
-
 			var globalMessageResponse = "";
 
-			var CategoryModel = Backbone.Model.extend({
+			var ArticleModel = Backbone.Model.extend({
 				idAttribute : "id"
 			});
 
-			var CategoryCollection = AppCollection.extend({
-				model : CategoryModel,
-				url : "{{ path('category_solution_xhr_actions', {solution: solution.id}) }}",
+			var ArticleCollection = AppCollection.extend({
+				model : ArticleModel,
+				url : "{{ path('article_solution_xhr_actions', {solution: solution.id}) }}",
 				filterParameters : {
 					"isActive" : "",
 					"search" : ""
@@ -370,11 +351,11 @@
 						reset: true,
 						success: function(model, response) {
 							app.appView.hideLoader();
-							var categoryListView = new CategoryList();
+							var articleListView = new ArticleList();
 							app.pager.paginationData = response.pagination_data;
 
 							var url = app.pager.paginationData.url;
-							if(categoryCollection.length == 0 && app.pager.paginationData.current != "0")
+							if(articleCollection.length == 0 && app.pager.paginationData.current != "0")
 								router.navigate(url.replace('replacePage', app.pager.paginationData.last),{trigger: true});
 							else {
 								app.pager.render();
@@ -389,20 +370,19 @@
 						}
 					});
 				},
-                batchOperation : function(data, callSyncData = true) {
+                batchOperation : function(data) {
 					if(!data.ids.length) return;
                     var self = this;
                     app.appView.showLoader();
                     $.ajax({
-                        url : "{{ path('category_mass_action') }}",
+                        url : "{{ path('article_mass_action') }}",
                         type : 'POST',
                         data : {data : data},
                         dataType : 'json',
                         success : function(response) {
                             app.appView.hideLoader();
-                            app.appView.renderResponseAlert(response);
-							if(callSyncData)
-                            	self.syncData();
+                            globalMessageResponse = response;
+                            self.syncData();
                         },
                         error: function (xhr) {
                             if(url = xhr.getResponseHeader('Location'))
@@ -419,22 +399,22 @@
                 }
 			});
 
-			var CategoryItem = Backbone.View.extend({
+			var ArticleItem = Backbone.View.extend({
 				tagName : "tr",
-				template : _.template($("#category_list_item_tmp").html()),
+				template : _.template($("#article_list_item_tmp").html()),
 				render : function() {
 					this.$el.html(this.template(this.model.toJSON()));
 					return this;
 				},
 				unrender : function(response) {
 					if(response.alertMessage != undefined) {
-						categoryCollection.syncData();
+						articleCollection.syncData();
 						app.appView.renderResponseAlert(response)
 					}
 				},
 			});
 
-			var CategoryList = Backbone.View.extend({
+			var ArticleList = Backbone.View.extend({
 				el : $(".uv-list-view table tbody"),
 				events: {
                     'change .mass-action-checkbox' : 'showBulkOptions'
@@ -466,19 +446,19 @@
                 },
 				render : function () {
 					this.$el.find("tr").remove();
-					if(categoryCollection.length) {
-						_.each(categoryCollection.models, function (item) {
-							this.renderCategory(item);
+					if(articleCollection.length) {
+						_.each(articleCollection.models, function (item) {
+							this.renderArticle(item);
 						}, this);
 					} else {
-						this.$el.append("<tr style='text-align: center;'><td colspan='9'>{% trans %}No Record Found{% endtrans %}</td></tr>")
+						this.$el.append("<tr style='text-align: center;'><td colspan='8'>{% trans %}No Record Found{% endtrans %}</td></tr>")
 					}
 				},
-				renderCategory : function (item) {
-					var categoryItem = new CategoryItem({
+				renderArticle : function (item) {
+					var articleItem = new ArticleItem({
 						model: item
 					});
-					this.$el.append(categoryItem.render().el);
+					this.$el.append(articleItem.render().el);
 				}
 			});
 
@@ -496,16 +476,17 @@
                     data['actionType'] = Backbone.$(e.currentTarget).parents('ul').attr('data-action') ? Backbone.$(e.currentTarget).parents('ul').attr('data-action') : Backbone.$(e.currentTarget).attr('data-action');
                     data['targetId'] = Backbone.$(e.currentTarget).attr('data-index');
                     data['ids'] = this.getCheckedIds();
-                    categoryCollection.batchOperation(data);
+                    articleCollection.batchOperation(data);
                     this.hideBulkOptions();
                 },
                 removeItem: function(e) {
                     var data = {};
+
                     if(Backbone.$(this.currentEvent.currentTarget).is("#mass-delete"))
                         data['actionType'] = "delete";
 
                     data['ids'] = this.getCheckedIds();
-                    categoryCollection.batchOperation(data);
+                    articleCollection.batchOperation(data);
                     this.hideBulkOptions();
                 },
                 getCheckedIds() {
@@ -528,6 +509,8 @@
 					$('.uv-action-bar-col-lt').eq(1).hide();
 					$('.uv-action-bar-col-lt').eq(0).show();
 					$('.uv-action-bar-col-rt').show()
+
+					$('.select-all-checkbox').prop('checked', false)
                 }
             });
 
@@ -686,53 +669,53 @@
 				defaultSortIndex: 'a.createdAt',
 				sortText: "{% trans %}Sort By:{% endtrans %} ",
 				defaultSortText: "{% trans %}Sort By:{% endtrans %} {% trans %}Created At{% endtrans %}",
-				template : _.template($("#category_list_sorting_tmp").html())
+				template : _.template($("#article_list_sorting_tmp").html())
 			})
 
-			var categoryCollection = new CategoryCollection();
+			var articleCollection = new ArticleCollection();
 
 			var filter = new Filter({
-				collection : categoryCollection
+				collection : articleCollection
 			});
 
 			Router = Backbone.Router.extend({
 				routes: {
 					'page/:number(/sort/:sortField)(/direction/:order)' : 'paginate',
-					'isActive/:status(/search/:query)(/page/:number)(/sort/:sortField)(/direction/:order)' : 'filterCategoryByStatus',
+					'isActive/:status(/search/:query)(/page/:number)(/sort/:sortField)(/direction/:order)' : 'filterArticleByStatus',
 					'search/:query(/page/:number)(/sort/:sortField)(/direction/:order)' : 'filterByQuery',
 					'' : 'initializeList'
 				},
 				initializeList : function() {
 					this.resetParams('', '');
-					categoryCollection.state.currentPage = null;
+					articleCollection.state.currentPage = null;
 					filter.sortCollection();
-					categoryCollection.syncData();
+					articleCollection.syncData();
 				},
 				paginate : function(number,sortField,order) {
 					this.resetParams('', '');
-					categoryCollection.state.currentPage = number;
+					articleCollection.state.currentPage = number;
 					filter.sortCollection(sortField,order);
-					categoryCollection.syncData();
+					articleCollection.syncData();
 				},
-				filterCategoryByStatus: function(status,query,number,sortField,order) {
+				filterArticleByStatus: function(status,query,number,sortField,order) {
 					this.resetParams(status,query);
-					categoryCollection.state.currentPage = number;
+					articleCollection.state.currentPage = number;
 					filter.sortCollection(sortField,order);
-					categoryCollection.syncData();
+					articleCollection.syncData();
 				},
 				filterByQuery : function(query,number,sortField,order) {
 					this.resetParams('',query);
-					categoryCollection.state.currentPage = number;
+					articleCollection.state.currentPage = number;
 					filter.sortCollection(sortField,order);
-					categoryCollection.syncData();
+					articleCollection.syncData();
 				},
 				resetParams : function(status, query) {
 					if(query != null)
 						query = query.replace(/\+/g,' ');
-					categoryCollection.filterParameters.isActive = status;
+					articleCollection.filterParameters.isActive = status;
 					var statusText = status ? $(".filter-by-status a[data-id='" + status + "']").text() : "{% trans %}All{% endtrans %}";
 					$(".filter-by-status .uv-dropdown-btn").text("{% trans %}Status:{% endtrans %} " + statusText);
-					categoryCollection.filterParameters.search = query;
+					articleCollection.filterParameters.search = query;
 					$(".uv-search-inline").val(query);
 				}
 			});
