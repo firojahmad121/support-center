@@ -1,68 +1,81 @@
 default_exception:
     path:     /exception
-    defaults: { _controller: WebkulDefaultBundle:Default:exceptionDefault }
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Default::exceptionDefault
 
 webkul_support_center_front_header:
     path:     /header/{searchDisable}
-    defaults: { _controller: UVDeskSupportCenterBundle:Customer:header, searchDisable: false }
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::header
+    defaults: { searchDisable: false }
 
 webkul_support_center_front_solutions:
     path:     /
-    defaults: { _controller: UVDeskSupportCenterBundle:Front:SolutionList }
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Front::SolutionList
 
 webkul_support_center_front_solution:
     path:     /folder/{solution}
-    defaults: { _controller: UVDeskSupportCenterBundle:Front:Solution, solution: 0 }
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Front::Solution
+    defaults: { solution: 0 }
 
 webkul_support_center_front_solution_articles:
     path:     /folder/{solution}/articles
-    defaults: { _controller: UVDeskSupportCenterBundle:Front:SolutionArticle, solution: 0 }
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Front::SolutionArticle
+    defaults: { solution: 0 }
 
 webkul_support_center_front_solution_category:
     path:     /category/{category}
-    defaults: { _controller: UVDeskSupportCenterBundle:Front:Category, category: 0 }
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Front::Category
+    defaults: { category: 0 }
 
 webkul_support_center_front_solution_category_article:
     path:     /article/{article}
-    defaults: { _controller: UVDeskSupportCenterBundle:Front:Article, article: 0 }
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Front::Article
+    defaults: { article: 0 }
 
 webkul_support_center_front_solution_article_slug:
     path:     /blog/{slug}
-    defaults: { _controller: UVDeskSupportCenterBundle:Front:Article, slug: '' }
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Front::Article
+    defaults: { slug: '' }
 
 webkul_support_center_front_solution_categories:
     path:     /categories
-    defaults: { _controller: UVDeskSupportCenterBundle:Front:CategoryListing }
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Front::CategoryListing
 
 
 webkul_support_center_front_solution_article:
     path:     /folder/{solution}/article/{article}
-    defaults: { _controller: UVDeskSupportCenterBundle:Front:Article, solution: 0, category: 0, article: 0 }
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Front::Article
+    defaults: { solution: 0, category: 0, article: 0 }
 
 webkul_support_center_front_solution_article_history:
     path:     /folder/{solution}/article/{article}/{history}
-    defaults: { _controller: UVDeskSupportCenterBundle:Front:Article, solution: 0, category: 0, article: 0, history: 0 }
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Front::Article
+    defaults: { solution: 0, category: 0, article: 0, history: 0 }
 
 webkul_support_center_front_solution_article_rating:
     path:     /rating/{articleId}
-    defaults: { _controller: UVDeskSupportCenterBundle:Front:RateArticle }
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Front::RateArticle
 
 webkul_support_center_front_search:
     path:     /search/{s}
-    defaults: { _controller: UVDeskSupportCenterBundle:Front:Search, s: '' }
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Front::Search
+    defaults: { s: '' }
 
 webkul_support_center_front_tag:
     path:     /tag/{tag}/{name}
-    defaults: { _controller: UVDeskSupportCenterBundle:Front:Tag, tag: '', name: '' }
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Front::Tag
+    defaults: { tag: '', name: '' }
 
 # user_account_validation:
 #     path:     /user-account-confirmation/{email}/{key}
-#     defaults: { _controller: WebkulUserBundle:User:AccountValidation, email:0, key:0}
+#     controller: Webkul\UVDesk\CoreBundle\Controller\User::AccountValidation
+#     defaults: { email: 0, key: 0 }
 
 webkul_support_center_front_account_validation:
     path:     /account-confirmation/{email}/{key}
-    defaults: { _controller: UVDeskSupportCenterBundle:Customer:AccountValidation, email:0, key:0}
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::AccountValidation
+    defaults: { email: 0, key: 0 }
 
 webkul_support_center_front_account_verification:
     path:     /account-verification/{email}/{key}
-    defaults: { _controller: UVDeskSupportCenterBundle:Customer:AccountVerification, email:0, key:0}
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::AccountVerification
+    defaults: { email: 0, key: 0 }
