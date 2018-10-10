@@ -15,7 +15,7 @@ use Webkul\UVDesk\SupportCenterBundle\Entity\Solutions;
 use Webkul\UVDesk\SupportCenterBundle\Form;
 use Webkul\UVDesk\SupportCenterBundle\Entity\ArticleViewLog;
 
-class FrontController extends Controller
+class Website extends Controller
 {
     private $visibility = ['public'];
     private $limit = 5;
@@ -48,7 +48,7 @@ class FrontController extends Controller
     }
 
    
-    protected function adminAction()
+    protected function admin()
     {
         dump("adminAction called");
         die;
@@ -58,7 +58,7 @@ class FrontController extends Controller
 	/**
 	 * View Solution Lists
 	 */
-    public function SolutionListAction(Request $request)
+    public function SolutionList(Request $request)
     {
         $this->isWebsiteActive();
 
@@ -101,7 +101,7 @@ class FrontController extends Controller
     /**
      * View Category List
     */
-    public function CategoryListingAction(Request $request)
+    public function CategoryListing(Request $request)
     {
         // dump("CategoryListingAction called");
         // die;
@@ -119,12 +119,12 @@ class FrontController extends Controller
     /**
      * View Solution with Category
      */
-    public function SolutionAction(Request $request)
+    public function Solution(Request $request)
     {
         $this->isWebsiteActive();
 
         if(!$request->attributes->get('solution'))
-            return $this->redirect($this->generateUrl('webkul_support_center_front_solutions'));
+            return $this->redirect($this->generateUrl('helpdesk_knowledgebase'));
 
         $filterArray = ['id' => $request->attributes->get('solution')];
 
@@ -138,7 +138,7 @@ class FrontController extends Controller
         $breadcrumbs = [
             [
                 'label' => $this->get('translator')->trans('Support Center'),
-                'url' => $this->generateUrl('webkul_support_center_front_solutions')
+                'url' => $this->generateUrl('helpdesk_knowledgebase')
             ],
             [
                 'label' => $solution->getName(),
@@ -174,12 +174,12 @@ class FrontController extends Controller
     /**
      * View Solution with Article
      */
-    public function SolutionArticleAction(Request $request)
+    public function SolutionArticle(Request $request)
     {
         $this->isWebsiteActive();
 
         if(!$request->attributes->get('solution'))
-            return $this->redirect($this->generateUrl('webkul_support_center_front_solutions'));
+            return $this->redirect($this->generateUrl('helpdesk_knowledgebase'));
 
         $filterArray = ['id' => $request->attributes->get('solution')];
 
@@ -193,7 +193,7 @@ class FrontController extends Controller
         $breadcrumbs = [
             [
                 'label' => $this->get('translator')->trans('Support Center'),
-                'url' => $this->generateUrl('webkul_support_center_front_solutions')
+                'url' => $this->generateUrl('helpdesk_knowledgebase')
             ],
             [
                 'label' => $solution->getName(),
@@ -221,12 +221,12 @@ class FrontController extends Controller
         return $this->render('@UVDeskSupportCenter/Front/folderArticle.html.twig', $article_data);
     }
 
-    public function CategoryAction(Request $request)
+    public function Category(Request $request)
     {
         $this->isWebsiteActive();
 
         if(!$request->attributes->get('category'))
-            return $this->redirect($this->generateUrl('webkul_support_center_front_solutions'));
+            return $this->redirect($this->generateUrl('helpdesk_knowledgebase'));
 
         $filterArray = array(
                             'id' => $request->attributes->get('category'),
@@ -243,7 +243,7 @@ class FrontController extends Controller
         $breadcrumbs = [
             [
                 'label' => $this->get('translator')->trans('Support Center'),
-                'url' => $this->generateUrl('webkul_support_center_front_solutions')
+                'url' => $this->generateUrl('helpdesk_knowledgebase')
             ],
             [
                 'label' => $category->getName(),
@@ -271,13 +271,13 @@ class FrontController extends Controller
         return $this->render('@UVDeskSupportCenter/Front/category.html.twig',$category_data);
         }
    
-    public function ArticleAction(Request $request)
+    public function Article(Request $request)
     {
        
         $this->isWebsiteActive();
 
         if (!$request->attributes->get('article') && !$request->attributes->get('slug')) {
-            return $this->redirect($this->generateUrl('webkul_support_center_front_solutions'));
+            return $this->redirect($this->generateUrl('helpdesk_knowledgebase'));
         }
 
         $entityManager = $this->getDoctrine()->getManager();
@@ -324,7 +324,7 @@ class FrontController extends Controller
         $article_details = [
             'article' => $article,
             'breadcrumbs' => [
-                ['label' => $this->get('translator')->trans('Support Center'), 'url' => $this->generateUrl('webkul_support_center_front_solutions')],
+                ['label' => $this->get('translator')->trans('Support Center'), 'url' => $this->generateUrl('helpdesk_knowledgebase')],
                 ['label' => $translatedArticle ? $translatedArticle->getName() : $article->getName(), 'url' => '#']
             ],
             'popArticles' => $this->get('support.service')->getPopularArticles(),
@@ -337,13 +337,13 @@ class FrontController extends Controller
 
         return $this->render('@UVDeskSupportCenter/Front/article.html.twig',$article_details);
     }
-    public function SearchAction(Request $request)
+    public function Search(Request $request)
     {
         $this->isWebsiteActive();
 
         $searchQuery = $request->query->get('s');
         if (empty($searchQuery)) {
-            return $this->redirect($this->generateUrl('webkul_support_center_front_solutions'));
+            return $this->redirect($this->generateUrl('helpdesk_knowledgebase'));
         }
 
         $articleCollection = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:Article')->getArticleBySearch($request);
@@ -355,20 +355,20 @@ class FrontController extends Controller
             'search' => $searchQuery,
             'articles' => $articleCollection,
             // 'breadcrumbs' => [
-            //     ['label' => $this->get('translator')->trans('Support Center'), 'url' => $this->generateUrl('webkul_support_center_front_solutions')],
+            //     ['label' => $this->get('translator')->trans('Support Center'), 'url' => $this->generateUrl('helpdesk_knowledgebase')],
             //     ['label' => $searchQuery, 'url' => '#'],
             // ],
         ]);
     }
 
-    public function TagAction(Request $request)
+    public function Tag(Request $request)
     {
        
         $this->isWebsiteActive();
 
         $tagQuery = $request->attributes->get('tag');
         if (empty($tagQuery)) {
-            return $this->redirect($this->generateUrl('webkul_support_center_front_solutions'));
+            return $this->redirect($this->generateUrl('helpdesk_knowledgebase'));
         }
 
         $tagLabel = $request->attributes->get('name');
@@ -378,19 +378,19 @@ class FrontController extends Controller
             'articles' => $articleCollection,
             'search' => $tagLabel,
             'breadcrumbs' => [
-                ['label' => $this->get('translator')->trans('Support Center'), 'url' => $this->generateUrl('webkul_support_center_front_solutions')],
+                ['label' => $this->get('translator')->trans('Support Center'), 'url' => $this->generateUrl('helpdesk_knowledgebase')],
                 ['label' => $tagLabel, 'url' => '#'],
             ],
         ]);
     }
 
-    public function RateArticleAction($articleId, Request $request)
+    public function RateArticle($articleId, Request $request)
     {
         dump("RateArticleAction called");
         die;
         $this->isWebsiteActive();
         if ($request->getMethod() != 'POST') {
-            return $this->redirect($this->generateUrl('webkul_support_center_front_solutions'));
+            return $this->redirect($this->generateUrl('helpdesk_knowledgebase'));
         }
 
         $company = $this->getCompany();

@@ -1,4 +1,4 @@
-{% extends "@UVDeskCore/BackSupport/layout.html.twig" %}
+{% extends "@UVDeskCore//Templates//layout.html.twig" %}
 
 {% block title %}
 	{{ 'Article'|trans }}
@@ -43,7 +43,7 @@
 						<h6>{{ 'Article'|trans }}</h6>
 					</div>
 					<div class="uv-aside-back">
-						<span onclick="window.location = '{{ app.request.headers.get('referer') ? app.request.headers.get('referer') : path('webkul_support_center_article')}}'"> {{ 'Back'|trans }}</span>
+						<span onclick="window.location = '{{ app.request.headers.get('referer') ? app.request.headers.get('referer') : path('helpdesk_member_knowledgebase_article_collection')}}'"> {{ 'Back'|trans }}</span>
 					</div>
 				</div>
 			</div>
@@ -223,7 +223,7 @@
 					<div class="uv-ticket-action-bar-rt">
 
 						<span class="uv-action-buttons">
-							<a href="{{path('webkul_support_center_front_solution_article_slug', {'slug': article.slug })}}" target="_blank" type="button" class="uv-btn-action uv-margin-right-5 uv-button-preview" {{ article.status ? '' : 'disabled="disabled"'}} id="preview-link">
+							<a href="{{path('helpdesk_knowledgebase_read_slug_article', {'slug': article.slug })}}" target="_blank" type="button" class="uv-btn-action uv-margin-right-5 uv-button-preview" {{ article.status ? '' : 'disabled="disabled"'}} id="preview-link">
 								<span class="uv-icon-eye-light"></span> {{'view'|trans}}
 							</a>
 
@@ -560,9 +560,9 @@
 	</script>
 
 	<script type="text/javascript">
-		var path_history = "{{ path('article_history', {'id': article.id }) }}"
-		var path_related = "{{ path('article_related', {'id': article.id }) }}"
-		var translated_path_history = "{{ path('translated_article_history', {'id': article.id }) }}";
+		var path_history = "{{ path('helpdesk_member_knowledgebase_revision_article', {'id': article.id }) }}"
+		var path_related = "{{ path('helpdesk_member_knowledgebase_related_article_xhr', {'id': article.id }) }}"
+		var translated_path_history = "{{ path('translated_helpdesk_member_knowledgebase_revision_article', {'id': article.id }) }}";
 			$.fn.serializeFormObject = function () {
 					var o = {};
 					var outputCopy = o;
@@ -668,7 +668,7 @@
                     var self = this;
                     app.appView.showLoader();
                     $.ajax({
-                        url : "{{ path('article_mass_action') }}",
+                        url : "{{ path('helpdesk_member_knowledgebase_update_article_xhr') }}",
                         type : 'POST',
                         data : {data : data},
                         dataType : 'json',
@@ -757,7 +757,7 @@
 					this.articleEntityUpdate(data);
 
 					setTimeout(function(){
-                    	window.location = '{{ app.request.headers.get('referer') ? app.request.headers.get('referer') : path('webkul_support_center_article')}}';
+                    	window.location = '{{ app.request.headers.get('referer') ? app.request.headers.get('referer') : path('helpdesk_member_knowledgebase_article_collection')}}';
 					}, 1000);
                 },
 			});
@@ -865,7 +865,7 @@
 							//return '{{ "Only valid syntax is allowed"|trans }}';
 					}
 				},
-                urlRoot : "{{ path('article_mass_action') }}"
+                urlRoot : "{{ path('helpdesk_member_knowledgebase_update_article_xhr') }}"
 			});
 
 			var articlemodel = new ArticleModel({
@@ -1240,7 +1240,7 @@
 								data['name'] = text;
 
 								$.ajax({
-									url : "{{ path('article_mass_action') }}",
+									url : "{{ path('helpdesk_member_knowledgebase_update_article_xhr') }}",
 									type : 'POST',
 									data : {data : data},
 									dataType : 'json',
@@ -1382,7 +1382,7 @@
                             self.xhrReq.abort();
 
 						let filterType = currentElement.attr('data-filter-type');
-						let path = (filterType == 'tag' ? "{{ path('search_ticket_filter_options_xhr') }}" : "{{ path('article_xhr_actions') }}");
+						let path = (filterType == 'tag' ? "{{ path('search_ticket_filter_options_xhr') }}" : "{{ path('helpdesk_member_knowledgebase_article_collection_xhr') }}");
                         self.xhrReq = $.ajax({
                             url : path,
                             type : 'GET',

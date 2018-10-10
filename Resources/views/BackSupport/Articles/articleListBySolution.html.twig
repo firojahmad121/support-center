@@ -1,5 +1,4 @@
-{% extends "@UVDeskCore/BackSupport/layout.html.twig" %}
-
+{% extends "@UVDeskCore//Templates//layout.html.twig" %}
 
 {% block title %}
 	{{ 'Articles'|trans }}
@@ -21,7 +20,7 @@
 						<h6>{{ 'FOLDER'|trans }}</h6>
 					</div>
 					<div class="uv-aside-back">
-						<span onclick="window.location = '{{path('webkul_support_center_solution')}}'"> {{ 'Back'|trans }}</span>
+						<span onclick="window.location = '{{path('helpdesk_member_knowledgebase_folders_collection')}}'"> {{ 'Back'|trans }}</span>
 					</div>
 				</div>
 				{% set defaultImage = asset('bundles/webkuldefault/images/knowledgebase-splash.png') %}
@@ -124,7 +123,7 @@
 			</div>
 
 			<div class="uv-aside-brick">
-				<a href="{{path('webkul_support_center_front_solution', {'solution': solution.id })}}" target="_blank"  type="button" class="uv-btn-action">
+				<a href="{{path('helpdesk_knowledgebase_folder', {'solution': solution.id })}}" target="_blank"  type="button" class="uv-btn-action">
 					{{'preview'|trans}}
 				</a>
 			</div>
@@ -215,7 +214,7 @@
 					<div class="uv-action-bar-col-rt">
 						<input type="text" class="uv-search-inline uv-vertical-align uv-margin-right-15" placeholder="{{ 'Search'|trans }}">
 						<!-- Add Button -->
-						<a href="{{ path('article_add_action') }}" type="button" class="uv-btn-action">
+						<a href="{{ path('helpdesk_member_knowledgebase_create_article') }}" type="button" class="uv-btn-action">
 							<span class="uv-icon-add"></span>
 							{{ "New Article"|trans }}
 						</a>
@@ -324,8 +323,8 @@
 	<!-- //Article list item template -->
 
 	<script type="text/javascript">
-		var path = "{{ path('article_edit_action', {'id': 'replaceId' }) }}";
-		var pathPreview = "{{ path('webkul_support_center_front_solution_article_slug', {'slug': 'replaceId' }) }}";
+		var path = "{{ path('helpdesk_member_knowledgebase_update_article', {'id': 'replaceId' }) }}";
+		var pathPreview = "{{ path('helpdesk_knowledgebase_read_slug_article', {'slug': 'replaceId' }) }}";
 
 		$(function () {
 			var globalMessageResponse = "";
@@ -336,7 +335,7 @@
 
 			var ArticleCollection = AppCollection.extend({
 				model : ArticleModel,
-				url : "{{ path('article_solution_xhr_actions', {solution: solution.id}) }}",
+				url : "{{ path('helpdesk_member_knowledgebase_folder_articles_collection_xhr', {solution: solution.id}) }}",
 				filterParameters : {
 					"isActive" : "",
 					"search" : ""
@@ -375,7 +374,7 @@
                     var self = this;
                     app.appView.showLoader();
                     $.ajax({
-                        url : "{{ path('article_mass_action') }}",
+                        url : "{{ path('helpdesk_member_knowledgebase_update_article_xhr') }}",
                         type : 'POST',
                         data : {data : data},
                         dataType : 'json',
@@ -579,7 +578,7 @@
                         msg: '{{ "This field is mandatory"|trans }}'
                     }
 				},
-                urlRoot : "{{ path('folder_ajax_action') }}"
+                urlRoot : "{{ path('helpdesk_member_knowledgebase_update_folder_xhr') }}"
 			});
 
 			var foldermodel = new FolderModel({

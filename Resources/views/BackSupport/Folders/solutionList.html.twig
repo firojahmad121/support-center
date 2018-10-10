@@ -1,4 +1,4 @@
-{% extends "@UVDeskCore/BackSupport/layout.html.twig" %}
+{% extends "@UVDeskCore//Templates//layout.html.twig" %}
 
 {% block title %}
 	{{ 'Folders'|trans }}
@@ -46,7 +46,7 @@
 	</style>
 
 	<div class="uv-inner-section">
-		{{ include('@UVDeskCore/BackSupport/panel-sidebar.html.twig') }}
+		{{ include('@UVDeskCore/Templates/panel-sidebar.html.twig') }}
 
 		<div class="uv-view {% if app.request.cookies and app.request.cookies.get('uv-asideView') %}uv-aside-view{% endif %}">
 			<h1>
@@ -91,7 +91,7 @@
 					<input type="text" class="uv-search-inline uv-vertical-align uv-margin-right-15" placeholder="{{ 'Search'|trans }}">
 					<!-- Add Button -->
 					
-					<a href="{{ path('folder_add_action') }}" type="button" class="uv-btn-action" id="uv-add-folder">
+					<a href="{{ path('helpdesk_member_knowledgebase_create_folder') }}" type="button" class="uv-btn-action" id="uv-add-folder">
 						<span class="uv-icon-add"></span>
 						{{ "New Folder"|trans }}
 					</a>
@@ -180,10 +180,10 @@
     </script>
 
 	<script type="text/javascript">
-		var path = "{{ path('folder_edit_action', {'id': 'replaceId' }) }}";
-		var pathCategory = "{{ path('webkul_support_center_solution_category', {'solution': 'replaceId' }) }}";
-		var pathArticle = "{{ path('webkul_support_center_solution_articles', {'solution': 'replaceId' }) }}";
-		var pathLayout = "{{ path('theme_xhr_action') }}";
+		var path = "{{ path('helpdesk_member_knowledgebase_update_folder', {'id': 'replaceId' }) }}";
+		var pathCategory = "{{ path('helpdesk_member_knowledgebase_folder_categories_collection', {'solution': 'replaceId' }) }}";
+		var pathArticle = "{{ path('helpdesk_member_knowledgebase_folder_articles_collection', {'solution': 'replaceId' }) }}";
+		var pathLayout = "{{ path('helpdesk_member_knowledgebase_update_theme_xhr') }}";
 		$(function () {
 			var globalMessageResponse = "";
 
@@ -193,7 +193,7 @@
 
 			var FolderCollection = AppCollection.extend({
 				model : FolderModel,
-				url : "{{ path('folder_xhr_actions') }}",
+				url : "{{ path('helpdesk_member_knowledgebase_folders_collection_xhr') }}",
 				filterParameters : {
 					"isActive" : "",
 					"search" : ""
@@ -254,7 +254,7 @@
 					app.appView.showLoader();
 					self = this;
 					this.model.destroy({
-						url : "{{ path('folder_ajax_action') }}/"+this.model.get('id'),
+						url : "{{ path('helpdesk_member_knowledgebase_update_folder_xhr') }}/"+this.model.get('id'),
 						method:"delete",
 						success : function (model, response, options) {
 							app.appView.hideLoader();

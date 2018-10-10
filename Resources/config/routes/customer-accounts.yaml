@@ -1,0 +1,49 @@
+helpdesk_customer_login:
+    path:     /login
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::login
+
+helpdesk_customer_logout:
+    path:     /logout
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::logout
+
+helpdesk_customer_account:
+    path:     /account
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::Account
+
+helpdesk_customer_forgot_password:
+    path:     /forgot-password
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::forgotPassword
+
+helpdesk_customer_account_validation:
+    path:     /account-confirmation/{email}/{key}
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::AccountValidation
+    defaults: { email: 0, key: 0 }
+
+helpdesk_customer_account_verification:
+    path:     /account-verification/{email}/{key}
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::AccountVerification
+    defaults: { email: 0, key: 0 }
+
+# helpdesk_customer_account_backup_trigger:
+#     path:     /resources/backup/confirm
+#     controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::initiateCustomerBackup
+
+# download_customer_resources_retrieve:
+#     path:     /resources/backup/{confirmationToken}
+#     controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::downloadCustomerBackup
+#     defaults: { _controller: UVDeskSupportCenterBundle:Customer:downloadCustomerBackup }
+
+# ajax_file_upload_customer:
+#     path:     /file-upload
+#     controller: Webkul\UVDesk\SupportCenterBundle\Controller\Solution::SolutionList
+#     defaults: { _controller: WebkulDefaultBundle:Default:ajaxFileUpload }
+
+# ajax_url_file_customer:
+#     path:     /url-upload
+#     controller: Webkul\UVDesk\SupportCenterBundle\Controller\Solution::SolutionList
+#     defaults: { _controller: WebkulDefaultBundle:Default:ajaxUrlFileUpload }
+
+# ajax_file_remove_customer:
+#     path:     /file-remove
+#     controller: Webkul\UVDesk\SupportCenterBundle\Controller\Solution::SolutionList
+#     defaults: { _controller: WebkulDefaultBundle:Default:ajaxFileRemove }

@@ -8,7 +8,7 @@
 {% block body %}
     <div class="uv-paper-article uv-paper-form">
         <div class="uv-paper-section">
-            <form action="{{ path('webkul_support_center_front_login_post') }}" method="post" id="loginForm">
+            <form action="{{ path('helpdesk_customer_login') }}" method="post" id="loginForm">
                 <section>
                     {% if websiteDetails is defined and websiteDetails.name is defined %}
                         <h1>{{ 'Sign In to %company%'|trans({ '%company%': '<span class="uv-brand">' ~ websiteDetails.name|e ~ '</span>' })|raw }}</h1>
@@ -16,7 +16,7 @@
                         <h1>{{ 'Sign In to <span class="uv-brand">UVdesk</span>'|trans|raw }}</h1>
                     {% endif %}
                     <div class="uv-element-block">
-                        <p>{{ 'If you have ever mailed or contacted us previously, your account would have been created already. %forgetPasswordLink%'|trans({'%forgetPasswordLink%': '<a href="' ~ path('webkul_support_center_front_forgot_password') ~ '">' ~ 'Recover your password and Sign In'|trans ~ '</a>'})|raw }}</p>
+                        <p>{{ 'If you have ever mailed or contacted us previously, your account would have been created already. %forgetPasswordLink%'|trans({'%forgetPasswordLink%': '<a href="' ~ path('helpdesk_customer_forgot_password') ~ '">' ~ 'Recover your password and Sign In'|trans ~ '</a>'})|raw }}</p>
                     </div>
                     <div class="uv-form">
                         {% set externalLoginFlag = false %}
@@ -111,7 +111,7 @@
                         <div class="uv-element-block">
                             <label class="uv-field-label">{{ 'Password'|trans }}</label>
                             <div class="uv-field-block uv-relative">
-                                <a class="uv-forgot-pwd" href="{{ path('webkul_support_center_front_forgot_password') }}" tabIndex="-1">{{ 'Forgot Password?'|trans }}</a>
+                                <a class="uv-forgot-pwd" href="{{ path('helpdesk_customer_forgot_password') }}" tabIndex="-1">{{ 'Forgot Password?'|trans }}</a>
                                 <input class="uv-field" type="password" name="_password">
                             </div>
                         </div>

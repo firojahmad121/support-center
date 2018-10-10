@@ -10,16 +10,13 @@ use Webkul\UVDesk\SupportCenterBundle\Controller\BaseController;
 
 use Webkul\UVDesk\SupportCenterBundle\Entity\Solutions;
 use Symfony\Component\Form\FormError;
-use Webkul\UVDesk\SupportCenterBundle\Form\Solution;
+use Webkul\UVDesk\SupportCenterBundle\Form\Solution as SolutionForm;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-// class SolutionController extends BaseController
-class SolutionController extends Controller
+
+class Solution extends Controller
 {   
-	/**
-	 * View Solution Lists
-	 */
-    public function SolutionListAction(Request $request)
+    public function SolutionList(Request $request)
     {	
         $solutionCount = $this->getDoctrine()
                         ->getRepository('UVDeskSupportCenterBundle:Solutions')
@@ -36,10 +33,11 @@ class SolutionController extends Controller
                 'categoryCount' => $categoryCount,
                 'articleCount' => $articleCount,
         ];
-        return $this->render('@UVDeskSupportCenter/Front/solutionList.html.twig',$solutions);
+
+        return $this->render('@UVDeskSupportCenter/BackSupport/Folders/solutionList.html.twig',$solutions);
     }
 
-    public function SolutionListXhrAction(Request $request)
+    public function SolutionListXhr(Request $request)
     {  
         $json = array();
         $repository = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:Solutions');
@@ -50,7 +48,7 @@ class SolutionController extends Controller
         return $response;
     }
 
-    public function SolutionAction(Request $request)
+    public function Solution(Request $request)
     {
         if($request->attributes->get('id')){
             $folder = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:Solutions')->findSolutionById([
@@ -65,7 +63,7 @@ class SolutionController extends Controller
         if($request->getMethod() == "POST") {
             $solutionImage = $request->files->get('solutionImage');
 
-            $form = $this->createForm(Solution::class, $folder);
+            $form = $this->createForm(SolutionForm::class, $folder);
            
             $form->handleRequest($request);
           
@@ -96,7 +94,7 @@ class SolutionController extends Controller
 
                 $this->addFlash('success', $message);
 
-                return $this->redirect($this->generateUrl('webkul_support_center_solution'));
+                return $this->redirect($this->generateUrl('helpdesk_member_knowledgebase_folders_collection'));
             } else {
                 
                 $errors = $this->getFormErrors($form);
@@ -109,7 +107,7 @@ class SolutionController extends Controller
             ]);
     }
 
-    public function SolutionXhrAction(Request $request)
+    public function SolutionXhr(Request $request)
     {
        
         $json = array();

@@ -1,0 +1,39 @@
+ajax_file_upload:
+    path:     /file-upload
+    controller: Webkul\UVDesk\DefaultBundle\Controller\Default::ajaxFileUpload
+
+ajax_url_file:
+    path:     /url-upload
+    controller: Webkul\UVDesk\DefaultBundle\Controller\Default::ajaxUrlFileUpload
+
+ajax_file_remove:
+    path:     /file-remove
+    controller: Webkul\UVDesk\DefaultBundle\Controller\Default::ajaxFileRemove
+
+ajax_service_call:
+    path:     /service-call
+    controller: Webkul\UVDesk\DefaultBundle\Controller\Default::ajaxServiceCall
+
+helpdesk_member_knowledgebase_folders_collection:
+    path:     /solution
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Solution::SolutionList
+    defaults: { panelId: 'knowledgebase' }
+
+helpdesk_member_knowledgebase_folders_collection_xhr:
+    path:     /solution/ajax
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Solution::SolutionListXhr
+
+helpdesk_member_knowledgebase_create_folder:
+    path:     /solution/add
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Solution::Solution
+    defaults: { panelId: 'knowledgebase' }
+
+helpdesk_member_knowledgebase_update_folder:
+    path:     /solution/edit/{id}
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Solution::Solution
+    defaults: { id: 0 }
+
+helpdesk_member_knowledgebase_update_folder_xhr:
+    path:     /solution/ajax/{id}
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Solution::SolutionXhr
+    defaults: { id: 0 }

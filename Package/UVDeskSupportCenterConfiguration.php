@@ -39,29 +39,29 @@ SVG;
             HelpdeskSection::KNOWLEDGEBASE => [
                 [
                     'name' => 'Folders',
-                    'route' => 'webkul_support_center_solution',
+                    'route' => 'helpdesk_member_knowledgebase_folders_collection',
                     'brick_svg' => self::FOLDERS_BRICK_SVG,
                 ],
                 [
                     'name' => 'Categories',
-                    'route' => 'webkul_support_center_category',
+                    'route' => 'helpdesk_member_knowledgebase_category_collection',
                     'brick_svg' => self::CATEGORIES_BRICK_SVG,
                 ],
                 [
                     'name' => 'Articles',
-                    'route' => 'webkul_support_center_article',
+                    'route' => 'helpdesk_member_knowledgebase_article_collection',
                     'brick_svg' => self::ARTICLES_BRICK_SVG,
                 ],
             ],
             HelpdeskSection::SETTINGS => [
                 [
                     'name' => 'Branding',
-                    'route' => 'branding_theme',
+                    'route' => 'helpdesk_member_knowledgebase_theme',
                     'brick_svg' => self::BRANDING_BRICK_SVG,
                 ],
                 [
                     'name' => 'Block Spam',
-                    'route' => 'branding_spam',
+                    'route' => 'helpdesk_member_knowledgebase_spam',
                     'brick_svg' => self::BLOCK_SPAM_BRICK_SVG,
                 ],
             ],
@@ -73,7 +73,7 @@ SVG;
         return [
             [
                 'name' => 'Knowledgebase',
-                'route' => 'webkul_support_center_solution',
+                'route' => 'helpdesk_member_knowledgebase_folders_collection',
                 'icon_svg' => self::KNOWLEDGEBASE_ICON_SVG,
             ],
         ];

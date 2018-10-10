@@ -1,0 +1,61 @@
+helpdesk_member_knowledgebase_article_collection:
+    path:     /articles
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Article::ArticleList
+
+helpdesk_member_knowledgebase_category_articles_collection:
+    path:     /{category}/articles
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Article::ArticleListByCategory
+    defaults: { category: 0 }
+
+helpdesk_member_knowledgebase_folder_articles_collection:
+    path:     /solution/{solution}/articles
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Article::ArticleListBySolution
+    defaults: { solution: 0 }
+
+helpdesk_member_knowledgebase_article_collection_xhr:
+    path:     /articles/ajax
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Article::ArticleListXhr
+
+# helpdesk_member_knowledgebase_category_articles_collection_xhr:
+#     path:     /{category}/articles/ajax
+#     controller: Webkul\UVDesk\SupportCenterBundle\Controller\Article::ArticleListXhr
+#     defaults: { category: 0 }
+
+helpdesk_member_knowledgebase_folder_articles_collection_xhr:
+    path:     /solution/{solution}/articles/ajax
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Article::ArticleListXhr
+    defaults: { solution: 0 }
+
+helpdesk_member_knowledgebase_create_article:
+    path:     /article/add
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Article::Article
+    defaults: { panelId: 'knowledgebase' }
+
+helpdesk_member_knowledgebase_update_article:
+    path:     /article/edit/{id}
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Article::Article
+    defaults: { panelId: 'knowledgebase', id: 0 }
+
+helpdesk_member_knowledgebase_update_article_xhr:
+    path:     /article/ajax
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Article::ArticleXhr
+
+# helpdesk_member_knowledgebase_remove_article:
+#     path:     /article/ajax/{id}
+#     controller: Webkul\UVDesk\SupportCenterBundle\Controller\Article::ArticleXhr
+#     defaults: { id: 0 }
+
+helpdesk_member_knowledgebase_revision_article:
+    path:     /articleHistory/{id}
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Article::articleHistoryXhr
+    defaults: { id: 0 }
+
+helpdesk_member_knowledgebase_related_article_xhr:
+    path:     /articleRelated/{id}
+    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Article::articleRelatedXhr
+    defaults: { id: 0 }
+
+# translated_article_history:
+#     path: /translatedArticleHistory/{id}
+#     controller: Webkul\UVDesk\SupportCenterBundle\Controller\Article::translatedArticleHistoryXhr
+#     defaults: { id: 0 }

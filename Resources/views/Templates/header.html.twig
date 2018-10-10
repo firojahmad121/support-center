@@ -57,7 +57,7 @@
     <div class="uv-container">
         <header>
             <div class="uv-header-lt">
-                <a class="uv-logo" href="{{path('webkul_support_center_front_solution')}}">
+                <a class="uv-logo" href="{{path('helpdesk_knowledgebase_folder')}}">
                     {% if websiteConfiguration is defined and websiteConfiguration.logoThumbnail is defined %}
                         <img src="{{ websiteConfiguration.logoThumbnail }}" alt="{{websiteConfiguration.name}}" />
                     {% else %}
@@ -83,18 +83,18 @@
                                 <label>{{ 'Account'|trans }}</label>
                                 <ul>
                                     <li>
-                                        <a href="{{ path('webkul_support_center_front_tickets') }}">{{ 'Tickets'|trans }}</a>
+                                        <a href="{{ path('helpdesk_customer_ticket_collection') }}">{{ 'Tickets'|trans }}</a>
                                     </li>
                                     {% if websiteConfiguration.ticketCreateOption == 1 %}
                                         <li>
-                                            <a href="{{ path('webkul_support_center_front_ticket_generate') }}">{{ 'New Ticket Request'|trans }}</a>
+                                            <a href="{{ path('helpdesk_customer_create_ticket') }}">{{ 'New Ticket Request'|trans }}</a>
                                         </li>
                                     {% endif %}
                                     <li>
-                                        <a href="{{ path('webkul_support_center_front_account') }}">{{ 'Profile'|trans }}</a>
+                                        <a href="{{ path('helpdesk_customer_account') }}">{{ 'Profile'|trans }}</a>
                                     </li>
                                     <li>
-                                        <a class="uv-text-danger" href="{{ path('webkul_support_center_front_logout') }}">{{ 'Sign Out'|trans }}</a>
+                                        <a class="uv-text-danger" href="{{ path('helpdesk_customer_logout') }}">{{ 'Sign Out'|trans }}</a>
                                     </li>
                                 </ul>
                             </div>
@@ -103,19 +103,19 @@
                 {% else %}
                     <nav>
                         <ul>
-                            <li><a href="{{path('webkul_support_center_front_solution')}}">{{"Home"|trans}}</a></li>
+                            <li><a href="{{path('helpdesk_knowledgebase_folder')}}">{{"Home"|trans}}</a></li>
                             {% for headerLink in websiteConfiguration.headerLinks %}
                                 <li><a href="{{headerLink.url}}" target="_blank">{{headerLink.label}}</a></li>
                             {% endfor %}
 
                             {% if websiteConfiguration is defined and websiteConfiguration.ticketCreateOption is defined %}
                                 {% if not websiteConfiguration.loginRequiredToCreate or app.user %}
-                                    <li><a href="{{path('webkul_support_center_front_ticket_generate')}}" class="uv-btn-small">{% trans %}Contact Us{% endtrans %}</a></li>
+                                    <li><a href="{{path('helpdesk_customer_create_ticket')}}" class="uv-btn-small">{% trans %}Contact Us{% endtrans %}</a></li>
                                 {% endif %}
                             {% endif %}
 
                             {% if websiteConfiguration is defined and websiteConfiguration.disableCustomerLogin is defined and not websiteConfiguration.disableCustomerLogin %}
-                                <li><a href="{{path('webkul_support_center_front_login')}}" class="uv-btn-small">{% trans %}Sign In{% endtrans %}</a></li>
+                                <li><a href="{{path('helpdesk_customer_login')}}" class="uv-btn-small">{% trans %}Sign In{% endtrans %}</a></li>
                             {% endif %}
                         </ul>
                     </nav>
@@ -135,7 +135,7 @@
 </div>
 <!--//Header-->
 {% if searchDisable is defined and searchDisable == false %}
-    <form method="get" action="{{path('webkul_support_center_front_search')}}">
+    <form method="get" action="{{path('helpdesk_knowledgebase_search')}}">
         <!--Hero-->
         <div class="uv-hero">
             <div class="uv-container">

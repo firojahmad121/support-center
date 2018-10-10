@@ -1,4 +1,4 @@
-{% extends "@UVDeskCore/BackSupport/layout.html.twig" %}
+{% extends "@UVDeskCore//Templates//layout.html.twig" %}
 
 {% block title %} 
 	{{ 'Articles'|trans }}
@@ -19,7 +19,7 @@
                     <h6>{{ 'FOLDERS'|trans }}</h6>
                 </div>
                 <div class="uv-aside-back">
-                    <span onclick="window.location = '{{path('webkul_support_center_solution')}}'"> {{ 'Back'|trans }}</span>
+                    <span onclick="window.location = '{{path('helpdesk_member_knowledgebase_folders_collection')}}'"> {{ 'Back'|trans }}</span>
                 </div>
             </div>
 
@@ -33,7 +33,7 @@
 									{% if solution.categories %}
 										{% for category in solution.categories %}
 											<li>
-												{# <a class="" href="{{path('webkul_support_center_category_articles', {'category': category.id} )}}">{{ category.name }}
+												{# <a class="" href="{{path('helpdesk_member_knowledgebase_category_articles_collection', {'category': category.id} )}}">{{ category.name }}
 													<span class="uv-flag-gray">{{category.articleCount}}</span>
 												</a> #}
 											</li>
@@ -48,7 +48,7 @@
 						{% endfor %}
 					{% else %}
 						<li>
-							<a class="uv-aside-nav-active" href="{{ path('folder_add_action') }}">{{ 'New Folder'|trans }}</a>
+							<a class="uv-aside-nav-active" href="{{ path('helpdesk_member_knowledgebase_create_folder') }}">{{ 'New Folder'|trans }}</a>
 						</li>
 					{% endif %}
 				</ul>
@@ -141,7 +141,7 @@
 						<input type="text" class="uv-search-inline uv-vertical-align uv-margin-right-15" placeholder="{{ 'Search'|trans }}">
 						<!-- Add Button -->
 						{# {% set resources = user_service.getCompanyLeftResources() %} #}
-						<a href="{{ path('article_add_action') }}" type="button" class="uv-btn-action" id="uv-add-article">
+						<a href="{{ path('helpdesk_member_knowledgebase_create_article') }}" type="button" class="uv-btn-action" id="uv-add-article">
 							<span class="uv-icon-add"></span>
 							{{ "New Article"|trans }}
 						</a>
@@ -259,8 +259,8 @@
 	<!-- //Article list item template -->
 
 	<script type="text/javascript">
-		var path = "{{ path('article_edit_action', {'id': 'replaceId' }) }}";
-    	var pathPreview = "{{ path('webkul_support_center_front_solution_article_slug', {'slug': 'replaceId' }) }}";
+		var path = "{{ path('helpdesk_member_knowledgebase_update_article', {'id': 'replaceId' }) }}";
+    	var pathPreview = "{{ path('helpdesk_knowledgebase_read_slug_article', {'slug': 'replaceId' }) }}";
 
 		$(function () {
 			var globalMessageResponse = "";
@@ -271,7 +271,7 @@
 
 			var ArticleCollection = AppCollection.extend({
 				model : ArticleModel,
-				url : "{{ path('article_xhr_actions') }}",
+				url : "{{ path('helpdesk_member_knowledgebase_article_collection_xhr') }}",
 				filterParameters : {
 					"isActive" : "",
 					"search" : ""
@@ -311,7 +311,7 @@
 					var self = this;
                     app.appView.showLoader();
                     $.ajax({
-                        url : "{{ path('article_mass_action') }}",
+                        url : "{{ path('helpdesk_member_knowledgebase_update_article_xhr') }}",
                         type : 'POST',
                         data : {data : data},
                         dataType : 'json',

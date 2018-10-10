@@ -2,7 +2,7 @@
 
 namespace Webkul\UVDesk\SupportCenterBundle\Controller;
 
-use Webkul\UVDesk\CoreBundle\Entity\Ticket;
+use Webkul\UVDesk\CoreBundle\Entity\Ticket as TicketEntity;
 use Webkul\UVDesk\CoreBundle\Entity\Thread;
 use Webkul\UVDesk\SupportCenterBundle\Services\UVdeskSupport;
 use Webkul\UVDesk\SupportCenterBundle\Form\Ticket as TicketForm;
@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class TicketController extends Controller
+class Ticket extends Controller
 {
     protected function isWebsiteActive()
     {
@@ -45,14 +45,14 @@ class TicketController extends Controller
         throw new NotFoundHttpException('Not found !');
     }
 
-    public function ticketaddAction(Request $request)
+    public function ticketadd(Request $request)
     {
         $this->isWebsiteActive();
 
         $websiteConfiguration = $this->get('support.service')->getActiveConfiguration($this->getWebsiteDetails()->getId());
         $formErrors = $errors = array();
         if(!$websiteConfiguration || !$websiteConfiguration->getTicketCreateOption() || ($websiteConfiguration->getLoginRequiredToCreate() && !$this->getUser()))
-            return $this->redirect($this->generateUrl('webkul_support_center_front_solutions'));
+            return $this->redirect($this->generateUrl('helpdesk_knowledgebase'));
 
         $em = $this->getDoctrine()->getManager();
         $post = $request->request->all();
@@ -89,7 +89,7 @@ class TicketController extends Controller
                             );
                     }
 
-                    $ticket = new Ticket();
+                    $ticket = new TicketEntity();
                     $loggedUser = $this->get('security.token_storage')->getToken()->getUser();
                     if(!empty($loggedUser) && $loggedUser != 'anon.') {
                         $form = $this->createForm(TicketForm::class, $ticket, [
@@ -183,7 +183,7 @@ class TicketController extends Controller
                             $request->getSession()->getFlashBag()->set('warning', $this->get('translator')->trans('Warning ! Can not create ticket, invalid details.'));
                         }
 
-                        return $this->redirect($this->generateUrl('webkul_support_center_front_ticket_generate'));
+                        return $this->redirect($this->generateUrl('helpdesk_customer_create_ticket'));
                     } else {
                         $errors = $this->getFormErrors($form);
                         $errors = array_merge($errors, $formErrors);
@@ -207,7 +207,7 @@ class TicketController extends Controller
         $breadcrumbs = [
             [
                 'label' => $this->get('translator')->trans('Support Center'),
-                'url' => $this->generateUrl('webkul_support_center_front_solutions')
+                'url' => $this->generateUrl('helpdesk_knowledgebase')
             ],
             [
                 'label' => $this->get('translator')->trans("Create Ticket Request"),
@@ -226,7 +226,7 @@ class TicketController extends Controller
         );
     }
 
-    public function ticketListAction(Request $request)
+    public function ticketList(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $ticketRepo = $em->getRepository('UVDeskSupportCenterBundle:Wicket');
@@ -243,7 +243,7 @@ class TicketController extends Controller
         ));
     }
 
-    public function saveReplyAction(int $id, Request $request)
+    public function saveReply(int $id, Request $request)
     {
         $this->isWebsiteActive();
 
@@ -315,12 +315,12 @@ class TicketController extends Controller
             );
         }
 
-        return $this->redirect($this->generateUrl('webkul_support_center_front_ticket_view',array(
+        return $this->redirect($this->generateUrl('helpdesk_customer_ticket',array(
             'id' => $ticket->getId()
         )));
     }
 
-    public function ticketsAction(Request $request)
+    public function tickets(Request $request)
     {
         $this->isWebsiteActive();
 
@@ -336,7 +336,7 @@ class TicketController extends Controller
      * @param Object $request "HTTP Request object"
      * @return JSON "JSON response"
      */
-    public function ticketListXhrAction(Request $request)
+    public function ticketListXhr(Request $request)
     {
         $this->isWebsiteActive();
 
@@ -359,7 +359,7 @@ class TicketController extends Controller
      * @param Object $request "HTTP Request object"
      * @return JSON "JSON response"
      */
-    public function threadListXhrAction(Request $request)
+    public function threadListXhr(Request $request)
     {
         $this->isWebsiteActive();
 
@@ -377,7 +377,7 @@ class TicketController extends Controller
         return $response;
     }
 
-    public function ticketViewAction(int $id, Request $request)
+    public function ticketView(int $id, Request $request)
     {
         $this->isWebsiteActive();
 

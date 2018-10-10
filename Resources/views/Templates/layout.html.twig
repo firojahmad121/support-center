@@ -132,9 +132,9 @@
         {% block header %}
             {# header.twig #}
             {# {% if searchDisable is defined %}
-                {{ render_esi(url('webkul_support_center_front_header', { 'searchDisable': searchDisable })) }}
+                {{ render_esi(url('helpdesk_knowledgebase_header', { 'searchDisable': searchDisable })) }}
             {% else %}
-                {{ render_esi(url('webkul_support_center_front_header', { 'searchDisable': true })) }}
+                {{ render_esi(url('helpdesk_knowledgebase_header', { 'searchDisable': true })) }}
             {% endif %} #}
             {% include "@UVDeskSupportCenter//Front//header.html.twig" %}
         {% endblock %}
@@ -162,7 +162,7 @@
                                 <p>{{"Looking for anything specific article which resides in general queries? Just browse the various relevant folders and categories and then you will find the desired article."|trans}}
                                 </p>
             					{% if websiteConfiguration is defined and websiteConfiguration.ticketCreateOption is defined %}
-                                    <a href="{{ path('webkul_support_center_front_ticket_generate') }}" class="uv-btn uv-margin-top-15">{{'Contact Us'|trans}}</a>
+                                    <a href="{{ path('helpdesk_customer_create_ticket') }}" class="uv-btn uv-margin-top-15">{{'Contact Us'|trans}}</a>
                                 {% endif %}
                             </div>
                         </div>

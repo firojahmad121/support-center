@@ -8,14 +8,14 @@
 		<div class="uv-container">
 			<div class="uv-nav-bar-lt">
 				<ul class="uv-nav-tab-label">
-					<li><a href="{{ path('webkul_support_center_front_tickets') }}">{{ 'Ticket Requests'|trans }}</a></li>
+					<li><a href="{{ path('helpdesk_customer_ticket_collection') }}">{{ 'Ticket Requests'|trans }}</a></li>
 					{% if websiteConfiguration.ticketCreateOption %}
-                        <li><a href="{{ path('webkul_support_center_front_ticket_generate') }}">{{ 'New Ticket Request'|trans }}</a></li>
+                        <li><a href="{{ path('helpdesk_customer_create_ticket') }}">{{ 'New Ticket Request'|trans }}</a></li>
                     {% endif %}
 				</ul>
 			</div>
 			<div class="uv-nav-bar-rt">
-				<form method="get" action="{{path('webkul_support_center_front_search')}}">
+				<form method="get" action="{{path('helpdesk_knowledgebase_search')}}">
 					<input name="s" class="uv-nav-search" type="text" placeholder="{{ 'Search'|trans }}">
 				</form>
 			</div>
@@ -301,7 +301,7 @@
                                                             <img src="{{ file.attachmentThumb }}" class="uv-auto-pointer-events" data-url="{{ file.attachmentOrginal }}" data-toggle="tooltip" title="{{ file.name }}"  data-download="{{ file.id }}">
                                                         </a>
                                                     {% else %}
-                                                        <a class="uv-ticket-uploads-brick uv-template-file" href="{{ path('webkul_support_center_front_download_ticket_attachment') }}/{{file.id}}" target="_blank" data-toggle="tooltip" title="{{ file.name }}">
+                                                        <a class="uv-ticket-uploads-brick uv-template-file" href="{{ path('helpdesk_customer_download_ticket_attachment') }}/{{file.id}}" target="_blank" data-toggle="tooltip" title="{{ file.name }}">
                                                             {% if fileDefaultImages[file.contentType] is defined %}
                                                                 <img src="{{ fileDefaultImages[file.contentType] }}" class="file-icon"/>
                                                             {% else %}
@@ -314,7 +314,7 @@
                                             {% if createThread.attachments|length > 1 %}
                                                 <div class="uv-upload-actions">
                                                     <!-- <a href="#"><span class="uv-icon-open-in-files"></span>Open in Files</a> -->
-                                                    <a href="{{ path('webkul_support_center_front_download_ticket_attachment_zip') }}/{{createThread.id}}" target="_blank"><span class="uv-icon-attachment"></span> {{ 'Download (as .zip)'|trans }}</a>
+                                                    <a href="{{ path('helpdesk_customer_download_ticket_attachment_zip') }}/{{createThread.id}}" target="_blank"><span class="uv-icon-attachment"></span> {{ 'Download (as .zip)'|trans }}</a>
                                                 </div>
                                             {% endif %}
                                         </div>
@@ -349,7 +349,7 @@
 
                             <!-- Reply Tab View -->
                             <div class="uv-tab-view uv-tab-view-active" id="reply">
-                                <form enctype="multipart/form-data" method="post" action="{{ path('webkul_support_center_front_thread_save', {'id': ticket.id }) }}" id="ticket-form">
+                                <form enctype="multipart/form-data" method="post" action="{{ path('helpdesk_customer_add_ticket_thread', {'id': ticket.id }) }}" id="ticket-form">
                                     <input name="threadType" value="reply" type="hidden">
                                     <input class="reply-status" name="status" value="" type="hidden">
                                     <div class="uv-element-block collaborators" style="display: none">
@@ -535,7 +535,7 @@
                                     <img src="<%= file.attachmentThumb %>" class="uv-auto-pointer-events" data-url="<%= file.attachmentOrginal %>" data-download="<%- file.id %>" data-toggle="tooltip" title="<%= file.name %>">
                                 </a>
                             <% } else { %>
-                                <a class="uv-ticket-uploads-brick uv-template-file" href="{{ path('webkul_support_center_front_download_ticket_attachment') }}/<%= file.id %>" target="_blank" data-toggle="tooltip" title="<%= file.name %>">
+                                <a class="uv-ticket-uploads-brick uv-template-file" href="{{ path('helpdesk_customer_download_ticket_attachment') }}/<%= file.id %>" target="_blank" data-toggle="tooltip" title="<%= file.name %>">
                                     <% if(fileDefaultImages[file.contentType]) { %>
                                         <img src="<%= fileDefaultImages[file.contentType] %>" class="file-icon">
                                     <% } else { %>
@@ -549,7 +549,7 @@
                         <div class="thread-attachments-zip pull-left">
                             <div class="uv-upload-actions">
                                 {#<a href="#"><span class="uv-icon-open-in-files"></span>Open in Files</a>#}
-                                <a href="{{ path('webkul_support_center_front_download_ticket_attachment_zip') }}/<%= id %>" target="_blank"><span class="uv-icon-attachment"></span> {{ 'Download (as .zip)'|trans }}</a>
+                                <a href="{{ path('helpdesk_customer_download_ticket_attachment_zip') }}/<%= id %>" target="_blank"><span class="uv-icon-attachment"></span> {{ 'Download (as .zip)'|trans }}</a>
                             </div>
                         </div>
                     <% } %>
@@ -567,7 +567,7 @@
             var viewerImages = function() {
                 {# $('.uv-viewer-images').viewer({
                     'url': 'data-url',
-                    'downloadBase': "{{ path('webkul_support_center_front_download_ticket_attachment') }}",
+                    'downloadBase': "{{ path('helpdesk_customer_download_ticket_attachment') }}",
                     'download': 'data-download',
                 }); #}
             };
@@ -623,7 +623,7 @@
                     var self = this;
                     app.appView.showLoader()
                     this.model.save({}, {
-                        url : "{{ path('webkul_support_center_front_rate_ticket') }}",
+                        url : "{{ path('helpdesk_customer_rate_ticket') }}",
                         success: function (model, response, options) {
                             app.appView.hideLoader()
                             if(response.alertClass == 'success') {
@@ -722,7 +722,7 @@
                                 'content' : content,
                                 'userType': 'customer'
                             }}, {
-                            url : "{{ path('webkul_support_center_front_ticket_save_draft') }}",
+                            url : "{{ path('helpdesk_customer_save_ticket_draft') }}",
                             success: function (model, response, options) {
                                 $('.mce-toolbar-grp .uv-loader').remove()
                             },
@@ -746,7 +746,7 @@
             var ThreadCollection = AppCollection.extend({
                 model : ThreadModel,
                 mode: "infinite",
-                url : "{{ path('webkul_support_center_front_thread_list_xhr', {'id': ticket.id}) }}",
+                url : "{{ path('helpdesk_customer_thread_collection_xhr', {'id': ticket.id}) }}",
                 parseRecords: function (resp, options) {
                     return resp.threads;
                 },
@@ -843,7 +843,7 @@
                 parse: function (resp, options) {
                     return resp.collaborator;
                 },
-                urlRoot : "{{ path('webkul_support_center_front_ticket_collaborator_action_xhr') }}"
+                urlRoot : "{{ path('helpdesk_customer_update_ticket_collaborators_xhr') }}"
             });
 
             var CollaboratorCollection = Backbone.PageableCollection.extend({
@@ -997,7 +997,7 @@
 		sfTinyMce.init({
             height: '250px',
 			selector : '.uv-ticket-reply textarea',
-			images_upload_url: "{{ path('customer_thread_encoded_image_uploader', {ticketId: app.request.get('id')}) }}",
+			images_upload_url: "{{ path('helpdesk_customer_upload_thread_encoded_image', {ticketId: app.request.get('id')}) }}",
             setup: function(editor) {
                 editor.on('KeyUp', function(e) {
                     {# ticketApp.ticketView.saveDraft(editor.getContent()); #}

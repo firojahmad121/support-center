@@ -1,4 +1,4 @@
-{% extends "@UVDeskCore/BackSupport/layout.html.twig" %}
+{% extends "@UVDeskCore//Templates//layout.html.twig" %}
 
 {% block title %}
 	{{ 'Branding'|trans }}
@@ -48,7 +48,7 @@
     </style>
 	<div class="uv-inner-section">		
 		{# Agent Panel Sidebar #}
-        {{ include('@UVDeskCore/BackSupport/panel-sidebar.html.twig') }}
+        {{ include('@UVDeskCore/Templates/panel-sidebar.html.twig') }}
 
 		<div class="uv-view {% if app.request.cookies and app.request.cookies.get('uv-asideView') %}uv-aside-view{% endif %}">
 			<h1>{{ 'Branding'|trans }}</h1>
@@ -68,7 +68,7 @@
 			<!--Tab View-->
 			<div class="uv-tab-view {% if type == 'general' or type == '' %}uv-tab-view-active{% endif %}" id="general">
 				<!--Form-->
-				<form method="post" action="{{ path('branding_theme', {'type': 'general'}) }}" id="generalSettingForm" enctype="multipart/form-data">
+				<form method="post" action="{{ path('helpdesk_member_knowledgebase_theme', {'type': 'general'}) }}" id="generalSettingForm" enctype="multipart/form-data">
                     <!-- Image block -->
                     <div class="uv-image-upload-wrapper uv-no-error-success-icon">
                         <div class="uv-element-block">
@@ -152,7 +152,7 @@
 			<!--Tab View-->
             <div class="uv-tab-view {% if type == 'knowledgebase' %}uv-tab-view-active{% endif %}" id="knowledgebase">
                 <!--Form-->
-				<form method="post" action="{{ path('branding_theme', {'type': 'knowledgebase'}) }}" id="knowledgebaseForm">
+				<form method="post" action="{{ path('helpdesk_member_knowledgebase_theme', {'type': 'knowledgebase'}) }}" id="knowledgebaseForm">
                     <!-- Field -->
 					<div class="uv-element-block">
                         <span  id="uv-reset-colors" class="uv-icon-history" data-toggle="tooltip" data-placement="right" title="{{ 'Use Default Colors'|trans }}"></span>
@@ -335,7 +335,7 @@
 
             <!--Tab View-->
             <div class="uv-tab-view {% if type == 'seo' %}uv-tab-view-active{% endif %}" id="seo">
-                <form method="post" action="{{ path('branding_theme', {'type': 'seo'}) }}" id="seoForm">
+                <form method="post" action="{{ path('helpdesk_member_knowledgebase_theme', {'type': 'seo'}) }}" id="seoForm">
 
 					<!-- Field -->
                     <div class="uv-element-block">
@@ -368,7 +368,7 @@
 
             <!--Tab View-->
             <div class="uv-tab-view {% if type == 'links' %}uv-tab-view-active{% endif %}" id="links">
-                <form method="post" action="{{ path('branding_theme', {'type': 'links'}) }}" id="linksForm" class="uv-no-error-success-icon">
+                <form method="post" action="{{ path('helpdesk_member_knowledgebase_theme', {'type': 'links'}) }}" id="linksForm" class="uv-no-error-success-icon">
 
                     <div class="uv-header-link-wrapper">
                         <div class="links">
@@ -449,7 +449,7 @@
 
                 <!--Tab View-->
                 <div class="uv-tab-view {% if type == 'advanced' %}uv-tab-view-active{% endif %}" id="advanced">
-                    <form method="post" action="{{ path('branding_theme', {'type': 'advanced'}) }}" id="advancedForm">
+                    <form method="post" action="{{ path('helpdesk_member_knowledgebase_theme', {'type': 'advanced'}) }}" id="advancedForm">
                         <!-- Field -->
                         <div class="uv-element-block">
                             <label class="uv-field-label">{{ 'Custom CSS (Optional)'|trans }}</label>
@@ -483,7 +483,7 @@
         
             <!--Tab View-->
             <div class="uv-tab-view {% if type == 'advanced' %}uv-tab-view-active{% endif %}" id="advanced">
-                <form method="post" action="{{ path('branding_theme', {'type': 'advanced'}) }}" id="advancedForm">
+                <form method="post" action="{{ path('helpdesk_member_knowledgebase_theme', {'type': 'advanced'}) }}" id="advancedForm">
                     <!-- Field -->
                     <div class="uv-element-block">
                         <label class="uv-field-label">{{ 'Custom CSS (Optional)'|trans }}</label>
@@ -518,7 +518,7 @@
             <!--Tab View-->
             <div class="uv-tab-view {% if type == 'broadcasting' %}uv-tab-view-active{% endif %}" id="broadcasting">
                 {# {% set broadcastMessage = website.broadcastMessage|json_decode %} #}
-                <form method="post" action="{{ path('branding_theme', {'type': 'broadcasting'}) }}" id="broadcastingForm">
+                <form method="post" action="{{ path('helpdesk_member_knowledgebase_theme', {'type': 'broadcasting'}) }}" id="broadcastingForm">
                     <!-- Field -->
                     <div class="uv-element-block">
                         <label class="uv-field-label">{{ 'Broadcast Message'|trans }}</label>

@@ -9,15 +9,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-use Webkul\UVDesk\SupportCenterBundle\Entity\Article;
+use Webkul\UVDesk\SupportCenterBundle\Entity\Article as ArticleEntity;
 use Webkul\UVDesk\SupportCenterBundle\Entity\ArticleCategory;
 use Webkul\UVDesk\SupportCenterBundle\Entity\ArticleHistory;
 use Webkul\UVDesk\SupportCenterBundle\Entity\SolutionCategory;
 use Webkul\UVDesk\SupportCenterBundle\Form;
 
-class ArticleController extends Controller
+class Article extends Controller
 {
-    public function articleListAction(Request $request)
+    public function articleList(Request $request)
     {
        
         $solutions = $this->getDoctrine()
@@ -37,7 +37,7 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function articleListByCategoryAction(Request $request)
+    public function articleListByCategory(Request $request)
     {
       
 
@@ -62,7 +62,7 @@ class ArticleController extends Controller
             $this->noResultFound();
     }
 
-    public function ArticleListBySolutionAction(Request $request)
+    public function ArticleListBySolution(Request $request)
     {
         
 
@@ -84,7 +84,7 @@ class ArticleController extends Controller
             $this->noResultFound();
     }
 
-    public function articleListXhrAction(Request $request)
+    public function articleListXhr(Request $request)
     {
         $json = array();
        
@@ -104,7 +104,7 @@ class ArticleController extends Controller
         return $response;
     }
 
-    public function articleHistoryXhrAction(Request $request)
+    public function articleHistoryXhr(Request $request)
     {
         $json = array();
         $repository = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:Article');
@@ -128,7 +128,7 @@ class ArticleController extends Controller
         return $response;
     }
 
-    public function translatedArticleHistoryXhrAction(Request $request)
+    public function translatedArticleHistoryXhr(Request $request)
     {
         $json = array();
         $repository = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:TranslatedArticle');
@@ -149,7 +149,7 @@ class ArticleController extends Controller
     }
 
 
-    public function articleRelatedXhrAction(Request $request)
+    public function articleRelatedXhr(Request $request)
     {
         $json = array();
         $repository = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:Article');
@@ -174,7 +174,7 @@ class ArticleController extends Controller
         return false;
     }
 
-    public function articleAction(Request $request)
+    public function article(Request $request)
     {
         if($request->attributes->get('id')){
             $article = $this->getArticle(
@@ -185,7 +185,7 @@ class ArticleController extends Controller
             if(!$article)
                 $this->noResultFound();
         } else
-            $article = new Article;
+            $article = new ArticleEntity;
 
         $articleCategory = $articleTags = [];
         if($article->getId()) {
@@ -218,11 +218,11 @@ class ArticleController extends Controller
             return  $this->render('@UVDeskSupportCenter/Front/articleForm.html.twig', $article);
         }
 
-        return $this->render('@UVDeskSupportCenter/Front/articleAddForm.html.twig', [
+        return $this->render('@UVDeskSupportCenter/BackSupport/Articles/articleAddForm.html.twig', [
             'article' => $article,
         ]);
     }
-    public function articleXhrAction(Request $request)
+    public function articleXhr(Request $request)
     {
     
         $json = array();
@@ -246,7 +246,7 @@ class ArticleController extends Controller
                                 ]
                             );
                         }else{
-                            $article = new Article;
+                            $article = new ArticleEntity;
                         }
                         $json['errors'] = [];
                         if($article){
@@ -311,7 +311,7 @@ class ArticleController extends Controller
                                 $json['alertMessage'] = $this->get('translator')->trans('article.update.success');
 
                                 if(!$data['ids'][0]){
-                                    $json['redirect'] = $this->generateUrl('article_edit_action', array('id' => $article->getId()));
+                                    $json['redirect'] = $this->generateUrl('helpdesk_member_knowledgebase_update_article', array('id' => $article->getId()));
                                 }
 
                             }else{
@@ -547,7 +547,7 @@ class ArticleController extends Controller
             ->removeEntryByArticle($article->getId());
     }
 
-    public function articleRelatedXhr2Action(Request $request)
+    public function articleRelatedXhr2(Request $request)
     {
         $json = array();       
         if($request->getMethod() == "GET") {

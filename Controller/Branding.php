@@ -8,9 +8,9 @@ use Webkul\UVDesk\CoreBundle\Form\BrandingGeneral;
 use Webkul\UVDesk\SupportCenterBundle\Entity\Website;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class BrandingController extends Controller
+class Branding extends Controller
 {  
-    public function themeAction(Request $request)
+    public function theme(Request $request)
     {
         $errors = [];
         $em = $this->getDoctrine()->getManager();
@@ -132,7 +132,7 @@ class BrandingController extends Controller
         ]);
     }
 
-    public function spamAction(Request $request)
+    public function spam(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $website = $em->getRepository('UVDeskSupportCenterBundle:Website')->findOneBy(['code'=>"website_branding"]);
@@ -151,7 +151,7 @@ class BrandingController extends Controller
 
             $this->addFlash('success', 'Spam setting saved successfully.');
 
-            return $this->redirect($this->generateUrl('branding_spam'));
+            return $this->redirect($this->generateUrl('helpdesk_member_knowledgebase_spam'));
         }
         
         return $this->render('@UVDeskSupportCenter/Front/spam.html.twig', [

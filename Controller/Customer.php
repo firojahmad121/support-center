@@ -6,9 +6,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Security;
 
-Class CustomerController extends Controller
+Class Customer extends Controller
 {
-    protected function redirectLoginUserAction()
+    protected function redirectLoginUser()
     {
         $authChecker = $this->container->get('security.authorization_checker');
         if($authChecker->isGranted('ROLE_CUSTOMER'))
@@ -24,10 +24,6 @@ Class CustomerController extends Controller
             $this->noResultFound();
     }
 
-    /**
-     * If customer is playing with url and no result is found then what will happen
-     * @return
-     */
     protected function noResultFound()
     {
         throw new NotFoundHttpException('Permission Denied !');
@@ -51,15 +47,15 @@ Class CustomerController extends Controller
         return false;
     }
 
-    public function loginAction(Request $request)
+    public function login(Request $request)
     {
         if($this->redirectLoginUserAction())
-            return $this->redirect($this->generateUrl('webkul_support_center_front_tickets')); // Replace with Dashboard route
+            return $this->redirect($this->generateUrl('helpdesk_customer_ticket_collection')); // Replace with Dashboard route
 
         /** check disabled customer login **/
         if($this->isLoginDisabled()) {
             $this->addFlash('warning', $this->get('translator')->trans('Warning ! Customer Login disabled by admin.') );
-            return $this->redirect($this->generateUrl('webkul_support_center_front_solutions'));
+            return $this->redirect($this->generateUrl('helpdesk_knowledgebase'));
         }
 
         $session = $request->getSession();
@@ -74,17 +70,13 @@ Class CustomerController extends Controller
                 'breadcrumbs' => [
                     [
                         'label' => $this->get('translator')->trans('Support Center'),
-                        'url' => $this->generateUrl('webkul_support_center_front_solutions')
+                        'url' => $this->generateUrl('helpdesk_knowledgebase')
                     ], [
                         'label' => $this->get('translator')->trans('Sign In'),
                         'url' => '#'
                     ]
                 ]
             ]);
-    }
-
-    public function checkAction(Request $request)
-    {
     }
 
     public function forgotPasswordAction()

@@ -1,4 +1,4 @@
-{% extends "@UVDeskCore/BackSupport/layout.html.twig" %}
+{% extends "@UVDeskCore//Templates//layout.html.twig" %}
 
 {% block title %}
 	{{ 'Categories'|trans }}
@@ -19,7 +19,7 @@
                     <h6>{{ 'FOLDERS'|trans }}</h6>
                 </div>
                 <div class="uv-aside-back">
-                    <span onclick="window.location = '{{path('webkul_support_center_solution')}}'"> {{ 'Back'|trans }}</span>
+                    <span onclick="window.location = '{{path('helpdesk_member_knowledgebase_folders_collection')}}'"> {{ 'Back'|trans }}</span>
                 </div>
             </div>
 
@@ -28,12 +28,12 @@
 					{% if solutions|length %}				
 						{% for solution in solutions %}
 							<li>
-								<a class="" href="{{path('webkul_support_center_solution_category', {'solution': solution.id} )}}"><span class="uv-icon-folder"></span> {{ solution.name }} <span class="uv-flag-gray">{{solution.categoriesCount}}</span></a>
+								<a class="" href="{{path('helpdesk_member_knowledgebase_folder_categories_collection', {'solution': solution.id} )}}"><span class="uv-icon-folder"></span> {{ solution.name }} <span class="uv-flag-gray">{{solution.categoriesCount}}</span></a>
 							</li>
 						{% endfor %}
 					{% else %}
 						<li>
-							<a class="uv-aside-nav-active" href="{{ path('folder_add_action') }}">{{ 'New Folder'|trans }}</a>
+							<a class="uv-aside-nav-active" href="{{ path('helpdesk_member_knowledgebase_create_folder') }}">{{ 'New Folder'|trans }}</a>
 						</li>
 					{% endif %}						
                 </ul>
@@ -126,7 +126,7 @@
 						<input type="text" class="uv-search-inline uv-vertical-align uv-margin-right-15" placeholder="{{ 'Search'|trans }}">
 						<!-- Add Button -->
 						{# {% set resources = user_service.getCompanyLeftResources() %}						 #}
-						<a href="{{ path('category_add_action') }}" type="button" class="uv-btn-action" id="uv-add-category">
+						<a href="{{ path('helpdesk_member_knowledgebase_create_category') }}" type="button" class="uv-btn-action" id="uv-add-category">
 							<span class="uv-icon-add"></span>
 							{{ "New Category"|trans }}
 						</a>
@@ -245,8 +245,8 @@
 	<!-- //Category list item template -->
 
 	<script type="text/javascript">
-		var path = "{{ path('category_edit_action', {'id': 'replaceId' }) }}";
-		var pathPreview = "{{ path('webkul_support_center_front_solution_category', {'category': 'replaceId' }) }}";
+		var path = "{{ path('helpdesk_member_knowledgebase_update_category', {'id': 'replaceId' }) }}";
+		var pathPreview = "{{ path('helpdesk_knowledgebase_category', {'category': 'replaceId' }) }}";
 
 		$(function () {
 			var globalMessageResponse = "";
@@ -257,7 +257,7 @@
 
 			var CategoryCollection = AppCollection.extend({
 				model : CategoryModel,
-				url : "{{ path('category_xhr_actions') }}",
+				url : "{{ path('helpdesk_member_knowledgebase_category_collection_xhr') }}",
 				filterParameters : {
 					"isActive" : "",
 					"search" : ""
@@ -297,7 +297,7 @@
                     var self = this;
                     app.appView.showLoader();
                     $.ajax({
-                        url : "{{ path('category_mass_action') }}",
+                        url : "{{ path('helpdesk_member_knowledgebase_update_category_xhr') }}",
                         type : 'POST',
                         data : {data : data},
                         dataType : 'json',

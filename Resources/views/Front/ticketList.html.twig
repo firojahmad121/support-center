@@ -12,14 +12,14 @@
 		<div class="uv-container">
 			<div class="uv-nav-bar-lt">
 				<ul class="uv-nav-tab-label">
-					<li><a class="uv-nav-tab-active" href="{{ path('webkul_support_center_front_tickets') }}">{{ 'Ticket Requests'|trans }}</a></li>
+					<li><a class="uv-nav-tab-active" href="{{ path('helpdesk_customer_ticket_collection') }}">{{ 'Ticket Requests'|trans }}</a></li>
 					{% if websiteConfiguration.ticketCreateOption is defined and websiteConfiguration.ticketCreateOption %}
-						<li><a href="{{ path('webkul_support_center_front_ticket_generate') }}">{{ 'New Ticket Request'|trans }}</a></li>
+						<li><a href="{{ path('helpdesk_customer_create_ticket') }}">{{ 'New Ticket Request'|trans }}</a></li>
 					{% endif %}
 				</ul>
 			</div>
 			<div class="uv-nav-bar-rt">
-				<form method="get" action="{{path('webkul_support_center_front_search')}}">
+				<form method="get" action="{{path('helpdesk_knowledgebase_search')}}">
 					<input name="s" class="uv-nav-search" type="text" placeholder="{{ 'Search'|trans }}">
 				</form>
 			</div>
@@ -162,7 +162,7 @@
 
     <script type="text/javascript">
 		$(function() {
-			var ticketPath = "{{ path('webkul_support_center_front_ticket_view', {'id': 'replaceId' }) }}";
+			var ticketPath = "{{ path('helpdesk_customer_ticket', {'id': 'replaceId' }) }}";
 			var TicketModel = Backbone.Model.extend({
 				idAttribute : "id",
 				defaults : {
@@ -172,7 +172,7 @@
 
 			var TicketCollection = AppCollection.extend({
 				model : TicketModel,
-				url : "{{ path('webkul_support_center_front_tickets_xhr') }}",
+				url : "{{ path('helpdesk_customer_ticket_collection_xhr') }}",
 				filterParameters : {
 					"status" : "",
 					"search" : "",

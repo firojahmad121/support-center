@@ -14,8 +14,8 @@
 				</div>
 				<div class="uv-kb-folder-rt">
 					<p><span>{{folder.name}}</span></p>
-					<p><a href="{{ path('webkul_support_center_front_solution', {'solution': folder.id}) }}">{{folder.categoriesCount}} {{"Categories"|trans}}</a></p>
-					<p><a href="{{ path('webkul_support_center_front_solution_articles', {'solution': folder.id}) }}">{{folder.articleCount}} {{"Articles"|trans}}</a></p>
+					<p><a href="{{ path('helpdesk_knowledgebase_folder', {'solution': folder.id}) }}">{{folder.categoriesCount}} {{"Categories"|trans}}</a></p>
+					<p><a href="{{ path('helpdesk_knowledgebase_folder_article_collection', {'solution': folder.id}) }}">{{folder.articleCount}} {{"Articles"|trans}}</a></p>
 				</div>
 			</div>
 			<!--//Folder-->

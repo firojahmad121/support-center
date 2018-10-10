@@ -9,10 +9,10 @@ use Doctrine\Common\Collections\Criteria;
 
 use Webkul\UVDesk\SupportCenterBundle\Entity\SolutionCategory;
 use Webkul\UVDesk\SupportCenterBundle\Entity\SolutionCategoryMapping;
-use Webkul\UVDesk\SupportCenterBundle\Form\Category;
+use Webkul\UVDesk\SupportCenterBundle\Form\Category as CategoryForm;
 // use Webkul\UVDesk\UVDeskSupportCenterBundle\Form\Solution;
 
-class CategoryController extends Controller
+class Category extends Controller
 {
     const LIMIT = 10;
  
@@ -46,7 +46,7 @@ class CategoryController extends Controller
         }
     }
 
-    public function categoryListAction(Request $request)    
+    public function categoryList(Request $request)    
     {
                
         $solutions = $this->getDoctrine()
@@ -64,7 +64,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function categoryListBySolutionAction(Request $request)    
+    public function categoryListBySolution(Request $request)    
     {
        
         $solution = $this->getDoctrine()
@@ -86,7 +86,7 @@ class CategoryController extends Controller
             $this->noResultFound();
     }
 
-    public function categoryListXhrAction(Request $request)
+    public function categoryListXhr(Request $request)
     {
         $json = array();
         $repository = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:SolutionCategory');
@@ -103,7 +103,7 @@ class CategoryController extends Controller
         return $response;
     }
 
-    public function categoryAction(Request $request)
+    public function category(Request $request)
     {
         if($request->attributes->get('id')){
             $category = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:SolutionCategory')
@@ -122,7 +122,7 @@ class CategoryController extends Controller
         $errors = [];
         if($request->getMethod() == "POST") {
             $category_class = new Category($this->container);
-            $form = $this->createForm(Category::class, $category);
+            $form = $this->createForm(CategoryForm::class, $category);
             
             // dump($form);
             $form->submit(true);
@@ -178,7 +178,7 @@ class CategoryController extends Controller
 
                 $this->addFlash('success', $message);
 
-                return $this->redirect($this->generateUrl('webkul_support_center_category'));
+                return $this->redirect($this->generateUrl('helpdesk_member_knowledgebase_category_collection'));
             } else {
                 $errors = $this->getFormErrors($form);
                 $this->addFlash('warning', $message);
@@ -189,7 +189,7 @@ class CategoryController extends Controller
                            ->getRepository('UVDeskSupportCenterBundle:Solutions')
                            ->getAllSolutions(null, $this->container, 'a.id, a.name');
 
-        return $this->render('@UVDeskSupportCenter/Front/categoryForm.html.twig', [
+        return $this->render('@UVDeskSupportCenter/BackSupport/Category/categoryForm.html.twig', [
                 'category' => $category,
                 'categorySolutions' => $categorySolutions,
                 'solutions' => $solutions,
@@ -197,7 +197,7 @@ class CategoryController extends Controller
             ]);
     }
 
-    public function categoryXhrAction(Request $request)
+    public function categoryXhr(Request $request)
     {
         $json = array();
       

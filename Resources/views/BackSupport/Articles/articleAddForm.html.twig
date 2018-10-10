@@ -1,4 +1,4 @@
-{% extends "@UVDeskCore/BackSupport/layout.html.twig" %}
+{% extends "@UVDeskCore//Templates//layout.html.twig" %}
 
 {% block title %}
 	{{ 'Article'|trans }}
@@ -15,7 +15,7 @@
 	</style>
 	<div class="uv-inner-section uv-article">
 		{# Agent Panel Sidebar #}
-        {{ include('@UVDeskCore/BackSupport/panel-sidebar.html.twig') }}
+        {{ include('@UVDeskCore/Templates/panel-sidebar.html.twig') }}
 		
 		<div class="uv-view {% if app.request.cookies and app.request.cookies.get('uv-asideView') %}uv-aside-view{% endif %}">
 			<div class="uv-ticket-scroll-region uv-margin-0 {% if app.request.cookies and app.request.cookies.get('uv-asideView') %}uv-aside-view-tv{% endif %}">
@@ -190,7 +190,7 @@
                     var self = this;
                     app.appView.showLoader();
                     $.ajax({
-                        url : "{{ path('article_mass_action') }}",
+                        url : "{{ path('helpdesk_member_knowledgebase_update_article_xhr') }}",
                         type : 'POST',
                         data : {data : data},
                         dataType : 'json',
@@ -238,7 +238,7 @@
 							//return '{{ "Only valid syntax is allowed"|trans }}';
 					}
 				},
-                urlRoot : "{{ path('article_mass_action') }}"
+                urlRoot : "{{ path('helpdesk_member_knowledgebase_update_article_xhr') }}"
 			});
 
 			var articlemodel = new ArticleModel({

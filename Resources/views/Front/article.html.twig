@@ -1,8 +1,8 @@
 {% extends "@UVDeskSupportCenter/Front/layout.html.twig" %}
 
 {% if article.slug %}
-	{% block canonical %}{{ url('webkul_support_center_front_solution_article_slug', {'slug':article.slug }) }}{% endblock %}
-	{% block ogcanonical %}{{ url('webkul_support_center_front_solution_article_slug', {'slug':article.slug }) }}{% endblock %}
+	{% block canonical %}{{ url('helpdesk_knowledgebase_read_slug_article', {'slug':article.slug }) }}{% endblock %}
+	{% block ogcanonical %}{{ url('helpdesk_knowledgebase_read_slug_article', {'slug':article.slug }) }}{% endblock %}
 {% endif %}
 
 {% block title %}{% if translatedArticle %}{{ translatedArticle.metaTitle ? translatedArticle.metaTitle : translatedArticle.name }}{% else %}{{ article.metaTitle ? article.metaTitle : article.name }}{% endif %}{% endblock %}
@@ -121,7 +121,7 @@
 						var feedbackType = $(e.currentTarget).data('feedback');
 
 						$.ajax({
-							url: "{{ url('webkul_support_center_front_solution_article_rating', {'articleId': article.id}) }}",
+							url: "{{ url('helpdesk_knowledgebase_rate_article', {'articleId': article.id}) }}",
 							method: 'POST',
 							data: {
 								feedback: feedbackType,

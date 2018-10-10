@@ -25,7 +25,7 @@
 
 					<div class="uv-form">
 
-						<form action="{{ path('webkul_support_center_front_ticket_generate') }}" method="post" id="create-ticket-form" enctype="multipart/form-data">
+						<form action="{{ path('helpdesk_customer_create_ticket') }}" method="post" id="create-ticket-form" enctype="multipart/form-data">
 							{# <input type="hidden" name="_token" value="{{ default_service.generateCsrfToken('') }}"/> #}
 
 							{% if not isTicketViewPage %}

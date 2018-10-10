@@ -1,4 +1,4 @@
-{% extends "@UVDeskCore/BackSupport/layout.html.twig" %}
+{% extends "@UVDeskCore//Templates//layout.html.twig" %}
 
 {% block title %} 
 	{% trans %}Block Spam{% endtrans %}
@@ -7,12 +7,12 @@
 {% block pageContent %}
 	<div class="uv-inner-section">
 		{# Agent Panel Sidebar #}
-        {{ include('@UVDeskCore/BackSupport/panel-sidebar.html.twig') }}
+        {{ include('@UVDeskCore/Templates/panel-sidebar.html.twig') }}
 		
 		<div class="uv-view {% if app.request.cookies and app.request.cookies.get('uv-asideView') %}uv-aside-view{% endif %}">
 			<h1>{{ 'Block Spam'|trans }}</h1>
 			<!--Form-->
-			<form method="post" action="{{ path('branding_spam') }}">
+			<form method="post" action="{{ path('helpdesk_member_knowledgebase_spam') }}">
 				<!-- Field -->
 				<div class="uv-element-block">
 					<label class="uv-field-label">{{ 'Black list'|trans }}</label>
