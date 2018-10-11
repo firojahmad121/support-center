@@ -327,7 +327,7 @@ class Website extends Controller
                 ['label' => $this->get('translator')->trans('Support Center'), 'url' => $this->generateUrl('helpdesk_knowledgebase')],
                 ['label' => $translatedArticle ? $translatedArticle->getName() : $article->getName(), 'url' => '#']
             ],
-            'popArticles' => $this->get('support.service')->getPopularArticles(),
+            'popArticles' => $this->get('uvdesk.service')->getPopularArticles(),
             'dateAdded' => $this->get('user.service')->convertToTimezone($article->getDateAdded()),
             'articleTags' => $articleRepository->getTagsByArticle($article->getId()),
             'articleAuthor' => $articleRepository->getArticleAuthorDetails($article->getId()),
@@ -349,7 +349,7 @@ class Website extends Controller
         $articleCollection = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:Article')->getArticleBySearch($request);
 
         // Index search query in background for analytics
-        // $this->get('support.service')->indexSearchQuery($request->get('_locale'));
+        // $this->get('uvdesk.service')->indexSearchQuery($request->get('_locale'));
 
         return $this->render('@UVDeskSupportCenter/Front/search.html.twig', [
             'search' => $searchQuery,

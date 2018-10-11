@@ -34,7 +34,7 @@ class Solution extends Controller
                 'articleCount' => $articleCount,
         ];
 
-        return $this->render('@UVDeskSupportCenter/BackSupport/Folders/solutionList.html.twig',$solutions);
+        return $this->render('@UVDeskSupportCenter/BackSupport/Folders/folderList.html.twig',$solutions);
     }
 
     public function SolutionListXhr(Request $request)
@@ -101,7 +101,7 @@ class Solution extends Controller
             }
         }
 
-        return $this->render('@UVDeskSupportCenter/Front/solutionForm.html.twig', [
+        return $this->render('@UVDeskSupportCenter/BackSupport/Folders/folderForm.html.twig', [
                 'folder' => $folder,
                 'errors' => json_encode($errors)
             ]);

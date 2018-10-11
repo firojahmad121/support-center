@@ -49,7 +49,7 @@ class Ticket extends Controller
     {
         $this->isWebsiteActive();
 
-        $websiteConfiguration = $this->get('support.service')->getActiveConfiguration($this->getWebsiteDetails()->getId());
+        $websiteConfiguration = $this->get('uvdesk.service')->getActiveConfiguration($this->getWebsiteDetails()->getId());
         $formErrors = $errors = array();
         if(!$websiteConfiguration || !$websiteConfiguration->getTicketCreateOption() || ($websiteConfiguration->getLoginRequiredToCreate() && !$this->getUser()))
             return $this->redirect($this->generateUrl('helpdesk_knowledgebase'));
@@ -215,7 +215,7 @@ class Ticket extends Controller
             ],
         ];
 
-        return $this->render('@UVDeskSupportCenter//Front//ticket.html.twig',
+        return $this->render('@UVDeskSupportCenter/Front/ticket.html.twig',
             array(
                 'formErrors' => $formErrors,
                 'errors' => json_encode($errors),
@@ -238,7 +238,7 @@ class Ticket extends Controller
         
         $tickets = $ticketRepo->getAllCustomerTickets($currentUser);
         
-        return $this->render('@UVDeskSupportCenter//tickets.html.twig', array(
+        return $this->render('@UVDeskSupportCenter/Front/ticketList.html.twig', array(
             'ticketList' => $tickets,
         ));
     }
@@ -324,7 +324,7 @@ class Ticket extends Controller
     {
         $this->isWebsiteActive();
 
-        return $this->render('@UVDeskSupportCenter//Front//ticketList.html.twig',
+        return $this->render('@UVDeskSupportCenter/Front/ticketList.html.twig',
             array(
                 'searchDisable' => true
             )
@@ -397,6 +397,6 @@ class Ticket extends Controller
             'searchDisable' => true,
         ];
 
-        return $this->render('@UVDeskSupportCenter//Front//ticketView.html.twig', $twigResponse);
+        return $this->render('@UVDeskSupportCenter/Front/ticketView.html.twig', $twigResponse);
     }
 }

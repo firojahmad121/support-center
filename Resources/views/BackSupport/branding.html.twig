@@ -135,7 +135,7 @@
                             <select name="defaultLocale" class="uv-select">
                                 <option value="">{{ 'Select default language'|trans }}</option>
                                 {# {% if localeCode == defaultLocale %}selected="selected"{% endif % #}
-                                {% for localeCode, localeName in support_service.getLocales() %}
+                                {% for localeCode, localeName in uvdesk_service.getLocales() %}
                                     <option value="{{ localeCode }}" }>{{ localeName }}</option>
                                 {% endfor %}
                             </select>
@@ -323,7 +323,7 @@
                     </div>
 
                     <!-- CSRF token Field -->
-                    {# <input type="hidden" name="website[_token]" value="{{ support_service.generateCsrfToken('website') }}"/> #}
+                    {# <input type="hidden" name="website[_token]" value="{{ uvdesk_service.generateCsrfToken('website') }}"/> #}
                     <!-- //CSRF token Field -->
 
 					<!--CTA-->
@@ -471,7 +471,7 @@
                         <!-- //Field -->
 
                         <!-- CSRF token Field -->
-                        <input type="hidden" name="form[_token]" value="{{ support_service.generateCsrfToken('form') }}"/>
+                        <input type="hidden" name="form[_token]" value="{{ uvdesk_service.generateCsrfToken('form') }}"/>
                         <!-- //CSRF token Field -->
 
                         <!--CTA-->
@@ -505,7 +505,7 @@
                     <!-- //Field -->
 
                     <!-- CSRF token Field -->
-                    <input type="hidden" name="form[_token]" value="{{ support_service.generateCsrfToken('form') }}"/>
+                    <input type="hidden" name="form[_token]" value="{{ uvdesk_service.generateCsrfToken('form') }}"/>
                     <!-- //CSRF token Field -->
 
                     <!--CTA-->

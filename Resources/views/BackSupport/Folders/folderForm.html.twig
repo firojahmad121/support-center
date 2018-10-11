@@ -13,7 +13,7 @@
 		{# {{ include('SupportCenterBundle:Front:solutionLeftSidebar.html') }} #}
         {# app/Resources/views/form/leftsiderbar.html.twig #}
         <div class="uv-aside" {% if app.request.cookies and app.request.cookies.get('uv-asideView') %}style="display: none;"{% endif %}>
-            {% set sidebarLinks = support_service.getLeftSidebarRoutes() %}
+            {% set sidebarLinks = uvdesk_service.getLeftSidebarRoutes() %}
             {% if sidebarLinks%}
                 <div class="uv-aside-head">
                     <div class="uv-aside-title">

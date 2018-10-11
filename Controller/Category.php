@@ -59,7 +59,7 @@ class Category extends Controller
                             ->getCategoriesCountBySolution($solution['id']);
         }
     // dump($solutions);die;
-        return $this->render('@UVDeskSupportCenter/Front/categoryList.html.twig', [
+        return $this->render('@UVDeskSupportCenter/BackSupport/Category/categoryList.html.twig', [
             'solutions' => $solutions
         ]);
     }
@@ -81,7 +81,7 @@ class Category extends Controller
                             ->getCategoriesCountBySolution($request->attributes->get('solution')),
             ];
             // dump($solution_category);die;
-            return $this->render('@UVDeskSupportCenter/Front/categoryListBySolution.html.twig',$solution_category);
+            return $this->render('@UVDeskSupportCenter/BackSupport/Category/categoryListBySolution.html.twig',$solution_category);
         }else
             $this->noResultFound();
     }

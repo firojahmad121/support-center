@@ -109,7 +109,7 @@
 											<img class="locale-image" src='{{ asset("bundles/webkuldefault/images/country-flags/default.png") }}' alt="{{ 'default'|trans }}">
 											<span class="locale-name uv-vtop">{{ 'Default'|trans }}</span>
 										</li>
-										{% for localeCode, localeName in support_service.getLocales() %}
+										{% for localeCode, localeName in uvdesk_service.getLocales() %}
 											<li data-value="{{ localeCode }}">
 												<img class="locale-image" src='{{ asset("bundles/webkuldefault/images/country-flags/" ~ localeCode|lower|replace({" ": "-"}) ~ ".png") }}' alt="{{ localeCode }}">
 												<span class="locale-name uv-vtop">{{ localeName|trans }}</span>
@@ -715,7 +715,7 @@
 						formData['ids'] = [this.articleId];
 						formData['actionType'] = 'articleUpdate';
 						formData['content'] = $('textarea#article_content').val();
-						{% for localeCode, localeName in support_service.getLocales() %}
+						{% for localeCode, localeName in uvdesk_service.getLocales() %}
 							var localeType = '{{ localeCode }}';
 						{% endfor %}
 						this.articleEntityUpdate(formData);
@@ -775,7 +775,7 @@
 					'click #article-locale li': 'closeDropdown',
 				},
 				initialize: function() {
-					var allLanguages = 	{{ support_service.getLocales()|json_encode|raw }};
+					var allLanguages = 	{{ uvdesk_service.getLocales()|json_encode|raw }};
 					var self = this;
 
 					$.each(allLanguages, function(key, language) {
@@ -1439,7 +1439,7 @@
 			});
 		});
 	</script>
-	{{ include("@UVDeskSupportCenter/Front/tinymce.html.twig") }}
+	{{ include("@UVDeskSupportCenter/Templates/tinyMCE.html.twig") }}
     <script>
 		{# var toolbarOptions = sfTinyMce.options.toolbar;
         initializeArticleTinymce = function() {

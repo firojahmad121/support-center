@@ -1,4 +1,4 @@
-{% extends "@UVDeskSupportCenter/Front/layout.html.twig" %}
+{% extends "@UVDeskSupportCenter/Templates/layout.html.twig" %}
 
 {% if article.slug %}
 	{% block canonical %}{{ url('helpdesk_knowledgebase_read_slug_article', {'slug':article.slug }) }}{% endblock %}
@@ -8,8 +8,8 @@
 {% block title %}{% if translatedArticle %}{{ translatedArticle.metaTitle ? translatedArticle.metaTitle : translatedArticle.name }}{% else %}{{ article.metaTitle ? article.metaTitle : article.name }}{% endif %}{% endblock %}
 {% block ogtitle %}{% if translatedArticle %}{{ translatedArticle.metaTitle ? translatedArticle.metaTitle : translatedArticle.name }}{% else %}{{ article.metaTitle ? article.metaTitle : article.name }}{% endif %}{% endblock %}
 {% block twtitle %}{% if translatedArticle %}{{ translatedArticle.metaTitle ? translatedArticle.metaTitle : translatedArticle.name }}{% else %}{{ article.metaTitle ? article.metaTitle : article.name }}{% endif %}{% endblock %}
-{% block metaDescription %}{% if translatedArticle %}{{ translatedArticle.metaDescription ? translatedArticle.metaDescription : support_service.createConentToKeywords(translatedArticle.content, 255, true)|join(' ') }}{% else %}{{ article.metaDescription ? article.metaDescription : support_service.createConentToKeywords(article.content, 255, true)|join(' ') }}{% endif %}{% endblock %}
-{% block metaKeywords %}{% if translatedArticle %}{{ translatedArticle.keywords ? : support_service.createConentToKeywords(translatedArticle.content) }}{% else %}{{ article.keywords ? : support_service.createConentToKeywords(article.content) }}{% endif %}{% endblock %}
+{% block metaDescription %}{% if translatedArticle %}{{ translatedArticle.metaDescription ? translatedArticle.metaDescription : uvdesk_service.createConentToKeywords(translatedArticle.content, 255, true)|join(' ') }}{% else %}{{ article.metaDescription ? article.metaDescription : uvdesk_service.createConentToKeywords(article.content, 255, true)|join(' ') }}{% endif %}{% endblock %}
+{% block metaKeywords %}{% if translatedArticle %}{{ translatedArticle.keywords ? : uvdesk_service.createConentToKeywords(translatedArticle.content) }}{% else %}{{ article.keywords ? : uvdesk_service.createConentToKeywords(article.content) }}{% endif %}{% endblock %}
 
 {% block body %}
 	{# {% block image '@WebkulDefaultBundle/Resources/public/images/uv-avatar-ironman.png' %}
@@ -79,7 +79,7 @@
 			{% endif %} #}
 		</div>
 
-		{% include "@UVDeskSupportCenter/Front/sidepanel.html.twig" %}
+		{% include "@UVDeskSupportCenter/Templates/sidepanel.html.twig" %}
 	</div>
 	{{ parent() }}
 {% endblock %}

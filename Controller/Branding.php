@@ -123,7 +123,7 @@ class Branding extends Controller
             }
         }
         // dump($configuration);die;/
-        return $this->render('@UVDeskSupportCenter/Front/branding.html.twig', [
+        return $this->render('@UVDeskSupportCenter/BackSupport/branding.html.twig', [
             'website' => $website,
             'type' => $settingType,
             'configuration' => $configuration,
@@ -154,7 +154,7 @@ class Branding extends Controller
             return $this->redirect($this->generateUrl('helpdesk_member_knowledgebase_spam'));
         }
         
-        return $this->render('@UVDeskSupportCenter/Front/spam.html.twig', [
+        return $this->render('@UVDeskSupportCenter/BackSupport/spam.html.twig', [
             'whitelist'=>$configuration->getWhiteList(),
             'blacklist'=>$configuration->getBlackList(),
         ]);

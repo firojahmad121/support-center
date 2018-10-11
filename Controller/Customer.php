@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Security;
 
 Class Customer extends Controller
 {
-    protected function redirectLoginUser()
+    protected function redirectUserToLogin()
     {
         $authChecker = $this->container->get('security.authorization_checker');
         if($authChecker->isGranted('ROLE_CUSTOMER'))
@@ -49,7 +49,7 @@ Class Customer extends Controller
 
     public function login(Request $request)
     {
-        if($this->redirectLoginUserAction())
+        if($this->redirectUserToLogin())
             return $this->redirect($this->generateUrl('helpdesk_customer_ticket_collection')); // Replace with Dashboard route
 
         /** check disabled customer login **/
@@ -63,7 +63,7 @@ Class Customer extends Controller
         $error = $session->get(Security::AUTHENTICATION_ERROR);
         $session->remove(Security::AUTHENTICATION_ERROR);
 
-        return $this->render('@UVDeskSupportCenter//Front//customerlogin.html.twig', [
+        return $this->render('@UVDeskSupportCenter/Front/login.html.twig', [
                 'searchDisable' => true,
                 'last_username' => $session->get(Security::LAST_USERNAME),
                 'error'         => $error,

@@ -1,10 +1,10 @@
-{% extends "@UVDeskSupportCenter//Front//layout.html.twig" %}
+{% extends "@UVDeskSupportCenter/Templates/layout.html.twig" %}
 
 {% block title %}{{folder.name}}{% endblock %}
 {% block ogtitle %}{{folder.name}}{% endblock %}
 {% block twtitle %}{{folder.name}}{% endblock %}
 {% block metaDescription %}{{folder.description}}{% endblock %}
-{% block metaKeywords %}{{ support_service.createConentToKeywords(folder.description)}}{% endblock %}
+{% block metaKeywords %}{{ uvdesk_service.createConentToKeywords(folder.description)}}{% endblock %}
 
 {% block body %} 
 	<div class="uv-paper-article">
@@ -36,7 +36,7 @@
 			</section>
 		</div>
 
-		{% include "@UVDeskSupportCenter/Front/popularArticle.html.twig" %}
+		{% include "@UVDeskSupportCenter/Templates/popularArticle.html.twig" %}
 	</div>
 	
 	{{ parent() }}

@@ -239,7 +239,7 @@ class Article extends EntityRepository
         if(isset($queryParameters['category']))
             unset($queryParameters['category']);
 
-        $paginationData['url'] = '#'.$container->get('support.service')->buildPaginationQuery($queryParameters);
+        $paginationData['url'] = '#'.$container->get('uvdesk.service')->buildPaginationQuery($queryParameters);
 
         $json['results'] = $newResult;
         $json['pagination_data'] = $paginationData;

@@ -1,9 +1,9 @@
-{% extends "@UVDeskSupportCenter//Front//layout.html.twig" %}
+{% extends "@UVDeskSupportCenter/Templates/layout.html.twig" %}
 
 {% block body %}
 
 	{% set themeTemplate = themeTemplate ? themeTemplate : 'masonryView' %}
-	{% include "@UVDeskSupportCenter//Front//Themes//Body//" ~ themeTemplate ~ ".html.twig" %}
+	{% include "@UVDeskSupportCenter/Themes/" ~ themeTemplate ~ ".html.twig" %}
 	{{parent()}}
 {% endblock %}
 

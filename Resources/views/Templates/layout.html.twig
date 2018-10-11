@@ -64,15 +64,15 @@
 
         {% if websiteConfiguration %}
             {% block head %}
-                {% include "@UVDeskSupportCenter//Front//websiteSettings.html.twig" %}
+                {% include "@UVDeskSupportCenter/Front/websiteSettings.html.twig" %}
             {% endblock %}
         {% endif %}
 
         {% if websiteConfiguration %}
-            {% if support_service.isDarkSkin(websiteConfiguration.brandColor) %}
-                {% include '@UVDeskSupportCenter//Front//darkSkin.html.twig' %}
+            {% if uvdesk_service.isDarkSkin(websiteConfiguration.brandColor) %}
+                {% include '@UVDeskSupportCenter/Front/darkSkin.html.twig' %}
             {% else %}
-                {% include '@UVDeskSupportCenter//Front//lightSkin.html.twig' %}
+                {% include '@UVDeskSupportCenter/Front/lightSkin.html.twig' %}
             {% endif %}
         {% endif %}
     </head>
@@ -89,7 +89,7 @@
         {% set bodyClass = 'uv-rtl' %}
     {% endif %} #}
     <body class="{{ bodySkinClass ~ ' ' ~ bodyClass }}">
-        {% set broadcastMessage = support_service.getValidBroadcastMessage(websiteConfiguration.broadcastMessage is defined ? websiteConfiguration.broadcastMessage : '') %}
+        {% set broadcastMessage = uvdesk_service.getValidBroadcastMessage(websiteConfiguration.broadcastMessage is defined ? websiteConfiguration.broadcastMessage : '') %}
         {% if broadcastMessage %}
             <div class="uv-kb-info" id="uv-kb-info-broadcast">
                 <p>{{ broadcastMessage.message is defined ? broadcastMessage.message : '' }}</p>
@@ -136,10 +136,10 @@
             {% else %}
                 {{ render_esi(url('helpdesk_knowledgebase_header', { 'searchDisable': true })) }}
             {% endif %} #}
-            {% include "@UVDeskSupportCenter//Front//header.html.twig" %}
+            {% include "@UVDeskSupportCenter/Templates/header.html.twig" %}
         {% endblock %}
 
-        {% include "@UVDeskSupportCenter//Front//breadcrumbs.html.twig" %}
+        {% include "@UVDeskSupportCenter/Templates/breadcrumbs.html.twig" %}
 
         {% block tabHeader %}
         {% endblock %}
@@ -172,9 +172,9 @@
         {% endblock %}
 
         {% block footer %}
-            {% include "@UVDeskSupportCenter//Front//footer.html.twig" %}
+            {% include "@UVDeskSupportCenter/Templates/footer.html.twig" %}
 
-            {% include "@UVDeskSupportCenter//pagination.html.twig" %}
+            {% include "@UVDeskSupportCenter/Templates/pagination.html.twig" %}
 
             <!-- Loader Template-->
             <script type="text/template" id="loader-tmp">
@@ -213,7 +213,7 @@
             </script>
 
             
-            {% if '.uvdesk.com' == support_service.getConfigParameter('site.url') %}
+            {% if '.uvdesk.com' == uvdesk_service.getConfigParameter('site.url') %}
                 <!-- Google Tag Manager -->
                 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
                 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

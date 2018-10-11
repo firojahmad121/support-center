@@ -1,4 +1,4 @@
-{% extends "@UVDeskSupportCenter/Front/layout.html.twig" %}
+{% extends "@UVDeskSupportCenter/Templates/layout.html.twig" %}
 {% block title %}{% trans %}Helpdesk Search{% endtrans %}{% endblock %}
 {% block ogtitle %}{% trans %}Helpdesk Search{% endtrans %}{% endblock %}
 {% block twtitle %}{% trans %}Helpdesk Search{% endtrans %}{% endblock %}
@@ -23,7 +23,7 @@
 				{% endif %}
 			</section>
 		</div>
-		{% include "@UVDeskSupportCenter//Front//popularArticle.html.twig" %}
+		{% include "@UVDeskSupportCenter/Templates/popularArticle.html.twig" %}
 	</div>
 	{{parent()}}
 {% endblock %}

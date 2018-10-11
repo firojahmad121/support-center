@@ -1,9 +1,9 @@
-{% extends "@UVDeskSupportCenter//Front//layout.html.twig" %}
+{% extends "@UVDeskSupportCenter/Templates/layout.html.twig" %}
 {% block title %}{{category.name}}{% endblock %}
 {% block ogtitle %}{{category.name}}{% endblock %}
 {% block twtitle %}{{category.name}}{% endblock %}
 {% block metaDescription %}{{category.description}}{% endblock %}
-{% block metaKeywords %}{{support_service.createConentToKeywords(category.description)}}{% endblock %}
+{% block metaKeywords %}{{uvdesk_service.createConentToKeywords(category.description)}}{% endblock %}
 
 {% block body %} 
 	<div class="uv-paper-article">

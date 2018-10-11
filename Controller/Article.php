@@ -32,7 +32,7 @@ class Article extends Controller
         }
   
 
-        return $this->render('@UVDeskSupportCenter/Front/articleList.html.twig', [
+        return $this->render('@UVDeskSupportCenter/BackSupport/Articles/articleList.html.twig', [
             'solutions' => $solutions
         ]);
     }
@@ -46,7 +46,7 @@ class Article extends Controller
                             ->findCategoryById(['id' => $request->attributes->get('category')]);
 
         if($category){
-            return $this->render('UVDeskSupportCenterBundle:Default:articleListByCategory.html.twig', [
+            return $this->render('@UVDeskSupportCenter/BackSupport/Articles/articleListByCategory.html.twig', [
                 'category' => $category,
                 'articleCount' => $this->getDoctrine()
                                         ->getRepository('UVDeskSupportCenterBundle:SolutionCategory')
@@ -71,7 +71,7 @@ class Article extends Controller
                             ->findSolutionById(['id' => $request->attributes->get('solution')]);
 
         if($solution){
-            return $this->render('@UVDeskSupportCenter/Front/articleListBySolution.html.twig', [
+            return $this->render('@UVDeskSupportCenter/BackSupport/Articles/articleListBySolution.html.twig', [
                 'solution' => $solution,
                 'solutionArticleCount' => $this->getDoctrine()
                             ->getRepository('UVDeskSupportCenterBundle:Solutions')
@@ -215,7 +215,7 @@ class Article extends Controller
                 'errors' => json_encode($errors),
                 'translatedArticles' => $translatedArticle
             ];
-            return  $this->render('@UVDeskSupportCenter/Front/articleForm.html.twig', $article);
+            return  $this->render('@UVDeskSupportCenter/BackSupport/Articles/articleForm.html.twig', $article);
         }
 
         return $this->render('@UVDeskSupportCenter/BackSupport/Articles/articleAddForm.html.twig', [
@@ -274,7 +274,7 @@ class Article extends Controller
                                 
                                 $em->persist($article);
                                 $em->flush();
-                                foreach($this->get('support.service')->getLocales() as $localeCode => $locale ) {
+                                foreach($this->get('uvdesk.service')->getLocales() as $localeCode => $locale ) {
                                     if( isset($data[$localeCode]['name']) ) {
                                         $transArticleData = $data[$localeCode];
                                         $translateArticleRepo = $em->getRepository('UVDeskSupportCenterBundle:TranslatedArticle');
@@ -477,7 +477,7 @@ class Article extends Controller
                                 $json['alertClass'] = 'danger';
                                 $json['alertMessage'] = $this->get('translator')->trans('Name length must not be greater than 200 !!');
                             } else {
-                                $articleBase->setName($this->get('support.service')->htmlfilter($data['name']));
+                                $articleBase->setName($this->get('uvdesk.service')->htmlfilter($data['name']));
 
                                 if(trim($articleBase->getContent()) != trim($data['content']))
                                     $this->updateContent($request, $articleBase, $data['content']);
@@ -515,7 +515,7 @@ class Article extends Controller
         $articleHistory->setContent($articleBase->getContent());
 
         if ($updateArticle) {
-            // $articleBase->setContent($this->get('support.service')->htmlfilter($content));
+            // $articleBase->setContent($this->get('uvdesk.service')->htmlfilter($content));
             $articleBase->setContent($content);
             $em->persist($articleBase);
         }
@@ -534,7 +534,7 @@ class Article extends Controller
         $transArticleHistory->setTranslatedArticleId($transArticleBase->getId());
         $transArticleHistory->setContent($transArticleBase->getContent());
 
-        $transArticleBase->setContent($this->get('support.service')->htmlfilter($content));
+        $transArticleBase->setContent($this->get('uvdesk.service')->htmlfilter($content));
         $em->persist($transArticleHistory);
         $em->persist($transArticleBase);
         $em->flush();
