@@ -423,11 +423,11 @@ class KnowledgebaseWebsite
     /**
      * Set website.
      *
-     * @param \Webkul\UVDesk\SupportCenterBundle\Entity\website|null $website
+     * @param \Webkul\UVDesk\CoreBundle\Entity\website|null $website
      *
      * @return KnowledgebaseWebsite
      */
-    public function setWebsite(\Webkul\UVDesk\SupportCenterBundle\Entity\Website $website = null)
+    public function setWebsite(\Webkul\UVDesk\CoreBundle\Entity\Website $website = null)
     {
         $this->website = $website;
 
@@ -437,7 +437,7 @@ class KnowledgebaseWebsite
     /**
      * Get website.
      *
-     * @return \Webkul\UVDesk\SupportCenterBundle\Entity\Website|null
+     * @return \Webkul\UVDesk\CoreBundle\Entity\Website|null
      */
     public function getWebsite()
     {
