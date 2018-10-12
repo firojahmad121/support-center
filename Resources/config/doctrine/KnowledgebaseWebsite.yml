@@ -1,4 +1,4 @@
-Webkul\UVDesk\SupportCenterBundle\Entity\KnowledgebaseConfiguration:
+Webkul\UVDesk\SupportCenterBundle\Entity\KnowledgebaseWebsite:
     type: entity
     table: null
     repositoryClass: null

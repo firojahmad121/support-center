@@ -16,8 +16,8 @@ class Branding extends Controller
         $em = $this->getDoctrine()->getManager();
         $settingType = $request->attributes->get('type');
         $userService = $this->container->get('user.service');
-        $website = $em->getRepository('UVDeskCoreBundle:Website')->findOneBy(['code'=>"website_branding"]);
-        $configuration = $em->getRepository('UVDeskSupportCenterBundle:KnowledgebaseConfiguration')->findOneBy(['website' => $website->getId(), 'isActive' => 1]);
+        $website = $em->getRepository('UVDeskCoreBundle:Website')->findOneBy(['code'=>"knowledgebase"]);
+        $configuration = $em->getRepository('UVDeskSupportCenterBundle:KnowledgebaseWebsite')->findOneBy(['website' => $website->getId(), 'isActive' => 1]);
 
         if ($request->getMethod() == 'POST') {
             $isValid = 0;
@@ -135,11 +135,11 @@ class Branding extends Controller
     public function spam(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $website = $em->getRepository('UVDeskCoreBundle:Website')->findOneBy(['code'=>"website_branding"]);
+        $website = $em->getRepository('UVDeskCoreBundle:Website')->findOneBy(['code'=>"knowledgebase"]);
         if(!$website) {
             // return not found
         }
-        $configuration = $em->getRepository('UVDeskSupportCenterBundle:KnowledgebaseConfiguration')->findOneBy(['website' => $website->getId(), 'isActive' => 1]);
+        $configuration = $em->getRepository('UVDeskSupportCenterBundle:KnowledgebaseWebsite')->findOneBy(['website' => $website->getId(), 'isActive' => 1]);
         $params = $request->request->all();
 
         

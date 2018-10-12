@@ -33,7 +33,7 @@ class Ticket extends Controller
         $em = $this->getDoctrine()->getManager();
         $websiteRepo = $em->getRepository('UVDeskCoreBundle:Website');
 
-        return $currentWebsite = $websiteRepo->findOneBy(['code' => 'website_branding']);
+        return $currentWebsite = $websiteRepo->findOneBy(['code' => 'knowledgebase']);
     }
 
     /**

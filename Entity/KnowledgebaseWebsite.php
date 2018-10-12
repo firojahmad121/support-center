@@ -3,9 +3,9 @@
 namespace Webkul\UVDesk\SupportCenterBundle\Entity;
 
 /**
- * KnowledgebaseConfiguration
+ * KnowledgebaseWebsite
  */
-class KnowledgebaseConfiguration
+class KnowledgebaseWebsite
 {
     /**
      * @var int
@@ -132,7 +132,7 @@ class KnowledgebaseConfiguration
      *
      * @param string $status
      *
-     * @return KnowledgebaseConfiguration
+     * @return KnowledgebaseWebsite
      */
     public function setStatus($status)
     {
@@ -156,7 +156,7 @@ class KnowledgebaseConfiguration
      *
      * @param string $brandColor
      *
-     * @return KnowledgebaseConfiguration
+     * @return KnowledgebaseWebsite
      */
     public function setBrandColor($brandColor)
     {
@@ -180,7 +180,7 @@ class KnowledgebaseConfiguration
      *
      * @param string $pageBackgroundColor
      *
-     * @return KnowledgebaseConfiguration
+     * @return KnowledgebaseWebsite
      */
     public function setPageBackgroundColor($pageBackgroundColor)
     {
@@ -204,7 +204,7 @@ class KnowledgebaseConfiguration
      *
      * @param string $headerBackgroundColor
      *
-     * @return KnowledgebaseConfiguration
+     * @return KnowledgebaseWebsite
      */
     public function setHeaderBackgroundColor($headerBackgroundColor)
     {
@@ -282,7 +282,7 @@ class KnowledgebaseConfiguration
      *
      * @param string $ticketCreateOption
      *
-     * @return KnowledgebaseConfiguration
+     * @return KnowledgebaseWebsite
      */
     public function setTicketCreateOption($ticketCreateOption)
     {
@@ -306,7 +306,7 @@ class KnowledgebaseConfiguration
      *
      * @param \DateTime $createdAt
      *
-     * @return KnowledgebaseConfiguration
+     * @return KnowledgebaseWebsite
      */
     public function setCreatedAt($createdAt)
     {
@@ -330,7 +330,7 @@ class KnowledgebaseConfiguration
      *
      * @param \DateTime $updatedAt
      *
-     * @return KnowledgebaseConfiguration
+     * @return KnowledgebaseWebsite
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -354,7 +354,7 @@ class KnowledgebaseConfiguration
      *
      * @param string $broadcastMessage
      *
-     * @return KnowledgebaseConfiguration
+     * @return KnowledgebaseWebsite
      */
     public function setBroadcastMessage($broadcastMessage)
     {
@@ -425,7 +425,7 @@ class KnowledgebaseConfiguration
      *
      * @param \Webkul\UVDesk\SupportCenterBundle\Entity\website|null $website
      *
-     * @return KnowledgebaseConfiguration
+     * @return KnowledgebaseWebsite
      */
     public function setWebsite(\Webkul\UVDesk\SupportCenterBundle\Entity\Website $website = null)
     {
@@ -456,7 +456,7 @@ class KnowledgebaseConfiguration
      *
      * @param \Webkul\UVDesk\SupportCenterBundle\Entity\Website $website
      *
-     * @return KnowledgebaseConfiguration
+     * @return KnowledgebaseWebsite
      */
     public function addWebsite(\Webkul\UVDesk\SupportCenterBundle\Entity\Website $website)
     {
@@ -732,7 +732,7 @@ class KnowledgebaseConfiguration
      *
      * @param bool $loginRequiredToCreate
      *
-     * @return KnowledgebaseConfiguration
+     * @return KnowledgebaseWebsite
      */
     public function setLoginRequiredToCreate($loginRequiredToCreate)
     {
