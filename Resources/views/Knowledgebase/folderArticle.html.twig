@@ -24,7 +24,7 @@
 								<span class="uv-icon-star uv-pre"></span>
 								{% endif %}
 									<a href="{{path('helpdesk_knowledgebase_read_slug_article', {'slug': article.slug})}}">
-										{{ article.translatedArticle is defined and article.translatedArticle ? article.translatedArticle : article.name }}
+										{{ article.name }}
 									</a>
 							</li>
 

@@ -1,6 +1,7 @@
 Webkul\UVDesk\SupportCenterBundle\Entity\ArticleTags:
     type: entity
     table: null
+    repositoryClass: null
     id:
         id:
             type: integer

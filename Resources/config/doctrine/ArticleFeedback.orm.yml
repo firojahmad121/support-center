@@ -1,5 +1,7 @@
 Webkul\UVDesk\SupportCenterBundle\Entity\ArticleFeedback:
     type: entity
+    table: null
+    repositoryClass: null
     manyToOne:
         article:
             targetEntity: Webkul\UVDesk\SupportCenterBundle\Entity\Article
@@ -13,7 +15,6 @@ Webkul\UVDesk\SupportCenterBundle\Entity\ArticleFeedback:
                 name: user_id
                 referencedColumnName: id
                 onDelete: cascade
-    table: null
     id:
         id:
             type: integer

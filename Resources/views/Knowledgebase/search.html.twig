@@ -15,7 +15,7 @@
 				{% if articles %}
 					<ul>
 						{% for article in articles %}
-							<li> {% if article.stared %}<span class="uv-icon-star uv-pre"></span>{% endif %} <a href="{{path('helpdesk_knowledgebase_read_slug_article', {'slug': article.slug})}}">{{ article.translatedName is defined and article.translatedName ? article.translatedName : article.name }}</a></li>
+							<li> {% if article.stared %}<span class="uv-icon-star uv-pre"></span>{% endif %} <a href="{{ path('helpdesk_knowledgebase_read_slug_article', {'slug': article.slug})}}">{{ article.name }}</a></li>
 						{% endfor %}
 					</ul>
 				{% else %}
@@ -23,7 +23,9 @@
 				{% endif %}
 			</section>
 		</div>
+		
 		{% include "@UVDeskSupportCenter/Templates/popularArticle.html.twig" %}
 	</div>
+
 	{{parent()}}
 {% endblock %}

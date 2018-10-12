@@ -1,6 +1,6 @@
 <?php
 
-namespace Webkul\UVDesk\SupportCenterBundle\Controller;
+namespace Webkul\UVDesk\SupportCenterBundle\Knowledgebase;
 
 use Webkul\UVDesk\CoreBundle\Entity\Ticket as TicketEntity;
 use Webkul\UVDesk\CoreBundle\Entity\Thread;
@@ -31,7 +31,7 @@ class Ticket extends Controller
     protected function getWebsiteDetails()
     {
         $em = $this->getDoctrine()->getManager();
-        $websiteRepo = $em->getRepository('UVDeskSupportCenterBundle:Website');
+        $websiteRepo = $em->getRepository('UVDeskCoreBundle:Website');
 
         return $currentWebsite = $websiteRepo->findOneBy(['code' => 'website_branding']);
     }
@@ -215,7 +215,7 @@ class Ticket extends Controller
             ],
         ];
 
-        return $this->render('@UVDeskSupportCenter/Front/ticket.html.twig',
+        return $this->render('@UVDeskSupportCenter/Knowledgebase/ticket.html.twig',
             array(
                 'formErrors' => $formErrors,
                 'errors' => json_encode($errors),
@@ -238,7 +238,7 @@ class Ticket extends Controller
         
         $tickets = $ticketRepo->getAllCustomerTickets($currentUser);
         
-        return $this->render('@UVDeskSupportCenter/Front/ticketList.html.twig', array(
+        return $this->render('@UVDeskSupportCenter/Knowledgebase/ticketList.html.twig', array(
             'ticketList' => $tickets,
         ));
     }
@@ -324,7 +324,7 @@ class Ticket extends Controller
     {
         $this->isWebsiteActive();
 
-        return $this->render('@UVDeskSupportCenter/Front/ticketList.html.twig',
+        return $this->render('@UVDeskSupportCenter/Knowledgebase/ticketList.html.twig',
             array(
                 'searchDisable' => true
             )
@@ -397,6 +397,6 @@ class Ticket extends Controller
             'searchDisable' => true,
         ];
 
-        return $this->render('@UVDeskSupportCenter/Front/ticketView.html.twig', $twigResponse);
+        return $this->render('@UVDeskSupportCenter/Knowledgebase/ticketView.html.twig', $twigResponse);
     }
 }

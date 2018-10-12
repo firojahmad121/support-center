@@ -19,7 +19,7 @@
 					<ul>
 						{% for article in articles %}
 							{#<li> {% if article.stared %}<span class="uv-icon-star uv-pre"></span>{% endif %} <a href="{{path('helpdesk_knowledgebase_read_article', {'article': article.id})}}">{{article.name}}</a></li>#}
-							<li> {% if article.stared %}<span class="uv-icon-star uv-pre"></span>{% endif %} <a href="{{path('helpdesk_knowledgebase_read_slug_article', {'slug': article.slug})}}">{{ article.translatedArticle is defined and article.translatedArticle ? article.translatedArticle : article.name}}</a></li>
+							<li> {% if article.stared %}<span class="uv-icon-star uv-pre"></span>{% endif %} <a href="{{path('helpdesk_knowledgebase_read_slug_article', {'slug': article.slug})}}">{{ article.name }}</a></li>
 						{% endfor %}
 					</ul>
 				{% else %}

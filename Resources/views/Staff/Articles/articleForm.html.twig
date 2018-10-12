@@ -35,6 +35,7 @@
 		}
 	}
 	</style>
+
 	<div class="uv-inner-section uv-article">
         <div class="uv-aside uv-category" style="overflow-x: hidden;{% if app.request.cookies and app.request.cookies.get('uv-asideView') %}display: none;{% endif %}">
 		    <div class="uv-main-info-block">
@@ -93,34 +94,6 @@
 			<div class="uv-aside-brick">
 				<!--Ticket Actions-->
 				<div class="uv-aside-ticket-actions">
-
-					<div class="uv-aside-select">
-						<label class="uv-aside-select-label">{{ 'Language'|trans }}</label>
-						<div id="selected-locale-view">
-							<img src="{{ asset("bundles/webkuldefault/images/country-flags/default.png") }}" class="flag-image">
-							<span class="uv-aside-select-value uv-dropdown-other uv-aside-drop-icon uv-vtop" data-id="{{ article.status }}">
-								{{ 'Default'|trans }}
-							</span>
-							<div class="uv-dropdown-list uv-no-patch uv-bottom-left" id="lang-selector-dropdown">
-								<div class="uv-dropdown-container">
-									<label>{{ 'Language'|trans }}</label>
-									<ul class="language" data-action="language" id="article-locale" data-val="">
-										<li data-value="">
-											<img class="locale-image" src='{{ asset("bundles/webkuldefault/images/country-flags/default.png") }}' alt="{{ 'default'|trans }}">
-											<span class="locale-name uv-vtop">{{ 'Default'|trans }}</span>
-										</li>
-										{% for localeCode, localeName in uvdesk_service.getLocales() %}
-											<li data-value="{{ localeCode }}">
-												<img class="locale-image" src='{{ asset("bundles/webkuldefault/images/country-flags/" ~ localeCode|lower|replace({" ": "-"}) ~ ".png") }}' alt="{{ localeCode }}">
-												<span class="locale-name uv-vtop">{{ localeName|trans }}</span>
-											</li>
-										{% endfor %}
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-
 					<div class="uv-aside-select">
 						<label class="uv-aside-select-label">{{ 'Status'|trans }}</label>
 						<div>
@@ -331,9 +304,6 @@
 							<div class="uv-table uv-list-view"></div>
 						</div>
 					</div>
-
-					<div id="uv-translated-articles">
-					</div>
 				</form>
 			</div>
 		</div>
@@ -386,7 +356,6 @@
 {% block footer %}
 	{{ parent() }}
 
-	<!-- Article Related list item template -->
 	<script id="article_related_list_item_tmp" type="text/template">
 		<div class="uv-related">
 			<a class="uv-btn-tag remove-event-select remove" data-id="<%= id %>" data-article-id="<%= articleId %>" href="#">
@@ -395,36 +364,7 @@
 			<%- name %>
 		</div>
     </script>
-	<!-- //Article Related list item template -->
 
-	<!-- Article list item template -->
-	<script id="translated_article_history_list_item_tmp" type="text/template">
-		<div class="uv-revision-parent">
-			<div class="uv-revision-left">
-					<span class="uv-icon-history"></span>
-			</div>
-			<div class="uv-revision-right">
-				<div>{{ "Revision"|trans }} #<%= id %>
-				</div>
-				<div><%- name %> {{ "updated the article"|trans }} <span class="timeago" data-timestamp="<%= dateAdded.timestamp %>"> {{ "on"|trans }} <%= dateAdded.format %></span></div>
-				<div class="uv-action-buttons">
-					<a href="#" type="button" class="uv-btn-small history-preview" data-id="<%= id %>">
-						{{"Preview"|trans}}
-					</a>
-					<a href="#" type="button" class="uv-btn-small <% if(hasContent && !isCurrent){ %>t-history-restore<% } %>"  <% if(isCurrent || !hasContent){ %>disabled="disabled" <% } %>>
-						<% if('undefined' != typeof(isCurrent) && isCurrent) { %>
-							{{ "Restored"|trans }}
-						<% }else{ %>
-							{{ "Restore"|trans }}
-						<% } %>
-					</a>
-				</div>
-			</div>
-		</div>
-    </script>
-	<!-- //Article list item template -->
-
-	<!-- Article list item template -->
 	<script id="article_history_list_item_tmp" type="text/template">
 		<div class="uv-revision-parent">
 			<div class="uv-revision-left">
@@ -456,7 +396,6 @@
 			</div>
 		</div>
     </script>
-	<!-- //Article list item template -->
 
 	<script id="article_preview_html" type="text/template">
 		<div class="uv-pop-up-overlay" id="preview-modal" style="display:block;">
@@ -485,105 +424,30 @@
 		</div>
     </script>
 
-	<script id="translate_article_view" type="text/template">
-	</script>
-
-	<script type="text/template" id="translated-article-template">
-		<% translatedArticles = {{ translatedArticles|json_encode|raw }} %>
-		<div id="<%- locale %>-article-section" class="article-instances">
-			<div class="uv-tab-view" data-id="article-edit">
-				<!-- Field -->
-				<div class="uv-element-block">
-					<label class="uv-field-label">{{ 'Title'|trans }}</label>
-					<div class="uv-field-block">
-						<input name="<%- locale %>[name]" class="uv-field" type="text" value="<%- ('undefined' != typeof(translatedArticles[locale]) && 'undefined' != typeof(translatedArticles[locale]['name'])) ? translatedArticles[locale]['name'] : ''  %>">
-						<span class="uv-field-info"><%- "{{ 'Provide title to use in %locale% version of this article, otherwise leave it empty to use main article.' }}".replace('%locale%', locale.toUpperCase()) %></span>
-					</div>
-				</div>
-				<!-- //Field -->
-
-				<!-- Field -->
-				<div class="uv-element-block uv-element-block-textarea">
-					<label class="uv-field-label">{{ 'Content'|trans }}</label>
-					<div class="uv-field-block uv-margin-top-5">
-						<textarea name="<%- locale %>[content]" class="uv-field"><%- ('undefined' != typeof(translatedArticles[locale]) && 'undefined' != typeof(translatedArticles[locale]['content'])) ? translatedArticles[locale]['content'] : ''  %></textarea>
-					</div>
-				</div>
-				<!-- //Field -->
-			</div>
-
-			<div class="uv-tab-view" data-id="article-seo">
-				<!-- Field -->
-				<div class="uv-element-block">
-					<label class="uv-field-label">{{ 'Slug'|trans }}</label>
-					<div class="uv-field-block">
-						<input class="uv-field" type="text" value="{{ article.slug }}" disabled="disabled">
-					</div>
-					<span class="uv-field-info">{{'Slug is the url identity of this article.'|trans}}</span>
-				</div>
-				<!-- //Field -->
-
-				<!-- Field -->
-				<div class="uv-element-block">
-					<label class="uv-field-label">{{ 'Meta Title'|trans }}</label>
-					<div class="uv-field-block">
-						<input name="<%- locale %>[metaTitle]" class="uv-field" type="text" value="<%- ('undefined' != typeof(translatedArticles[locale]) && 'undefined' != typeof(translatedArticles[locale]['metaTitle'])) ? translatedArticles[locale]['metaTitle'] : ''  %>">
-					</div>
-					<span class="uv-field-info">{{"Title tags and meta descriptions are bits of HTML code in the header of a web page. They help search engines understand the content on a page. A page's title tag and meta description are usually shown whenever that page appears in search engine results"|trans}}</span>
-				</div>
-				<!-- //Field -->
-
-				<!-- Field -->
-				<div class="uv-element-block">
-					<label class="uv-field-label">{{ 'Meta Keywords'|trans }}</label>
-					<div class="uv-field-block">
-						<input name="<%- locale %>[keywords]" class="uv-field" type="text" value="<%- ('undefined' != typeof(translatedArticles[locale]) && 'undefined' != typeof(translatedArticles[locale]['keywords'])) ? translatedArticles[locale]['keywords'] : ''  %>">
-					</div>
-					<span class="uv-field-info">{{'comma "," separated'|trans}}</span>
-				</div>
-				<!-- //Field -->
-
-				<!-- Field -->
-				<div class="uv-element-block">
-					<label class="uv-field-label">{{ 'Meta Description'|trans }}</label>
-					<div class="uv-field-block">
-						<textarea name="<%- locale %>[metaDescription]" class="uv-field"><%- ('undefined' != typeof(translatedArticles[locale]) && 'undefined' != typeof(translatedArticles[locale]['metaDescription'])) ? translatedArticles[locale]['metaDescription'] : ''  %></textarea>
-					</div>
-				</div>
-				<!-- //Field -->
-			</div>
-
-			<div class="uv-tab-view" data-id="article-history">
-				<div class="uv-table uv-list-view"></div>
-			</div>
-		</div>
-	</script>
-
 	<script type="text/javascript">
 		var path_history = "{{ path('helpdesk_member_knowledgebase_revision_article', {'id': article.id }) }}"
 		var path_related = "{{ path('helpdesk_member_knowledgebase_related_article_xhr', {'id': article.id }) }}"
-		var translated_path_history = "{{ path('translated_helpdesk_member_knowledgebase_revision_article', {'id': article.id }) }}";
-			$.fn.serializeFormObject = function () {
-					var o = {};
-					var outputCopy = o;
-					var a = this.serializeArray();
-					var regex = /(\w+)+/g;
-					$.each(a, function (index, item) {
-						var keys = item.name.match(regex);
-						keys.forEach(function (key, localIndex) {
-							if (!outputCopy.hasOwnProperty(key)) {
-								outputCopy[key] = {};
-							}
-							if(localIndex == keys.length - 1) {
-								outputCopy[key] = isNaN(item.value)|| item.value == '' || item.value == null  ? item.value : +item.value;
-							}
-							outputCopy = outputCopy[key];
-						});
-						outputCopy = o;
-					});
-					return o;
-				};
 
+		$.fn.serializeFormObject = function () {
+			var o = {};
+			var outputCopy = o;
+			var a = this.serializeArray();
+			var regex = /(\w+)+/g;
+			$.each(a, function (index, item) {
+				var keys = item.name.match(regex);
+				keys.forEach(function (key, localIndex) {
+					if (!outputCopy.hasOwnProperty(key)) {
+						outputCopy[key] = {};
+					}
+					if(localIndex == keys.length - 1) {
+						outputCopy[key] = isNaN(item.value)|| item.value == '' || item.value == null  ? item.value : +item.value;
+					}
+					outputCopy = outputCopy[key];
+				});
+				outputCopy = o;
+			});
+			return o;
+		};
 
 		$(function () {
 			var globalMessageResponse = "";
@@ -764,64 +628,11 @@
 
 			var ArticleFullView = Backbone.View.extend({
 				el: $('body'),
-				translatedArticleTemplate: _.template($('#translated-article-template').html()),
-				transltedEl: $('#uv-translated-articles'),
 				previewTemplate : _.template($("#article_preview_html").html()),
 				events: {
-					'click #article-locale': 'changeArticleView',
-					'click #article-section-tab ul li': 'showTranslateArticleTab',
 					'click #preview-link': 'previewArticle',
 					'click #preview-article': 'renderArticlePreview',
 					'click #article-locale li': 'closeDropdown',
-				},
-				initialize: function() {
-					var allLanguages = 	{{ uvdesk_service.getLocales()|json_encode|raw }};
-					var self = this;
-
-					$.each(allLanguages, function(key, language) {
-						var json = { 'locale': key };
-						self.transltedEl.append(self.translatedArticleTemplate(json));
-						var elSelector = '#' + key + '-article-section';
-						var translatedArticleForm = new ArticleForm({
-							el: $(elSelector),
-							model : articlemodel
-						});
-
-					});
-					//initializeArticleTinymce();
-				},
-				changeArticleView: function(e) {
-					var target = $(e.target).closest('li');
-					var val = target.attr('data-value');
-					var lang = $('#article-locale').attr('data-value', val);
-					if(!val) {
-						$('.article-other-info').show();
-						var selector = '#original-article';
-						$('#selected-locale-view .uv-dropdown-other').html("{{ 'Default'|trans }}");
-						$('#selected-locale-view .flag-image').attr('src', '{{ asset("bundles/webkuldefault/images/country-flags/default.png") }}' );
-					} else {
-						$('.article-other-info').hide();
-						var selector = '#' + val + '-article-section';
-						$('#selected-locale-view .uv-dropdown-other').html(target.find('.locale-name').html());
-						$('#selected-locale-view .flag-image').attr('src', target.find('.locale-image').attr('src'));
-					}
-
-					$('.article-instances' + ':not(' + selector + ')').hide();
-					$(selector).show();
-					this.showTranslateArticleTab();
-					$('#selected-locale-view').removeClass('uv-dropdown-open');
-				},
-				showTranslateArticleTab: function() {
-					var lang = $('#article-locale').attr('data-value');
-					if(lang) {
-						var targetFor = $('#article-section-tab .uv-tab-active').attr('for');
-						var tabView = $('#' + lang + '-article-section').find('.uv-tab-view').filter('*[data-id="'+targetFor+'"]');
-						if(!tabView.length) {
-							$('li[for="article-edit"]').trigger('click');
-						}
-						tabView.addClass('uv-tab-view-active');
-						tabView.siblings().removeClass('uv-tab-view-active');
-					}
 				},
 				previewArticle: function(e) {
 					var target = $(e.target).closest('.uv-button-preview');
@@ -973,125 +784,6 @@
 				}
 			});
 
-			/* js for translated revision part */
-            var TranslatedArticleHistoryModel = Backbone.Model.extend({
-                urlRoot : translated_path_history
-			});
-
-			var TranslatedArticleHistoryCollection = AppCollection.extend({
-				model : TranslatedArticleHistoryModel,
-				url : translated_path_history,
-				filterParameters : {
-					"isActive" : "",
-				},
-				initialize : function() {
-					this.syncData();
-				},
-				parseRecords: function (resp, options) {
-					return resp;
-				},
-				syncData : function() {
-					app.appView.showLoader();
-					this.fetch({
-						data : this.getValidParameters(),
-						reset: true,
-						success: function(model, response) {
-							app.appView.hideLoader();
-							var translatedArticleHistoryListView = new TranslatedArticleHistoryList();
-
-							if(globalMessageResponse)
-								app.appView.renderResponseAlert(globalMessageResponse);
-							globalMessageResponse = null;
-						},
-						error: function (model, xhr, options) {
-							if(url = xhr.getResponseHeader('Location'))
-								window.location = url;
-						}
-					});
-				}
-			});
-
-			var TranslatedArticleHistoryList = Backbone.View.extend({
-				el : $("*[data-id='article-history'] .uv-list-view"),
-				initialize : function() {
-					this.render();
-				},
-				render : function () {
-					if(translatedArticleHistoryCollection.length) {
-						_.each(translatedArticleHistoryCollection.models, function (item) {
-							var modelLocale = item.get('locale');
-							if(modelLocale) {
-								var element =  $("#" + modelLocale + "-article-section *[data-id='article-history'] .uv-list-view")
-								if(element)  {
-									var translatedArticleHistoryItem = new TranslatedArticleHistoryItem({
-										model: item
-									});
-									element.append(translatedArticleHistoryItem.render().el);
-								}
-							}
-							// this.renderArticle(item); //mod
-						}, this);
-						this.$el.append("<div class='uv-no-translated-revision uv-text-center'>{% trans %}No Record Found{% endtrans %}</div>");
-					} else {
-						this.$el.append("<div class='uv-text-center'>{% trans %}No Record Found{% endtrans %}</div>")
-					}
-				},
-			});
-
-			var TranslatedArticleHistoryItem = Backbone.View.extend({
-				tagName : "div",
-				template : _.template($("#translated_article_history_list_item_tmp").html()),
-				previewTemplate : _.template($("#article_history_view_html").html()),
-				events: {
-					'click .history-preview' : "preview",
-					'click .t-history-restore' : "restore",
-				},
-				render : function() {
-					var locale = this.model.get('locale');
-					try {
-						var transTinyMceContent = tinyMCE.get(locale + '[content]').getContent();
-					} catch(e) {
-						var transTinyMceContent = null;
-					}
-					this.$el.html(this.template($.extend(this.model.toJSON(), {
-						isCurrent: (transTinyMceContent && this.model.get('content').trim() == transTinyMceContent ? true : false),
-						hasContent: (this.model.attributes.content.trim().length ? true : false)
-					}) ));
-					return this;
-				},
-				preview: function(e){
-					e.preventDefault();
-					$('body').append(this.previewTemplate());
-
-					if(this.model.attributes.content.trim().length){
-						$('body').find('#preview-modal .uv-html-preview').html(this.model.attributes.content);
-					}else{
-						$('body').find('#preview-modal .uv-html-preview').html(
-							`
-								<h2>{{'Oops'|trans}}</h2>
-								<p>{{'Sorry, there are nothing to display.'|trans}}</p>
-							`
-						);
-						$('body').find('#preview-modal .restore').attr('disabled', 'disabled');
-						$('body').find('#preview-modal .uv-btn.uv-btn-error').removeClass('restore');
-					}
-				},
-				restore: function(e) {
-					e.preventDefault();
-					formData = {};
-					formData['ids'] = ['{{article.id}}'];
-					formData['actionType'] = 'translateContentUpdate';
-					formData['content'] = this.model.attributes.content;
-					formData['locale'] = this.model.attributes.locale;
-					tinyMCE.get(this.model.attributes.locale + '[content]').setContent(this.model.attributes.content);
-					articleForm.articleEntityUpdate(formData);
-					articleHistoryCollection.syncData();
-				}
-			});
-
-			var translatedArticleHistoryCollection = new TranslatedArticleHistoryCollection();
-			/* end js for translated revision part */
-
 			var ArticleHistoryList = Backbone.View.extend({
 				el : $("#article-history .uv-list-view"),
 				initialize : function() {
@@ -1118,13 +810,9 @@
 
 			articleHistoryCollection = new ArticleHistoryCollection();
 
-
-
-
             var ArticleRelatedModel = Backbone.Model.extend({
                 urlRoot : path_related
 			});
-
 
 			var ArticleRelatedCollection = AppCollection.extend({
 				model : ArticleRelatedModel,
@@ -1209,7 +897,6 @@
 
 			articleRelatedCollection = new ArticleRelatedCollection();
 
-
 			var TagList = Backbone.View.extend({
                 el : $("#tagUpdate"),
                 events : {
@@ -1281,8 +968,6 @@
             });
 
 			new TagList({});
-
-
 
             var BodyView = Backbone.View.extend({
                 el: 'body',
@@ -1445,10 +1130,7 @@
         initializeArticleTinymce = function() {
 			sfTinyMce.init({
 				selector: 'textarea[name*="content"]',
-				toolbar: toolbarOptions + ' | insert | styleselect | alignleft aligncenter alignright alignjustify | outdent indent | code | translate',
-				setup: function (editor) {
-					addTranslateButton(editor);
-				},
+				toolbar: toolbarOptions + ' | insert | styleselect | alignleft aligncenter alignright alignjustify | outdent indent | code',
 			});
 		}; #}
 		

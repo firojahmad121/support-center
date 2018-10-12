@@ -1,49 +1,49 @@
 helpdesk_customer_login:
     path:     /login
-    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::login
+    controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Customer::login
 
 helpdesk_customer_logout:
     path:     /logout
-    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::logout
+    controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Customer::logout
 
 helpdesk_customer_account:
     path:     /account
-    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::Account
+    controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Customer::Account
 
 helpdesk_customer_forgot_password:
     path:     /forgot-password
-    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::forgotPassword
+    controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Customer::forgotPassword
 
 helpdesk_customer_account_validation:
     path:     /account-confirmation/{email}/{key}
-    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::AccountValidation
+    controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Customer::AccountValidation
     defaults: { email: 0, key: 0 }
 
 helpdesk_customer_account_verification:
     path:     /account-verification/{email}/{key}
-    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::AccountVerification
+    controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Customer::AccountVerification
     defaults: { email: 0, key: 0 }
 
 # helpdesk_customer_account_backup_trigger:
 #     path:     /resources/backup/confirm
-#     controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::initiateCustomerBackup
+#     controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Customer::initiateCustomerBackup
 
 # download_customer_resources_retrieve:
 #     path:     /resources/backup/{confirmationToken}
-#     controller: Webkul\UVDesk\SupportCenterBundle\Controller\Customer::downloadCustomerBackup
+#     controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Customer::downloadCustomerBackup
 #     defaults: { _controller: UVDeskSupportCenterBundle:Customer:downloadCustomerBackup }
 
 # ajax_file_upload_customer:
 #     path:     /file-upload
-#     controller: Webkul\UVDesk\SupportCenterBundle\Controller\Solution::SolutionList
+#     controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Solution::SolutionList
 #     defaults: { _controller: WebkulDefaultBundle:Default:ajaxFileUpload }
 
 # ajax_url_file_customer:
 #     path:     /url-upload
-#     controller: Webkul\UVDesk\SupportCenterBundle\Controller\Solution::SolutionList
+#     controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Solution::SolutionList
 #     defaults: { _controller: WebkulDefaultBundle:Default:ajaxUrlFileUpload }
 
 # ajax_file_remove_customer:
 #     path:     /file-remove
-#     controller: Webkul\UVDesk\SupportCenterBundle\Controller\Solution::SolutionList
+#     controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Solution::SolutionList
 #     defaults: { _controller: WebkulDefaultBundle:Default:ajaxFileRemove }

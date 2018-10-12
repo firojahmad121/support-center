@@ -1,5 +1,7 @@
 Webkul\UVDesk\SupportCenterBundle\Entity\ArticleViewLog:
     type: entity
+    table: null
+    repositoryClass: null
     manyToOne:
         user:
             targetEntity: Webkul\UVDesk\CoreBundle\Entity\User
@@ -15,7 +17,6 @@ Webkul\UVDesk\SupportCenterBundle\Entity\ArticleViewLog:
                 name: article_id
                 referencedColumnName: id
                 onDelete: cascade
-    table: null
     id:
         id:
             type: integer

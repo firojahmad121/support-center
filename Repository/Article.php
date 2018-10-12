@@ -97,12 +97,6 @@ class Article extends EntityRepository
                 'articleId' => $params['articleId'],
                 'status' => $status,
             ]);
-        if(!empty($params['locale'])) {
-            $qbS->leftJoin('Webkul\UVDesk\SupportCenterBundle\Entity\TranslatedArticle','ta','WITH', 'ta.article = aR.id')
-                ->addSelect('ta.locale, ta.name as translatedName, ta.content as translatedContent')
-                ->andWhere('ta.locale = :locale OR ta.locale IS NULL')
-                ->setParameter('locale', $params['locale']);
-        }
 
         $results = $qbS->getQuery()->getResult();
         return $results;
@@ -503,10 +497,8 @@ class Article extends EntityRepository
             'locale' => $request->getLocale(),
         ];
 
-        $results = $this->createQueryBuilder('a')->select('a.id, a.name, a.slug, a.content, a.metaDescription, a.keywords, a.metaTitle, a.status, a.viewed, a.stared, a.dateAdded, a.dateUpdated, ta.locale, ta.name as translatedName, ta.content as translatedContent')
-                 ->leftJoin('Webkul\UVDesk\SupportCenterBundle\Entity\TranslatedArticle','ta','WITH', 'ta.article = a.id')
-                 ->andWhere('ta.locale = :locale OR ta.locale IS NULL')
-                 ->andwhere('a.name LIKE :name OR a.content LIKE :name OR ta.name LIKE :name OR ta.content LIKE :name')
+        $results = $this->createQueryBuilder('a')->select('a.id, a.name, a.slug, a.content, a.metaDescription, a.keywords, a.metaTitle, a.status, a.viewed, a.stared, a.dateAdded, a.dateUpdated')
+                 ->andwhere('a.name LIKE :name OR a.content LIKE :name')
                  ->andwhere('a.status = :status')
                  ->orderBy((!empty($sort)) ? 'a.' . $sort : 'a.id', (!empty($direction)) ? $direction : Criteria::DESC)
                  ->setParameters($params)
@@ -607,26 +599,6 @@ class Article extends EntityRepository
         $articles = $qb->getQuery()->getArrayResult();
 
         return $articles;
-    }
-
-    /**
-    * @param Webkul\UserBundle\Entity\Company
-    * @param String locale
-    * @return $popular article collection with translatedName and translatedContent
-    **/
-    public function getPopularTranslatedArticles($locale)
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder()
-                ->select('a.id,a.name, a.slug, a.content, a.keywords, a.metaTitle, a.status, a.viewed, a.stared, a.dateAdded, a.dateUpdated')
-                ->from($this->getEntityName(), 'a')
-                ->andwhere('a.status = :status')
-                ->setParameter('status', 1)
-                ->addOrderBy('a.viewed', Criteria::DESC)
-                ->setMaxResults(10);
-       
-
-        $results = $qb->getQuery()->getArrayResult();
-        return $results;
     }
 
     public function getArticleFeedbacks($article)

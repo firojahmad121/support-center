@@ -1,52 +1,16 @@
 {% extends "@UVDeskCore//Templates//layout.html.twig" %}
 
-{% block title %} 
-    {% if folder.id %}
-		{{ 'Edit Folder'|trans }}
-	{% else %}
-		{{ 'Add Folder'|trans }}
-	{% endif %}
-{% endblock %}
+{% block title %}{{ 'Add Folder'|trans }}{% endblock %}
 
 {% block pageContent %}
 	<div class="uv-inner-section">
-		{# {{ include('SupportCenterBundle:Front:solutionLeftSidebar.html') }} #}
-        {# app/Resources/views/form/leftsiderbar.html.twig #}
-        <div class="uv-aside" {% if app.request.cookies and app.request.cookies.get('uv-asideView') %}style="display: none;"{% endif %}>
-            {% set sidebarLinks = uvdesk_service.getLeftSidebarRoutes() %}
-            {% if sidebarLinks%}
-                <div class="uv-aside-head">
-                    <div class="uv-aside-title">
-                        <h6>{{ sidebarLinks.title }}</h6>
-                    </div>
-                    <div class="uv-aside-back">
-                        <span onclick="history.length > 1 ? history.go(-1) : window.location = '{{ path("helpdesk_member_dashboard") }}';"> {{ 'Back'|trans }}</span>
-                    </div>
-                </div>
-
-                <div class="uv-aside-nav">
-                    <ul>
-                        {% for item in sidebarLinks.items %}
-                            <li>
-                                <a class="{{ item.class }}" {{ item.link ? 'href='~item.link : false }} {% if item.attr is defined %}{{item.attr}}{% endif %}>{{ item.title|raw }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-        </div>
+        {# Agent Panel Sidebar #}
+        {{ include('@UVDeskCore/Templates/panel-sidebar.html.twig') }}
+		
 		<div class="uv-view {% if app.request.cookies and app.request.cookies.get('uv-asideView') %}uv-aside-view{% endif %}">
-			<h1>
-				{% if folder.id %}
-					{{ 'Edit Folder'|trans }}
-				{% else %}
-					{{ 'Add Folder'|trans }}
-				{% endif %}
-			</h1>
+			<h1>{{ 'Add Folder'|trans }}</h1>
 			
-			<!--Form-->
 			<form method="post" action="" id="entity-form" enctype="multipart/form-data">
-				<!-- Field -->
 				<div class="uv-element-block">
 					<label class="uv-field-label">{{ 'Name'|trans }}</label>
 					<div class="uv-field-block">
@@ -54,9 +18,7 @@
 					</div>
 					<span class="uv-field-info">{{ 'Folder Name is shown upfront at Knowledge Base'|trans }}</span>
 				</div>
-				<!-- //Field -->
 
-				<!-- Field -->
 				<div class="uv-element-block">
 					<label class="uv-field-label">{{ 'Description'|trans }}</label>
 					<div class="uv-field-block">
@@ -64,9 +26,7 @@
 					</div>
 					<span class="uv-field-info">{{ 'A small text about the folder helps user to navigate more easily'|trans }}</span>
 				</div>
-				<!-- //Field -->
 
-				<!-- Field -->
 				<div class="uv-element-block">
 					<label class="uv-field-label">{{ 'Status'|trans }}</label>
 					<div class="uv-field-block">
@@ -77,7 +37,6 @@
 					</div>
 					<span class="uv-field-info">{{ 'Choose appropriate status'|trans }}</span>
 				</div>
-				<!-- //Field -->
 
 				{# <div class="uv-element-block uv-no-error-success-icon">
 					<label class="uv-field-label">{{ 'Folder Image'|trans }}</label>
@@ -97,16 +56,15 @@
 					<span class="uv-field-info">{{ 'An image is worth a thousands words and makes folder more accessible'|trans }}</span>
 				</div> #}
 
-				<!--CTA-->
 				<input class="uv-btn" href="#" value="{{ 'Save Changes'|trans }}" type="submit">
-				<!--//CTA-->
 			</form>
-			<!--//Form-->
 		</div>
 	</div>
 {% endblock %}
+
 {% block footer %}
 	{{ parent() }}
+
 	<script type="text/javascript">
 		$(function () {
 			var EntityModel = Backbone.Model.extend({

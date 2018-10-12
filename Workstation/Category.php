@@ -1,6 +1,6 @@
 <?php
 
-namespace Webkul\UVDesk\SupportCenterBundle\Controller;
+namespace Webkul\UVDesk\SupportCenterBundle\Workstation;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,7 +59,7 @@ class Category extends Controller
                             ->getCategoriesCountBySolution($solution['id']);
         }
     // dump($solutions);die;
-        return $this->render('@UVDeskSupportCenter/BackSupport/Category/categoryList.html.twig', [
+        return $this->render('@UVDeskSupportCenter/Staff/Category/categoryList.html.twig', [
             'solutions' => $solutions
         ]);
     }
@@ -81,7 +81,7 @@ class Category extends Controller
                             ->getCategoriesCountBySolution($request->attributes->get('solution')),
             ];
             // dump($solution_category);die;
-            return $this->render('@UVDeskSupportCenter/BackSupport/Category/categoryListBySolution.html.twig',$solution_category);
+            return $this->render('@UVDeskSupportCenter/Staff/Category/categoryListBySolution.html.twig',$solution_category);
         }else
             $this->noResultFound();
     }
@@ -189,7 +189,7 @@ class Category extends Controller
                            ->getRepository('UVDeskSupportCenterBundle:Solutions')
                            ->getAllSolutions(null, $this->container, 'a.id, a.name');
 
-        return $this->render('@UVDeskSupportCenter/BackSupport/Category/categoryForm.html.twig', [
+        return $this->render('@UVDeskSupportCenter/Staff/Category/categoryForm.html.twig', [
                 'category' => $category,
                 'categorySolutions' => $categorySolutions,
                 'solutions' => $solutions,

@@ -58,15 +58,15 @@
 
         {% if websiteConfiguration %}
             {% block head %}
-                {% include "@UVDeskSupportCenter/Front/websiteSettings.html.twig" %}
+                {% include "@UVDeskSupportCenter/Knowledgebase/websiteSettings.html.twig" %}
             {% endblock %}
         {% endif %}
 
         {% if websiteConfiguration %}
             {% if uvdesk_service.isDarkSkin(websiteConfiguration.brandColor) %}
-                {% include '@UVDeskSupportCenter/Front/darkSkin.html.twig' %}
+                {% include '@UVDeskSupportCenter/Knowledgebase/darkSkin.html.twig' %}
             {% else %}
-                {% include '@UVDeskSupportCenter/Front/lightSkin.html.twig' %}
+                {% include '@UVDeskSupportCenter/Knowledgebase/lightSkin.html.twig' %}
             {% endif %}
         {% endif %}
     </head>

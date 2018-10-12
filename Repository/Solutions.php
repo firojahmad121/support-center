@@ -4,7 +4,8 @@ namespace Webkul\UVDesk\SupportCenterBundle\Repository;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
-class SolutionsRepository extends \Doctrine\ORM\EntityRepository
+
+class Solutions extends \Doctrine\ORM\EntityRepository
 {
     const LIMIT = 10;
 

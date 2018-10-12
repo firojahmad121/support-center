@@ -1,6 +1,6 @@
 <?php
 
-namespace Webkul\UVDesk\SupportCenterBundle\Controller;
+namespace Webkul\UVDesk\SupportCenterBundle\Workstation;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
@@ -32,7 +32,7 @@ class Article extends Controller
         }
   
 
-        return $this->render('@UVDeskSupportCenter/BackSupport/Articles/articleList.html.twig', [
+        return $this->render('@UVDeskSupportCenter/Staff/Articles/articleList.html.twig', [
             'solutions' => $solutions
         ]);
     }
@@ -46,7 +46,7 @@ class Article extends Controller
                             ->findCategoryById(['id' => $request->attributes->get('category')]);
 
         if($category){
-            return $this->render('@UVDeskSupportCenter/BackSupport/Articles/articleListByCategory.html.twig', [
+            return $this->render('@UVDeskSupportCenter/Staff/Articles/articleListByCategory.html.twig', [
                 'category' => $category,
                 'articleCount' => $this->getDoctrine()
                                         ->getRepository('UVDeskSupportCenterBundle:SolutionCategory')
@@ -71,7 +71,7 @@ class Article extends Controller
                             ->findSolutionById(['id' => $request->attributes->get('solution')]);
 
         if($solution){
-            return $this->render('@UVDeskSupportCenter/BackSupport/Articles/articleListBySolution.html.twig', [
+            return $this->render('@UVDeskSupportCenter/Staff/Articles/articleListBySolution.html.twig', [
                 'solution' => $solution,
                 'solutionArticleCount' => $this->getDoctrine()
                             ->getRepository('UVDeskSupportCenterBundle:Solutions')
@@ -128,27 +128,6 @@ class Article extends Controller
         return $response;
     }
 
-    public function translatedArticleHistoryXhr(Request $request)
-    {
-        $json = array();
-        $repository = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:TranslatedArticle');
-
-        $articleId = $request->attributes->get('id');      
-
-        $json = $repository->getAllTranslatedHistoryByArticle($articleId);
-        if($json) {
-            foreach($json as $key => $js) {
-                $json[$key]['dateAdded'] = [
-                    'format' => $this->container->get('user.service')->convertToTimezone($js['dateAdded']),
-                    'timestamp' => $this->container->get('user.service')->convertToDatetimeTimezoneTimestamp($js['dateAdded']),
-                ];
-            }
-        }
-
-        return new JsonResponse($json);
-    }
-
-
     public function articleRelatedXhr(Request $request)
     {
         $json = array();
@@ -202,23 +181,17 @@ class Article extends Controller
                             ->getRepository('UVDeskSupportCenterBundle:SolutionCategory')
                             ->getAllCategories(null, $this->container, 'a.id, a.name');
 
-        if($request->attributes->get('id')) {
-            $em = $this->getDoctrine()->getManager();
-            $translatedArticle = $em->getRepository('UVDeskSupportCenterBundle:TranslatedArticle')->getTranslatedArticleByArticle($article);
-
-
-            $article = [
+        if ($request->attributes->get('id')) {
+            return  $this->render('@UVDeskSupportCenter/Staff/Articles/articleForm.html.twig', [
                 'article' => $article,
                 'articleCategory' => $articleCategory,
                 'articleTags' => $articleTags,
                 'categories' => $categories,
                 'errors' => json_encode($errors),
-                'translatedArticles' => $translatedArticle
-            ];
-            return  $this->render('@UVDeskSupportCenter/BackSupport/Articles/articleForm.html.twig', $article);
+            ]);
         }
 
-        return $this->render('@UVDeskSupportCenter/BackSupport/Articles/articleAddForm.html.twig', [
+        return $this->render('@UVDeskSupportCenter/Staff/Articles/articleAddForm.html.twig', [
             'article' => $article,
         ]);
     }
@@ -274,38 +247,6 @@ class Article extends Controller
                                 
                                 $em->persist($article);
                                 $em->flush();
-                                foreach($this->get('uvdesk.service')->getLocales() as $localeCode => $locale ) {
-                                    if( isset($data[$localeCode]['name']) ) {
-                                        $transArticleData = $data[$localeCode];
-                                        $translateArticleRepo = $em->getRepository('UVDeskSupportCenterBundle:TranslatedArticle');
-                                        $transArticle = $translateArticleRepo->findOneBy(['article' => $article, 'locale' => $localeCode]);
-
-                                        if($data[$localeCode]['name']) {
-                                            if($transArticle) {
-                                                if($transArticleData['content'] !== $transArticle->getContent() ) {
-                                                    $this->updateTranslateContent($transArticle, $transArticleData['content']);
-                                                }
-                                                $transArticle->setDetails($transArticleData);
-
-                                                $em->persist($transArticle);
-                                                $em->flush();
-                                            } else {
-                                                $transArticle = new TranslatedArticle();
-                                                $transArticle->setLocale($localeCode);
-                                                $transArticle->setArticle($article);                                               
-                                                $transArticle->setDetails($transArticleData);
-
-                                                $em->persist($transArticle);
-                                                $em->flush();
-                                            }
-                                        } else {
-                                            if($transArticle) {
-                                                $em->remove($transArticle);
-                                                $em->flush();
-                                            }
-                                        }
-                                    }
-                                }
 
                                 $json['alertClass'] = 'success';
                                 $json['alertMessage'] = $this->get('translator')->trans('article.update.success');
@@ -344,30 +285,6 @@ class Article extends Controller
                         }else{
                             $json['alertClass'] = 'danger';
                             $json['alertMessage'] = 'Warning ! This is not a valid request' ;
-                        }
-
-                        break;
-                    case 'translateContentUpdate':
-                        $article = $this->getArticle(
-                            [
-                                'id' => $data['ids'][0],
-                            ]
-                        );
-
-                        if($article && isset($data['locale'])) {
-                            $translatedArticle = $em->getRepository('UVDeskSupportCenterBundle:TranslatedArticle')->findOneBy([
-                                'article' => $article,
-                                'locale' => $data['locale'],
-                            ]);
-
-                            if(trim($translatedArticle->getContent()) != trim($data['content']))
-                                $this->updateTranslateContent($translatedArticle, $data['content']);
-
-                            $json['alertClass'] = 'success';
-                            $json['alertMessage'] = $this->translate('Success ! Revision restored successfully.');
-                        } else {
-                            $json['alertClass'] = 'danger';
-                            $json['alertMessage'] = $this->translate('Warning ! This is not a valid request');
                         }
 
                         break;
@@ -521,22 +438,6 @@ class Article extends Controller
         }
 
         $em->persist($articleHistory);
-        $em->flush();
-    }
-
-    private function updateTranslateContent($transArticleBase, $content)
-    {
-        $em = $this->getDoctrine()->getManager();
-        //entry for translate Article History
-        $transArticleHistory = new TranslatedArticleHistory;
-        $transArticleHistory->setCompanyId($this->getCompany()->getId());
-        $transArticleHistory->setUserId($this->getUser()->getId());
-        $transArticleHistory->setTranslatedArticleId($transArticleBase->getId());
-        $transArticleHistory->setContent($transArticleBase->getContent());
-
-        $transArticleBase->setContent($this->get('uvdesk.service')->htmlfilter($content));
-        $em->persist($transArticleHistory);
-        $em->persist($transArticleBase);
         $em->flush();
     }
 

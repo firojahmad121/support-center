@@ -1,6 +1,6 @@
 <?php
 
-namespace Webkul\UVDesk\SupportCenterBundle\Controller;
+namespace Webkul\UVDesk\SupportCenterBundle\Workstation;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ class Branding extends Controller
         $em = $this->getDoctrine()->getManager();
         $settingType = $request->attributes->get('type');
         $userService = $this->container->get('user.service');
-        $website = $em->getRepository('UVDeskSupportCenterBundle:Website')->findOneBy(['code'=>"website_branding"]);
+        $website = $em->getRepository('UVDeskCoreBundle:Website')->findOneBy(['code'=>"website_branding"]);
         $configuration = $em->getRepository('UVDeskSupportCenterBundle:KnowledgebaseConfiguration')->findOneBy(['website' => $website->getId(), 'isActive' => 1]);
 
         if ($request->getMethod() == 'POST') {
@@ -123,7 +123,7 @@ class Branding extends Controller
             }
         }
         // dump($configuration);die;/
-        return $this->render('@UVDeskSupportCenter/BackSupport/branding.html.twig', [
+        return $this->render('@UVDeskSupportCenter/Staff/branding.html.twig', [
             'website' => $website,
             'type' => $settingType,
             'configuration' => $configuration,
@@ -135,7 +135,7 @@ class Branding extends Controller
     public function spam(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $website = $em->getRepository('UVDeskSupportCenterBundle:Website')->findOneBy(['code'=>"website_branding"]);
+        $website = $em->getRepository('UVDeskCoreBundle:Website')->findOneBy(['code'=>"website_branding"]);
         if(!$website) {
             // return not found
         }
@@ -154,7 +154,7 @@ class Branding extends Controller
             return $this->redirect($this->generateUrl('helpdesk_member_knowledgebase_spam'));
         }
         
-        return $this->render('@UVDeskSupportCenter/BackSupport/spam.html.twig', [
+        return $this->render('@UVDeskSupportCenter/Staff/spam.html.twig', [
             'whitelist'=>$configuration->getWhiteList(),
             'blacklist'=>$configuration->getBlackList(),
         ]);

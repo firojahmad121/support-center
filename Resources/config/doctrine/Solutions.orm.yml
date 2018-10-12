@@ -1,7 +1,7 @@
 Webkul\UVDesk\SupportCenterBundle\Entity\Solutions:
     type: entity
     table: null
-    repositoryClass: Webkul\UVDesk\SupportCenterBundle\Repository\SolutionsRepository
+    repositoryClass: Webkul\UVDesk\SupportCenterBundle\Repository\Solutions
     id:
         id:
             type: integer

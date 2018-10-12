@@ -37,7 +37,7 @@ class BrandingFixtures extends Fixture
 
     public function load(ObjectManager $entityManager)
     {
-        $website = $entityManager->getRepository('UVDeskSupportCenterBundle:Website')->findOneByCode('website_branding');
+        $website = $entityManager->getRepository('UVDeskCoreBundle:Website')->findOneByCode('website_branding');
         
         if (empty($website)) {
             $website = new Website();

@@ -1,14 +1,14 @@
 Webkul\UVDesk\SupportCenterBundle\Entity\KnowledgebaseConfiguration:
     type: entity
+    table: null
+    repositoryClass: null
     manyToOne:
         website:
-            targetEntity: Website
+            targetEntity: Webkul\UVDesk\CoreBundle\Entity\Website
             inversedBy: website
             joinColumn:
                 name: website
                 referencedColumnName: id
-    table: null
-    repositoryClass: null
     id:
         id:
             type: integer

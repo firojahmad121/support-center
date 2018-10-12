@@ -1,6 +1,6 @@
 <?php
 
-namespace Webkul\UVDesk\SupportCenterBundle\Controller;
+namespace Webkul\UVDesk\SupportCenterBundle\Knowledgebase;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,7 +24,7 @@ class Website extends Controller
     protected function isWebsiteActive()
     {
        $em = $this->getDoctrine()->getManager();
-       $frontWebsite = $em->getRepository('UVDeskSupportCenterBundle:Website')->findOneBy(['code' => 'customer']);
+       $frontWebsite = $em->getRepository('UVDeskCoreBundle:Website')->findOneBy(['code' => 'customer']);
 
        return $frontWebsite ? $frontWebsite->getIsActive() : false;
     }
@@ -95,7 +95,7 @@ class Website extends Controller
         $twigResponse['solutions']['results'] = $newResult;
         $twigResponse['solutions']['categories'] = $categoryCollection;
 
-        return $this->render('@UVDeskSupportCenter//Front//index.html.twig', $twigResponse);
+        return $this->render('@UVDeskSupportCenter//Knowledgebase//index.html.twig', $twigResponse);
     }
 
     /**
@@ -110,7 +110,7 @@ class Website extends Controller
         $solutionRepository = $this->getDoctrine()->getRepository('WebkulSupportCenterBundle:Solutions');
         $categoryCollection = $solutionRepository->getAllCategories($this->getCompany()->getId(), null, 0);
 
-        return $this->render('@UVDeskSupportCenterBundle/Front/categoryListing.html.twig', [
+        return $this->render('@UVDeskSupportCenterBundle/Knowledgebase/categoryListing.html.twig', [
             'categories' => $categoryCollection,
             'categoryCount' => count($categoryCollection),
         ]);
@@ -155,7 +155,7 @@ class Website extends Controller
             ];
         }
 
-        return $this->render('@UVDeskSupportCenter//Front//folder.html.twig',
+        return $this->render('@UVDeskSupportCenter//Knowledgebase//folder.html.twig',
                         array(
                                 'folder' => $solution,
                                 'categoryCount' => $this->getDoctrine()
@@ -218,7 +218,7 @@ class Website extends Controller
             'breadcrumbs' => $breadcrumbs,
         ];
         // dump($article_data);die;
-        return $this->render('@UVDeskSupportCenter/Front/folderArticle.html.twig', $article_data);
+        return $this->render('@UVDeskSupportCenter/Knowledgebase/folderArticle.html.twig', $article_data);
     }
 
     public function Category(Request $request)
@@ -268,7 +268,7 @@ class Website extends Controller
             'breadcrumbs' => $breadcrumbs
         );
         // dump($category_data);die;
-        return $this->render('@UVDeskSupportCenter/Front/category.html.twig',$category_data);
+        return $this->render('@UVDeskSupportCenter/Knowledgebase/category.html.twig',$category_data);
         }
    
     public function Article(Request $request)
@@ -296,7 +296,6 @@ class Website extends Controller
             $this->noResultFound();
         }
         $article->setViewed((int) $article->getViewed() + 1);
-        $translatedArticle = $entityManager->getRepository('UVDeskSupportCenterBundle:TranslatedArticle')->findOneBy(['article' => $article, 'locale' => $request->getLocale()]);
 
         // Log article view
         $articleViewLog = new ArticleViewLog();
@@ -325,17 +324,16 @@ class Website extends Controller
             'article' => $article,
             'breadcrumbs' => [
                 ['label' => $this->get('translator')->trans('Support Center'), 'url' => $this->generateUrl('helpdesk_knowledgebase')],
-                ['label' => $translatedArticle ? $translatedArticle->getName() : $article->getName(), 'url' => '#']
+                ['label' => $article->getName(), 'url' => '#']
             ],
             'popArticles' => $this->get('uvdesk.service')->getPopularArticles(),
             'dateAdded' => $this->get('user.service')->convertToTimezone($article->getDateAdded()),
             'articleTags' => $articleRepository->getTagsByArticle($article->getId()),
             'articleAuthor' => $articleRepository->getArticleAuthorDetails($article->getId()),
-            'translatedArticle' => $translatedArticle,
             'relatedArticles' => $articleRepository->getAllRelatedyByArticle(['locale' => $request->getLocale(), 'articleId' => $article->getId()], [1]),
         ];
 
-        return $this->render('@UVDeskSupportCenter/Front/article.html.twig',$article_details);
+        return $this->render('@UVDeskSupportCenter/Knowledgebase/article.html.twig',$article_details);
     }
     public function Search(Request $request)
     {
@@ -351,7 +349,7 @@ class Website extends Controller
         // Index search query in background for analytics
         // $this->get('uvdesk.service')->indexSearchQuery($request->get('_locale'));
 
-        return $this->render('@UVDeskSupportCenter/Front/search.html.twig', [
+        return $this->render('@UVDeskSupportCenter/Knowledgebase/search.html.twig', [
             'search' => $searchQuery,
             'articles' => $articleCollection,
             // 'breadcrumbs' => [
@@ -363,7 +361,6 @@ class Website extends Controller
 
     public function Tag(Request $request)
     {
-       
         $this->isWebsiteActive();
 
         $tagQuery = $request->attributes->get('tag');
@@ -374,7 +371,7 @@ class Website extends Controller
         $tagLabel = $request->attributes->get('name');
         $articleCollection = $this->getDoctrine()->getRepository('WebkulSupportCenterBundle:Article')->getArticleByTags($this->getCompany()->getId(), [$tagLabel]);
 
-        return $this->render('WebkulSupportCenterBundle:Front:search.html.twig', [
+        return $this->render('WebkulSupportCenterBundle:Knowledgebase:search.html.twig', [
             'articles' => $articleCollection,
             'search' => $tagLabel,
             'breadcrumbs' => [

@@ -1,6 +1,6 @@
 <?php
 
-namespace Webkul\UVDesk\SupportCenterBundle\Controller;
+namespace Webkul\UVDesk\SupportCenterBundle\Knowledgebase;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -63,7 +63,7 @@ Class Customer extends Controller
         $error = $session->get(Security::AUTHENTICATION_ERROR);
         $session->remove(Security::AUTHENTICATION_ERROR);
 
-        return $this->render('@UVDeskSupportCenter/Front/login.html.twig', [
+        return $this->render('@UVDeskSupportCenter/Knowledgebase/login.html.twig', [
                 'searchDisable' => true,
                 'last_username' => $session->get(Security::LAST_USERNAME),
                 'error'         => $error,
