@@ -61,7 +61,7 @@
                     {% if websiteConfiguration is defined and websiteConfiguration.logoThumbnail is defined %}
                         <img src="{{ websiteConfiguration.logoThumbnail }}" alt="{{websiteConfiguration.name}}" />
                     {% else %}
-                            <img src="{{ asset('../bundles/uvdesksupportcenter/images/2b10167_uvdesk-gray-logo_1.svg') }}" alt="UVdesk" />
+                            <img src="{{ asset('../bundles/uvdeskcore/images/uvdesk-gray-logo.svg') }}" alt="UVdesk" />
                     {% endif %}
                 </a>
             </div>
@@ -70,7 +70,7 @@
                     <span style="position: relative" class="uv-profile-block">
                         <div class="uv-profile-wrapper uv-dropdown-other">
                             <div class="uv-profile-avatar">
-                                <img src="{{ currentUser.smallThumbnail ?: customerAsset }}">
+                                <img src="{{ currentUser.smallThumbnail ?: asset(default_customer_image_path) }}">
                             </div>
                             <div class="uv-profile-howdy">
                                 <span>{{ 'Howdy!'|trans }}</span>

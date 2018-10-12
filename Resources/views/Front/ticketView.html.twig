@@ -270,7 +270,7 @@
                                     {% if customer.smallThumbnail %}
                                         <img src="{{ customer.smallThumbnail }}">
                                     {% else %}
-                                        <img src="{{ customerAsset }}">
+                                        <img src="{{ asset(default_customer_image_path) }}">
                                     {% endif %}
                                 </div>
                                 <div class="uv-ticket-main-rt">
@@ -341,7 +341,7 @@
                             {% if currentUser.smallThumbnail %}
                                 <img src="{{ currentUser.smallThumbnail }}" />
                             {% else %}
-                                <img src="{{ customerAsset }}" />
+                                <img src="{{ asset(default_customer_image_path) }}" />
                             {% endif %}
                         </div>
                         <div class="uv-ticket-main-rt">
@@ -509,7 +509,7 @@
             <% if(user && user.smallThumbnail != null) { %>
                 <img src="<%= user.smallThumbnail %>" />
             <% } else { %>
-                <img src="<% if(userType == 'agent') { %> {{ agentAsset }} <% } else { %> {{ customerAsset }} <% } %>" />
+                <img src="<% if(userType == 'agent') { %> {{ asset(default_agent_image_path) }} <% } else { %> {{ asset(default_customer_image_path) }} <% } %>" />
             <% } %>
         </div>
         <div class="uv-ticket-main-rt">

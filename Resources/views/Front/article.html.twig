@@ -12,10 +12,6 @@
 {% block metaKeywords %}{% if translatedArticle %}{{ translatedArticle.keywords ? : uvdesk_service.createConentToKeywords(translatedArticle.content) }}{% else %}{{ article.keywords ? : uvdesk_service.createConentToKeywords(article.content) }}{% endif %}{% endblock %}
 
 {% block body %}
-	{# {% block image '@WebkulDefaultBundle/Resources/public/images/uv-avatar-ironman.png' %}
-		{% set customerAsset = asset_url %}
-	{% endblock %} #}
-
 	<div class="uv-paper-article">
 		<div class="uv-paper-section">
 			<section>
@@ -27,7 +23,7 @@
 							{% if articleAuthor.user.profileImage is defined and articleAuthor.user.profileImage %}
 								<img src="{{articleAuthor.user.profileImage}}">
 							{% else %}
-								<img src="{{customerAsset}}">
+								<img src="{{ asset(default_customer_image_path) }}">
 							{% endif %}
 						</div>
 						<div class="uv-author-info">

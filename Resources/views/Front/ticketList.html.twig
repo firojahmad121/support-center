@@ -150,7 +150,7 @@
                     <% if(agent.smallThumbnail != null) { %>
                         <img class="uv-table-agent" src="<%- agent.smallThumbnail %>" alt=""/>
                     <% } else { %>
-                        <img class="uv-table-agent" src="{{ agentAsset }}" alt=""/>
+                        <img class="uv-table-agent" src="{{ asset(default_agent_image_path) }}" alt=""/>
                     <% } %>
                     <%- agent.name %>
                 <% } else { %>
