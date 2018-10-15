@@ -55,10 +55,7 @@ class Website extends Controller
         return true;
     }
 
-	/**
-	 * View Solution Lists
-	 */
-    public function SolutionList(Request $request)
+    public function home(Request $request)
     {
         $this->isWebsiteActive();
 
@@ -98,10 +95,7 @@ class Website extends Controller
         return $this->render('@UVDeskSupportCenter//Knowledgebase//index.html.twig', $twigResponse);
     }
 
-    /**
-     * View Category List
-    */
-    public function CategoryListing(Request $request)
+    public function listCategories(Request $request)
     {
         // dump("CategoryListingAction called");
         // die;
@@ -116,10 +110,7 @@ class Website extends Controller
         ]);
     }
 
-    /**
-     * View Solution with Category
-     */
-    public function Solution(Request $request)
+    public function viewFolder(Request $request)
     {
         $this->isWebsiteActive();
 
@@ -171,10 +162,7 @@ class Website extends Controller
                     );
     }
 
-    /**
-     * View Solution with Article
-     */
-    public function SolutionArticle(Request $request)
+    public function viewFolderArticle(Request $request)
     {
         $this->isWebsiteActive();
 
@@ -221,7 +209,7 @@ class Website extends Controller
         return $this->render('@UVDeskSupportCenter/Knowledgebase/folderArticle.html.twig', $article_data);
     }
 
-    public function Category(Request $request)
+    public function viewCategory(Request $request)
     {
         $this->isWebsiteActive();
 
@@ -269,9 +257,9 @@ class Website extends Controller
         );
         // dump($category_data);die;
         return $this->render('@UVDeskSupportCenter/Knowledgebase/category.html.twig',$category_data);
-        }
+    }
    
-    public function Article(Request $request)
+    public function viewArticle(Request $request)
     {
        
         $this->isWebsiteActive();
@@ -335,7 +323,8 @@ class Website extends Controller
 
         return $this->render('@UVDeskSupportCenter/Knowledgebase/article.html.twig',$article_details);
     }
-    public function Search(Request $request)
+
+    public function searchKnowledgebase(Request $request)
     {
         $this->isWebsiteActive();
 
@@ -359,7 +348,7 @@ class Website extends Controller
         ]);
     }
 
-    public function Tag(Request $request)
+    public function viewTaggedResources(Request $request)
     {
         $this->isWebsiteActive();
 
@@ -381,7 +370,7 @@ class Website extends Controller
         ]);
     }
 
-    public function RateArticle($articleId, Request $request)
+    public function rateArticle($articleId, Request $request)
     {
         dump("RateArticleAction called");
         die;
