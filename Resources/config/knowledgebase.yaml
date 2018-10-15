@@ -1,69 +1,52 @@
-helpdesk_knowledgebase:
-    path:     /
-    controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Website::SolutionList
+helpdesk_member_knowledgebase_article_collection:
+    path:     /articles
+    controller: Webkul\UVDesk\SupportCenterBundle\Workstation\Article::ArticleList
 
-helpdesk_knowledgebase_header:
-    path:     /header/{searchDisable}
-    controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Customer::header
-    defaults: { searchDisable: false }
-
-default_exception:
-    path:     /exception
-    controller: Webkul\UVDesk\SupportCenterBundle\Controller\Default::exceptionDefault
-
-# Knowledgebase Folders
-helpdesk_knowledgebase_folder:
-    path:     /folder/{solution}
-    controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Website::Solution
-    defaults: { solution: 0 }
-
-helpdesk_knowledgebase_folder_article_collection:
-    path:     /folder/{solution}/articles
-    controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Website::SolutionArticle
-    defaults: { solution: 0 }
-
-# Knowledgebase Categories
-helpdesk_knowledgebase_category_collection:
-    path:     /categories
-    controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Website::CategoryListing
-
-helpdesk_knowledgebase_category:
-    path:     /category/{category}
-    controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Website::Category
+helpdesk_member_knowledgebase_category_articles_collection:
+    path:     /{category}/articles
+    controller: Webkul\UVDesk\SupportCenterBundle\Workstation\Article::ArticleListByCategory
     defaults: { category: 0 }
 
-# Knowledgebase Articles
-helpdesk_knowledgebase_read_article:
-    path:     /article/{article}
-    controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Website::Article
-    defaults: { article: 0 }
+helpdesk_member_knowledgebase_folder_articles_collection:
+    path:     /solution/{solution}/articles
+    controller: Webkul\UVDesk\SupportCenterBundle\Workstation\Article::ArticleListBySolution
+    defaults: { solution: 0 }
 
-helpdesk_knowledgebase_read_slug_article:
-    path:     /blog/{slug}
-    controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Website::Article
-    defaults: { slug: '' }
+helpdesk_member_knowledgebase_article_collection_xhr:
+    path:     /articles/ajax
+    controller: Webkul\UVDesk\SupportCenterBundle\Workstation\Article::ArticleListXhr
 
-helpdesk_knowledgebase_rate_article:
-    path:     /rating/{articleId}
-    controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Website::RateArticle
+# helpdesk_member_knowledgebase_category_articles_collection_xhr:
+#     path:     /{category}/articles/ajax
+#     controller: Webkul\UVDesk\SupportCenterBundle\Workstation\Article::ArticleListXhr
+#     defaults: { category: 0 }
 
-# webkul_support_center_Website_solution_article:
-#     path:     /folder/{solution}/article/{article}
-#     controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Website::Article
-#     defaults: { solution: 0, category: 0, article: 0 }
+helpdesk_member_knowledgebase_folder_articles_collection_xhr:
+    path:     /solution/{solution}/articles/ajax
+    controller: Webkul\UVDesk\SupportCenterBundle\Workstation\Article::ArticleListXhr
+    defaults: { solution: 0 }
 
-# webkul_support_center_Website_solution_article_history:
-#     path:     /folder/{solution}/article/{article}/{history}
-#     controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Website::Article
-#     defaults: { solution: 0, category: 0, article: 0, history: 0 }
+helpdesk_member_knowledgebase_create_article:
+    path:     /article/add
+    controller: Webkul\UVDesk\SupportCenterBundle\Workstation\Article::Article
+    defaults: { panelId: 'knowledgebase' }
 
-# Knowledgebase Search
-helpdesk_knowledgebase_search:
-    path:     /search/{s}
-    controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Website::Search
-    defaults: { s: '' }
+helpdesk_member_knowledgebase_update_article:
+    path:     /article/edit/{id}
+    controller: Webkul\UVDesk\SupportCenterBundle\Workstation\Article::Article
+    defaults: { panelId: 'knowledgebase', id: 0 }
 
-helpdesk_knowledgebase_tag:
-    path:     /tag/{tag}/{name}
-    controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Website::Tag
-    defaults: { tag: '', name: '' }
+helpdesk_member_knowledgebase_update_article_xhr:
+    path:     /article/ajax/{id}
+    controller: Webkul\UVDesk\SupportCenterBundle\Workstation\Article::ArticleXhr
+    defaults: { id: 0 }
+
+helpdesk_member_knowledgebase_revision_article:
+    path:     /articleHistory/{id}
+    controller: Webkul\UVDesk\SupportCenterBundle\Workstation\Article::articleHistoryXhr
+    defaults: { id: 0 }
+
+helpdesk_member_knowledgebase_related_article_xhr:
+    path:     /articleRelated/{id}
+    controller: Webkul\UVDesk\SupportCenterBundle\Workstation\Article::articleRelatedXhr
+    defaults: { id: 0 }
