@@ -1,7 +1,8 @@
 {% extends "@UVDeskSupportCenter/Templates/layout.html.twig" %}
-{% block title %}{% trans %}Customer Login{% endtrans %}{% endblock %}
-{% block ogtitle %}{% trans %}Customer Login{% endtrans %}{% endblock %}
-{% block twtitle %}{% trans %}Customer Login{% endtrans %}{% endblock %}
+
+{% block title %}Customer Login{% endblock %}
+{% block ogtitle %}Customer Login{% endblock %}
+{% block twtitle %}Customer Login{% endblock %}
 {% block metaDescription %}{% trans %}customer.login.metaDescription{% endtrans %}{% endblock %}
 {% block metaKeywords %}{% trans %}customer.login.metaKeywords{% endtrans %}{% endblock %}
 
@@ -10,122 +11,27 @@
         <div class="uv-paper-section">
             <form action="{{ path('helpdesk_customer_login') }}" method="post" id="loginForm">
                 <section>
-                    {% if websiteDetails is defined and websiteDetails.name is defined %}
-                        <h1>{{ 'Sign In to %company%'|trans({ '%company%': '<span class="uv-brand">' ~ websiteDetails.name|e ~ '</span>' })|raw }}</h1>
-                    {% else %}
-                        <h1>{{ 'Sign In to <span class="uv-brand">UVdesk</span>'|trans|raw }}</h1>
-                    {% endif %}
+                    <h1>{{ 'Sign In to %company%'|trans({ '%company%': '<span class="uv-brand">' ~ websiteDetails.name|e ~ '</span>' })|raw }}</h1>
                     <div class="uv-element-block">
-                        <p>{{ 'If you have ever mailed or contacted us previously, your account would have been created already. %forgetPasswordLink%'|trans({'%forgetPasswordLink%': '<a href="' ~ path('helpdesk_customer_forgot_password') ~ '">' ~ 'Recover your password and Sign In'|trans ~ '</a>'})|raw }}</p>
+                        <p>If you've ever contacted our support previously, your account would have already been created.</p>
                     </div>
+
                     <div class="uv-form">
-                        {% set externalLoginFlag = false %}
-                        {# {% set companySocialLoginConfiguration = application_service.getCompanySocialLoginConfiguration() %}
-                        {% set companySSOProviderCollection = application_service.getCompanySSOProviderCollection() %} #}
-
-                        {# {% if companySocialLoginConfiguration is not empty %}
-                            <!-- Facebook -->
-                            {% if companySocialLoginConfiguration.facebook == true %}
-                                {% set externalLoginFlag = true %}
-                                <div class="uv-element-block">
-                                    <a href="{{ path('webkul_support_center_front_social_login', {'applicationRouteName': 'facebook'}) }}" class="uv-btn-social uv-btn-facebook"><span class="uv-sl-facebook"></span>{{ 'Continue with Facebook'|trans }}</a>
-                                </div>
-                            {% endif %}
-
-                            <!-- Twitter -->
-                            {% if companySocialLoginConfiguration.twitter == true %}
-                                {% set externalLoginFlag = true %}
-                                <div class="uv-element-block">
-                                    <a href="{{ path('webkul_support_center_front_social_login', {'applicationRouteName': 'twitter'}) }}" class="uv-btn-social uv-btn-twitter"><span class="uv-sl-twitter"></span>{{ 'Continue with Twitter'|trans }}</a>
-                                </div>
-                            {% endif %}
-
-                            <!-- LinkedIn -->
-                            {% if companySocialLoginConfiguration.linkedIn == true %}
-                                {% set externalLoginFlag = true %}
-                                <div class="uv-element-block">
-                                    <a href="{{ path('webkul_support_center_front_linkedin_login') }}" class="uv-btn-social uv-btn-linkedin"><span class="uv-sl-linkedin"></span>{{ 'Continue with LinkedIn'|trans }}</a>
-                                </div>
-                            {% endif %}
-
-                            <!-- Google -->
-                            {% if companySocialLoginConfiguration.googlePlus == true %}
-                                {% set externalLoginFlag = true %}
-                                <div class="uv-element-block">
-                                    <a href="{{ path('webkul_support_center_front_google_login') }}" class="uv-btn-social uv-btn-google"><span class="uv-sl-google"></span>{{ 'Continue with Google'|trans }}</a>
-                                </div>
-                            {% endif %}
-
-                            <!-- Youtube -->
-                            {% if companySocialLoginConfiguration.youtube == true %}
-                                {% set externalLoginFlag = true %}
-                                <div class="uv-element-block">
-                                    <a href="{{ path('webkul_support_center_front_google_login') ~ '?extended-login=true' }}" class="uv-btn-social uv-btn-google"><span class="uv-sl-google"></span>{{ 'Continue with Youtube'|trans }}</a>
-                                </div>
-                            {% endif %}
-                        {% endif %} #}
-
-                        {# {% if companySSOProviderCollection is not empty %}
-                            {% set externalLoginFlag = true %}
-
-                            {% for companySSOProvider in companySSOProviderCollection %}
-                                {% if companySSOProvider.provider == 'Magento 1' %}
-                                    <!-- Magento 1 -->
-                                    <div class="uv-element-block">
-                                        <a href="{{ path('webkul_support_center_front_social_login', {'applicationRouteName': 'magento-sso'}) }}" class="uv-btn-social uv-btn-magento"><span class="uv-sl-magento"></span>{{ 'Continue with'|trans }} {{ companySSOProvider.title }}</a>
-                                    </div>
-                                {% elseif companySSOProvider.provider == 'Magento 2' %}
-                                    <!-- Magento 2 -->
-                                    <div class="uv-element-block">
-                                        <a href="{{ path('webkul_support_center_front_social_login', {'applicationRouteName': 'magento-2-sso'}) }}" class="uv-btn-social uv-btn-magento"><span class="uv-sl-magento"></span>{{ 'Continue with'|trans }} {{ companySSOProvider.title }}</a>
-                                    </div>
-                                {% elseif companySSOProvider.provider == 'Wordpress' %}
-                                    <!-- Wordpress -->
-                                    <div class="uv-element-block">
-                                        <a href="{{ path('webkul_support_center_front_social_login', {'applicationRouteName': 'wordpress-sso'}) }}" class="uv-btn-social uv-btn-wordpress"><span class="uv-sl-wordpress"></span>{{ 'Continue with'|trans }} {{ companySSOProvider.title }}</a>
-                                    </div>
-                                {% elseif companySSOProvider.provider == 'Opencart' %}
-                                    <!-- Opencart -->
-                                    <div class="uv-element-block">
-                                        <a href="{{ path('webkul_support_center_front_social_login', {'applicationRouteName': 'opencart-sso'}) }}" class="uv-btn-social uv-btn-opencart"><span class="uv-sl-opencart"></span>{{ 'Continue with'|trans }} {{ companySSOProvider.title }}</a>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %} #}
-
-                        {% if externalLoginFlag is defined and externalLoginFlag == true %}
-                            <div class="uv-element-block">
-                                <div class="uv-or-wrapper">
-                                    <span class="uv-or-text">{{ 'Or'|trans }}</span>
-                                </div>
-                            </div>
-                        {% endif %}
-
                         <div class="uv-element-block">
-                            <label class="uv-field-label">{{ 'Email'|trans }}</label>
+                            <label class="uv-field-label">Email</label>
                             <div class="uv-field-block">
                                 <input class="uv-field" type="email" name="_username">
                             </div>
                         </div>
 
                         <div class="uv-element-block">
-                            <label class="uv-field-label">{{ 'Password'|trans }}</label>
+                            <label class="uv-field-label">Password</label>
                             <div class="uv-field-block uv-relative">
-                                <a class="uv-forgot-pwd" href="{{ path('helpdesk_customer_forgot_password') }}" tabIndex="-1">{{ 'Forgot Password?'|trans }}</a>
+                                <a class="uv-forgot-pwd" href="{{ path('helpdesk_customer_forgot_password') }}" tabIndex="-1">Forgot Password?</a>
                                 <input class="uv-field" type="password" name="_password">
                             </div>
                         </div>
-                        <button class="uv-btn">{{ 'Sign In'|trans }}</button>
-                    </div>
-
-                    <div class="uv-element-block uv-no-margin-bottom">
-                        <div class="uv-agent-wrapper">
-                            {% if websiteDetails is defined and websiteDetails.name is defined %}
-                                <a href="{{ path('helpdesk_member_handle_login') }}">{{ 'I am %company% Agent'|trans({'%company%': websiteDetails.name }) }}</a>
-                            {% else %}
-                                <a href="{{ path('helpdesk_member_handle_login') }}">{{ 'I am UVdesk Agent'|trans }}</a>
-                            {% endif %}
-                        </div>
+                        <button class="uv-btn">Sign In</button>
                     </div>
                 </section>
             </form>

@@ -362,12 +362,12 @@ a:active {
   font-size: 15px;
   color: #333333;
   margin: 0px;
-  background-image: url(../uvdesksupportcenter/images/arrow-down.svg);
+  background-image: url(../uvdeskcore/images/arrow-down.svg);
   background-repeat: no-repeat;
   background-position: right 10px center;
 }
 .uv-date-picker {
-  background-image: url("../uvdesksupportcenter/images/icon-date-picker.svg");
+  background-image: url("../uvdeskcore/images/icon-date-picker.svg");
   background-position: right 10px center;
   background-repeat: no-repeat;
   width: 200px;
@@ -414,7 +414,7 @@ input[type="radio"][disabled="disabled"] + .uv-radio-view {
 .uv-checkbox input[type="checkbox"] + .uv-checkbox-view {
   width: 20px;
   height: 20px;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-controls.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-controls.svg");
   background-position: 0px 0px;
   cursor: pointer;
   position: absolute;
@@ -422,7 +422,7 @@ input[type="radio"][disabled="disabled"] + .uv-radio-view {
   left: 0;
 }
 .uv-checkbox input[type="checkbox"]:checked + .uv-checkbox-view {
-  background-image: url("../uvdesksupportcenter/images/uvdesk-controls.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-controls.svg");
   background-position: 0px -21px;
 }
 .uv-checkbox-label,
@@ -451,7 +451,7 @@ input[type="radio"][disabled="disabled"] + .uv-radio-view {
 .uv-radio input[type="radio"] + .uv-radio-view {
   width: 20px;
   height: 20px;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-controls.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-controls.svg");
   background-position: -21px 0px;
   cursor: pointer;
   position: absolute;
@@ -459,7 +459,7 @@ input[type="radio"][disabled="disabled"] + .uv-radio-view {
   left: 0;
 }
 .uv-radio input[type="radio"]:checked + .uv-radio-view {
-  background-image: url("../uvdesksupportcenter/images/uvdesk-controls.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-controls.svg");
   background-position: -21px -21px;
 }
 .uv-select {
@@ -478,7 +478,7 @@ input[type="radio"][disabled="disabled"] + .uv-radio-view {
   font-size: 15px;
   color: #333333;
   margin: 10px 0px;
-  background-image: url('../uvdesksupportcenter/images/arrow-down.svg');
+  background-image: url('../uvdeskcore/images/arrow-down.svg');
   background-repeat: no-repeat;
   background-position: right 10px center;
 }
@@ -543,7 +543,7 @@ input[type="radio"][disabled="disabled"] + .uv-radio-view {
 .uv-file-label:before {
   width: 18px;
   height: 20px;
-  background-image: url("../uvdesksupportcenter/images/icon-attachment.svg");
+  background-image: url("../uvdeskcore/images/icon-attachment.svg");
   content: "";
   display: inline-block;
   vertical-align: middle;
@@ -557,7 +557,7 @@ input[type="radio"][disabled="disabled"] + .uv-radio-view {
   width: 8px;
   height: 8px;
   margin-right: 5px;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kb-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kb-sprite.svg");
   background-position: -41px -90px;
   display: inline-block;
   vertical-align: middle;
@@ -596,7 +596,7 @@ input[type="radio"][disabled="disabled"] + .uv-radio-view {
   animation: jelly 0.5s ease-in-out;
 }
 .uv-pop-up-box .uv-pop-up-close {
-  background: url("../uvdesksupportcenter/images/icon-close.svg");
+  background: url("../uvdeskcore/images/icon-close.svg");
   width: 15px;
   height: 15px;
   position: absolute;
@@ -656,7 +656,7 @@ input[type="radio"][disabled="disabled"] + .uv-radio-view {
   padding: 7px 10px 9px 33px;
   background-size: 50px;
   background-position: -7px -8px;
-  background-image: url(../uvdesksupportcenter/images/icon-search-kb.svg);
+  background-image: url(../uvdeskcore/images/icon-search-kb.svg);
   background-repeat: no-repeat;
   width: 180px;
   max-width: 100%;
@@ -737,7 +737,7 @@ input[type="radio"][disabled="disabled"] + .uv-radio-view {
 .uv-dropdown .uv-dropdown-btn:after {
   content: "";
   position: absolute;
-  background-image: url('../uvdesksupportcenter/images/arrow-down.svg');
+  background-image: url('../uvdeskcore/images/arrow-down.svg');
   background-repeat: no-repeat;
   background-position: center;
   width: 12px;
@@ -774,7 +774,7 @@ span.uv-sorting.descend {
   top: 8px;
   right: 0px;
   cursor: pointer;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kb-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kb-sprite.svg");
   background-position: -96px -91px;
 }
 span.uv-sorting:hover.descend {
@@ -787,7 +787,7 @@ span.uv-sorting.ascend {
   top: 8px;
   right: 0px;
   cursor: pointer;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kb-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kb-sprite.svg");
   background-position: -109px -91px;
 }
 span.uv-sorting:hover.ascend {
@@ -998,7 +998,7 @@ span.uv-sorting:hover.ascend {
   width: 7px;
   height: 12px;
   content: "";
-  background: url("../uvdesksupportcenter/images/uvdesk-kb-sprite.svg");
+  background: url("../uvdeskcore/images/uvdesk-kb-sprite.svg");
   background-position: -122px -91px;
   display: inline-block;
 }
@@ -1016,7 +1016,7 @@ span.uv-sorting:hover.ascend {
   width: 7px;
   height: 12px;
   content: "";
-  background: url("../uvdesksupportcenter/images/uvdesk-kb-sprite.svg");
+  background: url("../uvdeskcore/images/uvdesk-kb-sprite.svg");
   background-position: -130px -91px;
   display: inline-block;
 }
@@ -1032,7 +1032,7 @@ span.uv-sorting:hover.ascend {
   pointer-events: none;
 }
 .uv-icon-down-light {
-  background-image: url(../uvdesksupportcenter/images/arrow-down-light.svg);
+  background-image: url(../uvdeskcore/images/arrow-down-light.svg);
   width: 12px;
   height: 6px;
   display: inline-block;
@@ -1061,7 +1061,7 @@ span.uv-sorting:hover.ascend {
   position: absolute;
   width: 8px;
   height: 8px;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-sprite.svg");
   background-position: -55px -27px;
   right: 10px;
   top: 10px;
@@ -1103,7 +1103,7 @@ span.uv-sorting:hover.ascend {
   width: 70px;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.2);
-  background-image: url("../uvdesksupportcenter/images/icon-broadcast.svg");
+  background-image: url("../uvdeskcore/images/icon-broadcast.svg");
   background-repeat: no-repeat;
   background-position: center center;
   position: absolute;
@@ -1116,7 +1116,7 @@ span.uv-sorting:hover.ascend {
   width: 10px;
   height: 10px;
   opacity: .5;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kb-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kb-sprite.svg");
   background-repeat: no-repeat;
   background-position: -56px -110px;
   position: absolute;
@@ -1581,7 +1581,7 @@ p {
   display: inline-block;
   width: 6px;
   height: 24px;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kb-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kb-sprite.svg");
   background-position: -89px -91px;
   cursor: pointer;
 }
@@ -1603,7 +1603,7 @@ p {
 .uv-hero article .uv-kb-search-lg {
   width: 800px;
   max-width: 100%;
-  background-image: url("../uvdesksupportcenter/images/icon-search-kb.svg");
+  background-image: url("../uvdeskcore/images/icon-search-kb.svg");
   background-repeat: no-repeat;
   background-position: 0px 0px;
   padding: 20px 20px 20px 60px;
@@ -1637,7 +1637,7 @@ p {
 .uv-kb-layout-folder .uv-kb-folder-lt {
   width: 90px;
   height: 90px;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kb-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kb-sprite.svg");
   background-position: 0px 0px;
   display: inline-block;
   vertical-align: middle;
@@ -1704,7 +1704,7 @@ p {
   margin-right: 7px;
   display: inline-block;
   vertical-align: top;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kb-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kb-sprite.svg");
   background-position: -52px -91px;
 }
 .uv-kb-layout-grid .uv-kb-folder .uv-folder-description {
@@ -1746,7 +1746,7 @@ p {
   width: 15px;
   height: 18px;
   display: inline-block;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kb-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kb-sprite.svg");
   background-position: -73px -91px;
   content: "";
   vertical-align: middle;
@@ -1771,7 +1771,7 @@ p {
   margin-top: -5px;
   display: inline-block;
   vertical-align: middle;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kb-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kb-sprite.svg");
   background-position: -52px -91px;
 }
 .uv-kb-layout-category .uv-kb-folder .uv-folder-description {
@@ -1859,7 +1859,7 @@ p {
   margin: 10px 0px 0px 0px;
 }
 .uv-footer {
-  margin: 60px 0px 100px 0px;
+  margin: 40px 0px;
 }
 .uv-footer-wrapper {
   border-top: solid 1px #D3D3D3;
@@ -1886,6 +1886,9 @@ p {
   display: inline-block;
   margin-left: 15px;
 }
+.uv-footer-wrapper .uv-footer-lt ul li:first-child {
+  margin-left: 0px;
+}
 .uv-footer-wrapper .uv-footer-lt ul li a:link,
 .uv-footer-wrapper .uv-footer-lt ul li a:hover,
 .uv-footer-wrapper .uv-footer-lt ul li a:focus,
@@ -1911,7 +1914,7 @@ p {
   text-align: center;
 }
 .uv-footer-credit .uv-credit-logo {
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kb-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kb-sprite.svg");
   background-position: 0px -91px;
   width: 32px;
   height: 33px;
@@ -1973,7 +1976,7 @@ p {
   width: 7px;
   height: 7px;
   margin-left: 10px;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kb-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kb-sprite.svg");
   background-position: -33px -91px;
   display: inline-block;
   vertical-align: middle;
@@ -2000,7 +2003,7 @@ p {
   border: none;
   font-size: 17px;
   color: #333333;
-  background-image: url("../uvdesksupportcenter/images/icon-search-kb.svg");
+  background-image: url("../uvdeskcore/images/icon-search-kb.svg");
   background-repeat: no-repeat;
   background-size: 50px;
   background-position: -5px -6px;
@@ -2211,7 +2214,7 @@ p {
   height: 18px;
   display: inline-block;
   vertical-align: middle;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-social-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-social-sprite.svg");
   margin-right: 5px;
   background-position: 0px 0px;
 }
@@ -2220,7 +2223,7 @@ p {
   height: 18px;
   display: inline-block;
   vertical-align: middle;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-social-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-social-sprite.svg");
   margin-right: 5px;
   background-position: 0px -19px;
 }
@@ -2229,7 +2232,7 @@ p {
   height: 18px;
   display: inline-block;
   vertical-align: middle;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-social-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-social-sprite.svg");
   margin-right: 5px;
   background-position: 0px -38px;
 }
@@ -2238,7 +2241,7 @@ p {
   height: 18px;
   display: inline-block;
   vertical-align: middle;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-social-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-social-sprite.svg");
   margin-right: 5px;
   background-position: 0px -57px;
 }
@@ -2247,7 +2250,7 @@ p {
   height: 18px;
   display: inline-block;
   vertical-align: middle;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-social-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-social-sprite.svg");
   margin-right: 5px;
   background-position: 0px -76px;
 }
@@ -2256,7 +2259,7 @@ p {
   height: 18px;
   display: inline-block;
   vertical-align: middle;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-social-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-social-sprite.svg");
   margin-right: 5px;
   background-position: 0px -94px;
 }
@@ -2265,7 +2268,7 @@ p {
   height: 18px;
   display: inline-block;
   vertical-align: middle;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-social-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-social-sprite.svg");
   margin-right: 5px;
   background-position: 0px -113px;
 }
@@ -2312,7 +2315,7 @@ p {
 .uv-icon-star {
   width: 18px;
   height: 18px;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kb-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kb-sprite.svg");
   background-position: -33px -99px;
   display: inline-block;
 }
@@ -2323,7 +2326,7 @@ p {
 .uv-starred:before {
   width: 18px;
   height: 18px;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kb-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kb-sprite.svg");
   background-position: -33px -99px;
   display: inline-block;
   content: "";
@@ -2396,7 +2399,7 @@ p {
   width: 30px;
   height: 30px;
   background-color: #00AD00;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kudo-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kudo-sprite.svg");
   background-position: -201px -1px;
   display: inline-block;
   vertical-align: middle;
@@ -2442,7 +2445,7 @@ p {
 .uv-kudo .uv-kudo-plank .uv-kudo-response-wrapper .uv-kudo-very-sad {
   width: 40px;
   height: 40px;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kudo-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kudo-sprite.svg");
   display: inline-block;
   vertical-align: middle;
   margin: 5px;
@@ -2454,7 +2457,7 @@ p {
 .uv-kudo .uv-kudo-plank .uv-kudo-response-wrapper .uv-kudo-sad {
   width: 40px;
   height: 40px;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kudo-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kudo-sprite.svg");
   display: inline-block;
   vertical-align: middle;
   margin: 5px;
@@ -2466,7 +2469,7 @@ p {
 .uv-kudo .uv-kudo-plank .uv-kudo-response-wrapper .uv-kudo-neutral {
   width: 40px;
   height: 40px;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kudo-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kudo-sprite.svg");
   display: inline-block;
   vertical-align: middle;
   margin: 5px;
@@ -2478,7 +2481,7 @@ p {
 .uv-kudo .uv-kudo-plank .uv-kudo-response-wrapper .uv-kudo-happy {
   width: 40px;
   height: 40px;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kudo-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kudo-sprite.svg");
   display: inline-block;
   vertical-align: middle;
   margin: 5px;
@@ -2490,7 +2493,7 @@ p {
 .uv-kudo .uv-kudo-plank .uv-kudo-response-wrapper .uv-kudo-very-happy {
   width: 40px;
   height: 40px;
-  background-image: url("../uvdesksupportcenter/images/uvdesk-kudo-sprite.svg");
+  background-image: url("../uvdeskcore/images/uvdesk-kudo-sprite.svg");
   display: inline-block;
   vertical-align: middle;
   margin: 5px;
@@ -2525,7 +2528,7 @@ p {
 .uv-icon-replies {
   width: 18px;
   height: 18px;
-  background-image: url('../uvdesksupportcenter/images/uvdesk-kb-sprite.svg');
+  background-image: url('../uvdeskcore/images/uvdesk-kb-sprite.svg');
   background-position: -138px -91px;
   content: ' ';
   display: inline-block;
@@ -2535,7 +2538,7 @@ p {
 .uv-icon-timestamp {
   width: 18px;
   height: 18px;
-  background-image: url('../uvdesksupportcenter/images/uvdesk-kb-sprite.svg');
+  background-image: url('../uvdeskcore/images/uvdesk-kb-sprite.svg');
   background-position: -157px -91px;
   content: ' ';
   display: inline-block;
@@ -2543,7 +2546,7 @@ p {
   margin-right: 5px;
 }
 .uv-icon-remove-dark-before {
-  background-image: url(../uvdesksupportcenter/images/uvdesk-kb-sprite.svg);
+  background-image: url(../uvdeskcore/images/uvdesk-kb-sprite.svg);
   background-position: -138px -110px;
   width: 8px;
   height: 8px;
@@ -2755,7 +2758,7 @@ p {
   text-decoration: underline;
 }
 .uv-ticket-view .uv-ticket-main .uv-ticket-uploads .uv-upload-actions .uv-icon-open-in-files {
-  background-image: url("../uvdesksupportcenter/images/icon-app-files.svg");
+  background-image: url("../uvdeskcore/images/icon-app-files.svg");
   width: 20px;
   height: 20px;
   margin-right: 3px;
@@ -2764,7 +2767,7 @@ p {
   vertical-align: middle;
 }
 .uv-ticket-view .uv-ticket-main .uv-ticket-uploads .uv-upload-actions .uv-icon-attachment {
-  background-image: url("../uvdesksupportcenter/images/icon-attachment.svg");
+  background-image: url("../uvdeskcore/images/icon-attachment.svg");
   width: 20px;
   height: 20px;
   margin-right: 3px;
@@ -3201,7 +3204,7 @@ p {
 .uv-rtl .uv-dropdown .uv-dropdown-btn:before {
   content: "";
   position: absolute;
-  background-image: url(../uvdesksupportcenter/images/arrow-down.svg);
+  background-image: url(../uvdeskcore/images/arrow-down.svg);
   background-repeat: no-repeat;
   background-position: center;
   width: 12px;
