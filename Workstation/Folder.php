@@ -56,7 +56,7 @@ class Folder extends Controller
                 $folder->setDescription($data['description']);
                 $folder->setvisibility($data['visibility']);
                 if(isset($solutionImage)){
-                    $fileName  = $this->container->get('uvdesk.core.fs.upload.manager')->upload($solutionImage);
+                    $fileName  = $this->container->get('uvdesk.service')->getFileUploadManager()->upload($solutionImage);
                     $folder->setSolutionImage($fileName);
                 } 
                 $folder->setDateAdded( new \DateTime());
@@ -109,7 +109,7 @@ class Folder extends Controller
             if ($form->isSubmitted() && $form->isValid()) {
                 $formData = $request->request->all();
                 if (isset($solutionImage)) {
-                    $knowledgebaseFolder->setSolutionImage($this->get('uvdesk.core.fs.upload.manager')->upload($solutionImage));
+                    $knowledgebaseFolder->setSolutionImage($this->get('uvdesk.service')->getFileUploadManager()->upload($solutionImage));
                 }
 
                 $knowledgebaseFolder
