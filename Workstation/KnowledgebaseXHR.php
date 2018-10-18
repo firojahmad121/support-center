@@ -4,9 +4,8 @@ namespace Webkul\UVDesk\SupportCenterBundle\Workstation;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+
 
 class KnowledgebaseXHR extends Controller
 {
@@ -23,81 +22,77 @@ class KnowledgebaseXHR extends Controller
     public function updateFolderXHR(Request $request)
     {
         $json = array();
-        if($request->getMethod() == "PATCH") { //UPDATE STATUS
-            $em = $this->getDoctrine()->getManager();
-            $content = json_decode($request->getContent(), true);
-            $solutionId = $content['id'];
-            $solution = $em->getRepository('UVDeskSupportCenterBundle:Solutions')->find($solutionId);
-            if($solution) {
-                switch($content['editType']){
-                    case 'status':
-                        $solution->setVisibility($content['value']);
-                        $em->persist($solution);
-                        $em->flush();
-                        
-                        $json['alertClass'] = 'success';
-                        $json['alertMessage'] = 'Success ! Folder status updated successfully.';
-                        break;
-                    default:
-                        break;
-                }
-            } else {
-                $json['alertClass'] = 'danger';
-                $json['alertMessage'] = $this->translate('Error ! Folder is not exist.');
-            }
-        } elseif($request->getMethod() == "PUT") {
-            $em = $this->getDoctrine()->getManager();
-            $content = json_decode($request->getContent(), true);
-            $solutionId = $content['id'];
-            $solution = $em->getRepository('UVDeskSupportCenterBundle:Solutions')->find($solutionId);
-            if($solution) {
-                    $form = $this->createFormBuilder($solution, [ 
-                            'data_class' => 'Webkul\UVDesk\SupportCenterBundle\Entity\Solutions',                            
-                        ])
-                        ->add('name', TextType::class)
-                        ->add('description', TextareaType::class)
-                        ->getForm();
-                
-                       
-                $form->submit(true);
-                $form->handleRequest($request);
-                if ($form->isSubmitted()) {
-                    $solution->setName($content['name']);
-                    $solution->setDescription($content['description']);
-                    $em->persist($solution);
-                    $em->flush();
-                    
-                    $json['alertClass'] = 'success';
-                    $json['alertMessage'] ='Success ! Folder updated successfully.';
+
+        $entityManager = $this->getDoctrine()->getManager();
+        switch($request->getMethod())
+        {
+            case "PATCH":
+                $content = json_decode($request->getContent(), true);
+                $solutionId = $content['id'];
+                $solution = $entityManager->getRepository('UVDeskSupportCenterBundle:Solutions')->find($solutionId);
+                if($solution) {
+                    switch($content['editType']){
+                        case 'status':
+                            $solution->setVisibility($content['value']);
+                            $entityManager->persist($solution);
+                            $entityManager->flush();                            
+                            $json['alertClass'] = 'success';
+                            $json['alertMessage'] = 'Success ! Folder status updated successfully.';
+                            break;
+                        default:
+                            break;
+                    }
                 } else {
                     $json['alertClass'] = 'danger';
-                    $json['errors'] = json_encode($form->getErrors());
+                    $json['alertMessage'] = 'Error ! Folder is not exist.';
                 }
-            } else {
-                $json['alertClass'] = 'danger';
-                $json['alertMessage'] = 'Error ! Folder does not exist.';
-            }
-        } else if($request->getMethod() == "DELETE") {
-            $solutionId = $request->attributes->get('id');
+            break;
+            case "PUT":
+              
+                $content = json_decode($request->getContent(), true);
+                $solutionId = $content['id'];
+                $solution = $entityManager->getRepository('UVDeskSupportCenterBundle:Solutions')->find($solutionId);
+                if($solution) {
+                    
+                        $solution->setName($content['name']);
+                        $solution->setDescription($content['description']);
+                        $entityManager->persist($solution);
+                        $entityManager->flush();
+                        
+                        $json['alertClass'] = 'success';
+                        $json['alertMessage'] ='Success ! Folder updated successfully.';
+                        
+                  
+                } else {
+                    $json['alertClass'] = 'danger';
+                    $json['alertMessage'] = 'Error ! Folder does not exist.';
+                }
+            break;
+            case "DELETE":
+                $solutionId = $request->attributes->get('folderId');
+                $solutionBase = $entityManager->getRepository('UVDeskSupportCenterBundle:Solutions')->find($solutionId);
 
-            $em = $this->getDoctrine()->getManager();
-            $solutionBase = $em->getRepository('UVDeskSupportCenterBundle:Solutions')->find($solutionId);
+                if($solutionBase){
+                    $entityManager->getRepository('UVDeskSupportCenterBundle:Solutions')->removeEntryBySolution($solutionId);
 
-            if($solutionBase){
-                $em->getRepository('UVDeskSupportCenterBundle:Solutions')->removeEntryBySolution($solutionId);
+                    $entityManager->remove($solutionBase);
+                    $entityManager->flush();
 
-                $em->remove($solutionBase);
-                $em->flush();
+                    $json['alertClass'] = 'success';
+                    $json['alertMessage'] = 'solution.deleteFolder.success';
+                }else{
 
-                $json['alertClass'] = 'success';
-                $json['alertMessage'] = $this->get('translator')->trans('solution.deleteFolder.success');
-            }else{
-
+                    $json['alertClass'] = 'error';
+                    $json['alertMessage'] = "Warning ! Folder doesn't exists!";
+                }
+            break;
+            default:
                 $json['alertClass'] = 'error';
-                $json['alertMessage'] = $this->translate("Warning ! Folder doesn't exists!");
-            }
-        }
+                $json['alertMessage'] = "Warning ! Bad request !";
+            break;
 
+        }
+      
         $response = new Response(json_encode($json));
         $response->headers->set('Content-Type', 'application/json');
         return $response;

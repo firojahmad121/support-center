@@ -24,26 +24,3 @@ helpdesk_customer_account_verification:
     controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Customer::AccountVerification
     defaults: { email: 0, key: 0 }
 
-# helpdesk_customer_account_backup_trigger:
-#     path:     /resources/backup/confirm
-#     controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Customer::initiateCustomerBackup
-
-# download_customer_resources_retrieve:
-#     path:     /resources/backup/{confirmationToken}
-#     controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Customer::downloadCustomerBackup
-#     defaults: { _controller: UVDeskSupportCenterBundle:Customer:downloadCustomerBackup }
-
-# ajax_file_upload_customer:
-#     path:     /file-upload
-#     controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Solution::SolutionList
-#     defaults: { _controller: WebkulDefaultBundle:Default:ajaxFileUpload }
-
-# ajax_url_file_customer:
-#     path:     /url-upload
-#     controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Solution::SolutionList
-#     defaults: { _controller: WebkulDefaultBundle:Default:ajaxUrlFileUpload }
-
-# ajax_file_remove_customer:
-#     path:     /file-remove
-#     controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Solution::SolutionList
-#     defaults: { _controller: WebkulDefaultBundle:Default:ajaxFileRemove }

@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\Criteria;
 use Webkul\UVDesk\SupportCenterBundle\Entity\SolutionCategory;
 use Webkul\UVDesk\SupportCenterBundle\Entity\SolutionCategoryMapping;
 use Webkul\UVDesk\SupportCenterBundle\Form\Category as CategoryForm;
-// use Webkul\UVDesk\UVDeskSupportCenterBundle\Form\Solution;
 
 class Category extends Controller
 {
@@ -30,7 +29,7 @@ class Category extends Controller
             $categories = $this->getDoctrine()
                                 ->getRepository('UVDeskSupportCenterBundle:SolutionCategory')
                                 ->createQueryBuilder('a')
-                                ->select('a.id, a.solutionId, a.companyId')
+                                // ->select('a.id, a.solutionId, a.companyId')
                                 ->getQuery()
                                 ->getResult()
                         ;
@@ -52,13 +51,16 @@ class Category extends Controller
         $solutions = $this->getDoctrine()
                            ->getRepository('UVDeskSupportCenterBundle:Solutions')
                            ->getAllSolutions(null, $this->container, 'a.id, a.name');
-        
-        foreach($solutions as $key => $solution){
-            $solutions[$key]['categoriesCount'] = $this->getDoctrine()
-                            ->getRepository('UVDeskSupportCenterBundle:Solutions')
-                            ->getCategoriesCountBySolution($solution['id']);
-        }
-    // dump($solutions);die;
+
+        $solutions = array_map(function($solution){
+            return [
+                'id'=>$solution['id'],
+                'name'=>$solution['name'],
+                'categoriesCount'=>$this->getDoctrine()
+                                        ->getRepository('UVDeskSupportCenterBundle:Solutions')
+                                        ->getCategoriesCountBySolution($solution['id'])
+                ];
+        },$solutions);
         return $this->render('@UVDeskSupportCenter/Staff/Category/categoryList.html.twig', [
             'solutions' => $solutions
         ]);
@@ -80,7 +82,6 @@ class Category extends Controller
                             ->getRepository('UVDeskSupportCenterBundle:Solutions')
                             ->getCategoriesCountBySolution($request->attributes->get('solution')),
             ];
-            // dump($solution_category);die;
             return $this->render('@UVDeskSupportCenter/Staff/Category/categoryListBySolution.html.twig',$solution_category);
         }else
             $this->noResultFound();
@@ -96,8 +97,6 @@ class Category extends Controller
         else
             $request->query->set('limit', self::LIMIT);        
         $json =  $repository->getAllCategories($request->query, $this->container);
-
-        // dump($json);die;
         $response = new Response(json_encode($json));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
@@ -121,15 +120,8 @@ class Category extends Controller
 
         $errors = [];
         if($request->getMethod() == "POST") {
-            $category_class = new Category($this->container);
-            $form = $this->createForm(CategoryForm::class, $category);
-            
-            // dump($form);
-            $form->submit(true);
-            $form->handleRequest($request);            
-            if ($form->isSubmitted() && $form->isValid()) {
+
                 $data = $request->request->all();
-                // dump($data);die;
                 $em = $this->getDoctrine()->getManager();
                 $category->setName($data['name']);
                 $category->setDescription($data['description']);
@@ -141,12 +133,12 @@ class Category extends Controller
                 $em->persist($category);
                 $em->flush();
 
-                $tempSolutions = explode(',', $request->request->get('tempSolutions'));
-                
+                $tempSolutions = explode(',', $request->request->get('tempSolutions'));                
                 $em = $this->getDoctrine()->getManager();
 
                 $oldSolutions = [];
-                if($categorySolutions){
+                if($categorySolutions)
+                {
                     foreach ($categorySolutions as $solution) {
                         if($key = array_search($solution['id'], $tempSolutions))
                             unset($tempSolutions[$key]);
@@ -167,7 +159,6 @@ class Category extends Controller
                             $solutionCategoryMapping = new SolutionCategoryMapping();
                             $solutionCategoryMapping->setSolutionId($solution);
                             $solutionCategoryMapping->setCategoryId($category->getId());
-                            // $solutionCategoryMapping->setCompanyId($company->getId());
                             $em->persist($solutionCategoryMapping);
                         }
                     }
@@ -179,10 +170,7 @@ class Category extends Controller
                 $this->addFlash('success', $message);
 
                 return $this->redirect($this->generateUrl('helpdesk_member_knowledgebase_category_collection'));
-            } else {
-                $errors = $this->getFormErrors($form);
-                $this->addFlash('warning', $message);
-            }
+          
         }
 
         $solutions = $this->getDoctrine()
@@ -190,11 +178,11 @@ class Category extends Controller
                            ->getAllSolutions(null, $this->container, 'a.id, a.name');
 
         return $this->render('@UVDeskSupportCenter/Staff/Category/categoryForm.html.twig', [
-                'category' => $category,
-                'categorySolutions' => $categorySolutions,
-                'solutions' => $solutions,
-                'errors' => json_encode($errors)
-            ]);
+                                'category' => $category,
+                                'categorySolutions' => $categorySolutions,
+                                'solutions' => $solutions,
+                                'errors' => json_encode($errors)
+                            ]);
     }
 
     public function categoryXhr(Request $request)
