@@ -92,6 +92,12 @@ class KnowledgebaseWebsite
      */
     private $updatedAt;
 
+
+    /**
+     * @var string
+     */
+    private $brandIsActive;
+
     /**
      * @var string
      */
@@ -844,6 +850,32 @@ class KnowledgebaseWebsite
     {
         return $this->customCSS;
     }
+
+
+/**
+     * Set brandIsActive
+     *
+     * @param string $customCSS
+     * @return Website
+     */
+    public function setBrandIsActive($brandIsActive)
+    {
+        $this->brandIsActive = $brandIsActive;
+
+        return $this;
+    }
+
+    /**
+     * Get customCSS
+     *
+     * @return string 
+     */
+    public function getBrandIsActive()
+    {
+        return $this->brandIsActive;
+    }
+    
+
     /**
      * @var integer
      */

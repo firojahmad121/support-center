@@ -82,7 +82,7 @@
                                             <path fill="#7c74f1" fill-rule="evenodd" d="M26.516,22.252H21.477V17.226h-3.75L24,11.031l6.269,6.195h-3.75v5.026ZM29.973,8.138A9.1,9.1,0,0,0,24,6.005a8.947,8.947,0,0,0-4.863,1.4,9.78,9.78,0,0,0-3.457,3.682A7.494,7.494,0,0,0,9,18.512a7.2,7.2,0,0,0,2.2,5.289,7.234,7.234,0,0,0,5.3,2.192H32.727A6.294,6.294,0,0,0,39,19.739,5.933,5.933,0,0,0,37.3,15.5a6.113,6.113,0,0,0-4.1-1.958A9.112,9.112,0,0,0,29.973,8.138Z"/>
                                         </svg>
                                     </div>
-                                    <img id="dynamic-image-upload" {% if isLogo %}src="{{ asset('assets/') }}{{ website.logo }}"{% endif %}>
+                                    <img id="dynamic-image-upload" {% if isLogo %}src="{{ website.logo }}"{% endif %}>
 
                                 </div>
                                 <div class="uv-image-info-brick">
@@ -99,7 +99,7 @@
 					  	<label class="uv-field-label">{{ 'Website Status'|trans }}</label>
                           <div class="uv-field-block">
                             <div class="uv-checkbox uv-margin-top-5">
-                                <input type="checkbox" name="website[status]" style="cursor:pointer;" {{ website.isActive ? 'checked="checked"' : '' }} >
+                                <input type="checkbox" name="website[status]" style="cursor:pointer;" {{ configuration.status ? 'checked="checked"' : '' }} >
                                 <span class="uv-checkbox-view"></span>
                             </div>
                             <span class="uv-field-info uv-margin-top-5">{{ 'Enable front end website and knowledgebase for customer(s)'|trans }}</span>
@@ -112,7 +112,7 @@
                         {##564DA8#}
 					  	<label class="uv-field-label">{{ 'Brand Color'|trans }}</label>
 					  	<div class="uv-field-block">
-					    	<input name="website[brandColor]" class="uv-field uv-color-field" type="text" value="{{ configuration.brandColor ?: '#7C70F4' }}" style="background: {{ configuration.brandColor ?: '#7C70F4' }}" placeholder="#7C70F4">
+					    	<input name="website[brandColor]" class="uv-field uv-color-field" type="text" value="{{ configuration.brandColor ? configuration.brandColor : '#7C70F4'}}" style="background:{{ configuration.brandColor ? configuration.brandColor : '#7C70F4'}}" placeholder="#7C70F4">
 					  	</div>
 					</div>
 					<!-- //Field -->
@@ -132,11 +132,12 @@
 					<div class="uv-element-block">
 					  	<label class="uv-field-label">{{ 'Default Language (Optional)'|trans }}</label>
 					  	<div class="uv-field-block">
-                            <select name="defaultLocale" class="uv-select">
+                            <select name="defaultLocal" class="uv-select">
                                 <option value="">{{ 'Select default language'|trans }}</option>
-                                {# {% if localeCode == defaultLocale %}selected="selected"{% endif % #}
+                              
                                 {% for localeCode, localeName in uvdesk_service.getLocales() %}
-                                    <option value="{{ localeCode }}" }>{{ localeName }}</option>
+                                    
+                                    <option value="{{ localeCode }}" {% if localeCode == website.local %}selected="selected"{% endif %}>{{ localeName }}</option>
                                 {% endfor %}
                             </select>
 					  	</div>
@@ -245,7 +246,7 @@
 
                     <div class="uv-knowledgebase-layout uv-no-error-success-icon">
                         <div class="uv-element-block">
-                            <label class="uv-field-label">{{ 'Layout'|trans }}</label>
+                            <label class="uv-field-label">{{ 'Layout '|trans }}</label>
                             <div class="uv-layout-icon-wrapper">
                                 <label for="homepage-masonry" class="uv-layout-icon uv-layout-grid {% if configuration.homepageContent and configuration.homepageContent == 'masonry' %}uv-layout-icon-active{% endif %}" data-toggle="tooltip" title="{{ 'Masonry'|trans }}"></label>
                                 <input name="website[homepageContent]" type="radio" id="homepage-masonry" value="masonry" {% if configuration.homepageContent and configuration.homepageContent == 'masonry' %}checked{% endif %}/>
@@ -547,7 +548,7 @@
                         <div class="uv-element-block">
                             <label>
                                 <div class="uv-checkbox">
-                                    <input type="checkbox" name="broadcasting[isActive]" value="1" {{ website.isActive ? 'checked' : '' }}>
+                                    <input type="checkbox" name="broadcasting[isActive]" value="{{ configuration.brandIsActive ? 1 : 0 }}" {{ configuration.brandIsActive ? 'checked' : '' }}>
                                     <span class="uv-checkbox-view"></span>
                                 </div>
                                 <span class="uv-checkbox-label">{{'Broadcasting is Active'|trans}}</span>
