@@ -137,11 +137,10 @@
 
 	<!-- Folder list item template -->
 	<script id="entity_list_item_tmp" type="text/template">
-		<a href="<%- path.replace('replaceId', id) %>"
-			<% if(solutionImage){ %>
+		<a href="<%- path.replace('replaceId', id) %>">
+			<% if(solutionImage) { %>
 				<div class="uv-app-list-brick-lt">
-					<img src="{{ asset('../bundles/UVDeskCore/images/folder-default.png') }}"/>
-					
+					<img src="<%= solutionImage %>"/>					
 				</div>
 			<% }else{ %>
 				<div class="uv-app-list-brick-lt uv-without-img"><div></div></div>
@@ -237,6 +236,7 @@
 					'click .delete-folder' : "confirmRemove",
 				},
 				render : function() {
+					console.log(this.model.toJSON());
 					this.$el.html(this.template(this.model.toJSON()));
 					return this;
 				},

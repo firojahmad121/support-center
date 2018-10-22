@@ -378,7 +378,7 @@ class Article extends Controller
                         $json['alertMessage'] = 'Success ! Article status updated successfully.';
                         break;
                     case "stared":
-                        $article = $em->getRepository('WebkulSupportCenterBundle:Article')->findOneBy(['id' => $data['id']]);
+                        $article = $em->getRepository('UVDeskSupportCenterBundle:Article')->findOneBy(['id' => $data['id']]);
                         if($article) {
                             $article->setStared( (isset($data['value']) && $data['value'] == 1) ? 1 : 0 );
                             $em->persist($article);
