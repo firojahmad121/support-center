@@ -41,7 +41,6 @@ class Branding extends Controller
                     $em->flush();
                     break;
                 case "knowledgebase":
-                // dump($params);die;
                     $configuration->setPageBackgroundColor($params['website']['pageBackgroundColor']);
                     $configuration->setHeaderBackgroundColor($params['website']['headerBackgroundColor']); 
 
@@ -122,7 +121,6 @@ class Branding extends Controller
                     break;
             }
         }
-        // dump($configuration);die;/
         return $this->render('@UVDeskSupportCenter/Staff/branding.html.twig', [
             'website' => $website,
             'type' => $settingType,
