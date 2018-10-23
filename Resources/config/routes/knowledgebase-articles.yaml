@@ -16,10 +16,7 @@ helpdesk_member_knowledgebase_article_collection_xhr:
     path:     /articles/ajax
     controller: Webkul\UVDesk\SupportCenterBundle\Workstation\Article::ArticleListXhr
 
-# helpdesk_member_knowledgebase_category_articles_collection_xhr:
-#     path:     /{category}/articles/ajax
-#     controller: Webkul\UVDesk\SupportCenterBundle\Workstation\Article::ArticleListXhr
-#     defaults: { category: 0 }
+
 
 helpdesk_member_knowledgebase_folder_articles_collection_xhr:
     path:     /solution/{solution}/articles/ajax

@@ -182,6 +182,8 @@ class Article extends Controller
                             ->getAllCategories(null, $this->container, 'a.id, a.name');
 
         if ($request->attributes->get('id')) {
+            $message = 'Success!  Article add successfully.';
+            $this->addFlash('success', $message);
             return  $this->render('@UVDeskSupportCenter/Staff/Articles/articleForm.html.twig', [
                 'article' => $article,
                 'articleCategory' => $articleCategory,
@@ -190,6 +192,7 @@ class Article extends Controller
                 'errors' => json_encode($errors),
             ]);
         }
+      
 
         return $this->render('@UVDeskSupportCenter/Staff/Articles/articleAddForm.html.twig', [
             'article' => $article,
@@ -375,7 +378,7 @@ class Article extends Controller
                         $json['alertMessage'] = 'Success ! Article status updated successfully.';
                         break;
                     case "stared":
-                        $article = $em->getRepository('WebkulSupportCenterBundle:Article')->findOneBy(['id' => $data['id']]);
+                        $article = $em->getRepository('UVDeskSupportCenterBundle:Article')->findOneBy(['id' => $data['id']]);
                         if($article) {
                             $article->setStared( (isset($data['value']) && $data['value'] == 1) ? 1 : 0 );
                             $em->persist($article);
@@ -426,13 +429,13 @@ class Article extends Controller
         $em = $this->getDoctrine()->getManager();
         //entry for Article History
         $articleHistory = new ArticleHistory;
-        // $articleHistory->setCompanyId($this->getCompany()->getId());
+       
         $articleHistory->setUserId($this->getUser()->getId());
         $articleHistory->setArticleId($articleBase->getId());
         $articleHistory->setContent($articleBase->getContent());
 
         if ($updateArticle) {
-            // $articleBase->setContent($this->get('uvdesk.service')->htmlfilter($content));
+            
             $articleBase->setContent($content);
             $em->persist($articleBase);
         }

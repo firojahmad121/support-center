@@ -6,15 +6,11 @@ use Doctrine\Common\Collections\Criteria;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 use Webkul\UVDesk\SupportCenterBundle\Entity\Solutions;
-use Symfony\Component\Form\FormError;
-use Webkul\UVDesk\SupportCenterBundle\Form\Solution as SolutionForm;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+
 
 class Folder extends Controller
-{   
+{  
     public function listFolders(Request $request)
     {
         $entityManager = $this->getDoctrine()->getManager();
@@ -28,6 +24,7 @@ class Folder extends Controller
             'solutionCount' => $totalKnowledgebaseFolders,
         ]);
     }
+   
 
     public function createFolder(Request $request)
     {
@@ -35,44 +32,41 @@ class Folder extends Controller
         $errors = [];
 
         if ($request->getMethod() == "POST") {
-            $solutionImage = $request->files->get('solutionImage');
 
-            $form = $this->createForm(SolutionForm::class, $folder);
-           
-            $form->handleRequest($request);
-          
-            if($imageFile = $request->files->get('solutionImage')) {
-                if(!preg_match('#^(image/)(?!(tif)|(svg) )#', $imageFile->getMimeType()) && !preg_match('#^(image/)(?!(tif)|(svg))#', $imageFile->getClientMimeType()) ) {
-                    $form->get('solutionImage')->addError(new FormError($this->translate('Provide valid image file. (Recommened: PNG, JPG or GIF Format)')));
+            $entityManager = $this->getDoctrine()->getManager();
+            $solutionImage = $request->files->get('solutionImage');
+            if($imageFile = $request->files->get('solutionImage'))
+            {
+                if(!preg_match('#^(image/)(?!(tif)|(svg) )#', $imageFile->getMimeType()) && !preg_match('#^(image/)(?!(tif)|(svg))#', $imageFile->getClientMimeType()) )
+                {
+                   
+                    $message = 'Warning! Provide valid image file. (Recommened: PNG, JPG or GIF Format).';
+                    $this->addFlash('warning', $message);
+                    return $this->render('@UVDeskSupportCenter/Staff/Folders/createFolder.html.twig', [
+                        'folder' => $folder
+                    ]);
+                    
                 }
             }
-            $form->submit(true);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
+              
+            $data = $request->request->all();
+            $folder->setName($data['name']);
+            $folder->setDescription($data['description']);
+            $folder->setvisibility($data['visibility']);
+            if(isset($solutionImage)){
+                $fileName  = $this->container->get('uvdesk.service')->getFileUploadManager()->upload($solutionImage);
+                $folder->setSolutionImage($fileName);
+            } 
+            $folder->setDateAdded( new \DateTime());
+            $folder->setDateUpdated( new \DateTime());
+            $folder->setSortOrder(1);
+            $entityManager->persist($folder);
+            $entityManager->flush();
+            $message = 'Success! Folder has been added successfully.';
 
-                $em = $this->getDoctrine()->getManager();
-                $data = $request->request->all();
-                $folder->setName($data['name']);
-                $folder->setDescription($data['description']);
-                $folder->setvisibility($data['visibility']);
-                if(isset($solutionImage)){
-                    $fileName  = $this->container->get('uvdesk.service')->getFileUploadManager()->upload($solutionImage);
-                    $folder->setSolutionImage($fileName);
-                } 
-                $folder->setDateAdded( new \DateTime());
-                $folder->setDateUpdated( new \DateTime());
-                $folder->setSortOrder(1);
-                $em->persist($folder);
-                $em->flush();
-                $message = 'Success! Folder has been added successfully.';
+            $this->addFlash('success', $message);
 
-                $this->addFlash('success', $message);
-
-                return $this->redirect($this->generateUrl('helpdesk_member_knowledgebase_folders_collection'));
-            } else {
-                
-                $errors = $this->getFormErrors($form);
-            }
+            return $this->redirect($this->generateUrl('helpdesk_member_knowledgebase_folders_collection'));
         }
 
         return $this->render('@UVDeskSupportCenter/Staff/Folders/createFolder.html.twig', [
@@ -94,40 +88,35 @@ class Folder extends Controller
         if ($request->getMethod() == "POST") {
             $formData = $request->request->all();
             $solutionImage = $request->files->get('solutionImage');
-            $form = $this->createForm(SolutionForm::class, $knowledgebaseFolder);
-           
-            $form->handleRequest($request);
           
             if ($imageFile = $request->files->get('solutionImage')) {
-                if(!preg_match('#^(image/)(?!(tif)|(svg) )#', $imageFile->getMimeType()) && !preg_match('#^(image/)(?!(tif)|(svg))#', $imageFile->getClientMimeType()) ) {
-                    $form->get('solutionImage')->addError(new FormError($this->translate('Provide valid image file. (Recommened: PNG, JPG or GIF Format)')));
+                if(!preg_match('#^(image/)(?!(tif)|(svg) )#', $imageFile->getMimeType()) && !preg_match('#^(image/)(?!(tif)|(svg))#', $imageFile->getClientMimeType()) ) 
+                {
+                    $message = 'Warning! Provide valid image file. (Recommened: PNG, JPG or GIF Format).';
+                    $this->addFlash('warning', $message);
+                    return $this->render('@UVDeskSupportCenter/Staff/Folders/updateFolder.html.twig', [
+                        'folder' => $folder
+                    ]);
                 }
             }
+            $formData = $request->request->all();
+            if (isset($solutionImage)) {
+                $knowledgebaseFolder->setSolutionImage($this->get('uvdesk.service')->getFileUploadManager()->upload($solutionImage));
+            }
 
-            $form->submit(true);
+            $knowledgebaseFolder
+                ->setName($formData['name'])
+                ->setDescription($formData['description'])
+                ->setvisibility($formData['visibility'])
+                ->setDateUpdated( new \DateTime())
+                ->setSortOrder(1);
+
+            $entityManager->persist($knowledgebaseFolder);
+            $entityManager->flush();
             
-            if ($form->isSubmitted() && $form->isValid()) {
-                $formData = $request->request->all();
-                if (isset($solutionImage)) {
-                    $knowledgebaseFolder->setSolutionImage($this->get('uvdesk.service')->getFileUploadManager()->upload($solutionImage));
-                }
-
-                $knowledgebaseFolder
-                    ->setName($formData['name'])
-                    ->setDescription($formData['description'])
-                    ->setvisibility($formData['visibility'])
-                    ->setDateAdded( new \DateTime())
-                    ->setDateUpdated( new \DateTime())
-                    ->setSortOrder(1);
-
-                $entityManager->persist($knowledgebaseFolder);
-                $entityManager->flush();
-                
-                $this->addFlash('success', 'Folder updated successfully.');
-                return $this->redirect($this->generateUrl('helpdesk_member_knowledgebase_folders_collection'));
-            } else {
-                $errors = $this->getFormErrors($form);
-            }
+            $this->addFlash('success', 'Folder updated successfully.');
+            return $this->redirect($this->generateUrl('helpdesk_member_knowledgebase_folders_collection'));
+          
         }
 
         return $this->render('@UVDeskSupportCenter/Staff/Folders/updateFolder.html.twig', [

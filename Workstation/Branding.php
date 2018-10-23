@@ -13,12 +13,12 @@ class Branding extends Controller
     public function theme(Request $request)
     {
         $errors = [];
-        $em = $this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager();
         $settingType = $request->attributes->get('type');
         $userService = $this->container->get('user.service');
-        $website = $em->getRepository('UVDeskCoreBundle:Website')->findOneBy(['code'=>"knowledgebase"]);
-        $configuration = $em->getRepository('UVDeskSupportCenterBundle:KnowledgebaseWebsite')->findOneBy(['website' => $website->getId(), 'isActive' => 1]);
-
+        $website = $entityManager->getRepository('UVDeskCoreBundle:Website')->findOneBy(['code'=>"knowledgebase"]);
+        $configuration = $entityManager->getRepository('UVDeskSupportCenterBundle:KnowledgebaseWebsite')->findOneBy(['website' => $website->getId(),'isActive' => 1]);
+        
         if ($request->getMethod() == 'POST') {
             $isValid = 0;
             $params = $request->request->all();
@@ -28,20 +28,20 @@ class Branding extends Controller
                 case "general":
                     $website->setName($params['website']['name']);
                     $status = array_key_exists("status",$params['website']) ? 1 : 0;
-                    $website->setIsActive($status);
                     if(isset($parmsFile['logo'])){
                         $fileName  = $this->container->get('uvdesk.service')->getFileUploadManager()->upload($parmsFile['logo']);
                         $website->setLogo($fileName);
                     }
-                    $em->persist($website);
-                    $em->flush(); 
-
+                    $website->setLocal($params['defaultLocal']);
+                    $entityManager->persist($website);
+                    $entityManager->flush(); 
+                    
+                    $configuration->setStatus($status);
                     $configuration->setBrandColor($params['website']['brandColor']);
-                    $em->persist($configuration);
-                    $em->flush();
+                    $entityManager->persist($configuration);
+                    $entityManager->flush();
                     break;
                 case "knowledgebase":
-                // dump($params);die;
                     $configuration->setPageBackgroundColor($params['website']['pageBackgroundColor']);
                     $configuration->setHeaderBackgroundColor($params['website']['headerBackgroundColor']); 
 
@@ -52,6 +52,7 @@ class Branding extends Controller
                     $configuration->setBannerBackgroundColor($params['website']['bannerBackgroundColor']);  
                     $configuration->setNavTextColor($params['website']['navTextColor']);
                     $configuration->setNavActiveColor($params['website']['navActiveColor']);
+                    $configuration->setHomepageContent($params['website']['homepageContent']);
 
 
                     $removeCustomerLoginButton = array_key_exists("removeCustomerLoginButton",$params['website']) ? $params['website']['removeCustomerLoginButton'] : 0;
@@ -68,15 +69,15 @@ class Branding extends Controller
                     $configuration->setTicketCreateOption($ticketCreateOption);                
                     $configuration->setLoginRequiredToCreate($loginRequiredToCreate);
                     $configuration->setUpdatedAt(new \DateTime());
-                    $em->persist($configuration);
-                    $em->flush();
+                    $entityManager->persist($configuration);
+                    $entityManager->flush();
                     break;
                 case "seo":
                     $configuration->setMetaDescription($params['metaDescription']);  
                     $configuration->setMetaKeywords($params['metaKeywords']);  
                     $configuration->setUpdatedAt(new \DateTime());
-                    $em->persist($configuration);
-                    $em->flush();
+                    $entityManager->persist($configuration);
+                    $entityManager->flush();
                     break;
                 case "links":
                     $footerLinks=[];
@@ -101,28 +102,29 @@ class Branding extends Controller
 
                     $configuration->setHeaderLinks($headerLinks);
                     $configuration->setFooterLinks($footerLinks);
-                    $em->persist($configuration);
-                    $em->flush();
+                    $entityManager->persist($configuration);
+                    $entityManager->flush();
                     break;
                 case "broadcasting":
-                    $isActive = array_key_exists('isActive',$params['broadcasting']) ? [] : ["isActive"=>0];
+                    $isActive = array_key_exists('isActive',$params['broadcasting']) ? []  : ["isActive"=>0];
                     $broadcast = json_encode(array_merge($params['broadcasting'],$isActive));
-                    $configuration->setBroadcastMessage($broadcast); 
+                    $active = array_key_exists('isActive',$params['broadcasting']) ? 1 : 0;
+                    $configuration->setBroadcastMessage($broadcast);
+                    $configuration->setBrandIsActive($active);
                     $configuration->setUpdatedAt(new \DateTime());
-                    $em->persist($configuration);
-                    $em->flush();
+                    $entityManager->persist($configuration);
+                    $entityManager->flush();
                     break;
                 case 'advanced':
                     $configuration->setCustomCSS($request->request->get('customCSS'));
                     $configuration->setScript($request->request->get('script'));
-                    $em->persist($configuration);
-                    $em->flush();
+                    $entityManager->persist($configuration);
+                    $entityManager->flush();
                     break;
                 default:
                     break;
             }
         }
-        // dump($configuration);die;/
         return $this->render('@UVDeskSupportCenter/Staff/branding.html.twig', [
             'website' => $website,
             'type' => $settingType,
@@ -134,20 +136,20 @@ class Branding extends Controller
 
     public function spam(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $website = $em->getRepository('UVDeskCoreBundle:Website')->findOneBy(['code'=>"knowledgebase"]);
+        $entityManager = $this->getDoctrine()->getManager();
+        $website = $entityManager->getRepository('UVDeskCoreBundle:Website')->findOneBy(['code'=>"knowledgebase"]);
         if(!$website) {
             // return not found
         }
-        $configuration = $em->getRepository('UVDeskSupportCenterBundle:KnowledgebaseWebsite')->findOneBy(['website' => $website->getId(), 'isActive' => 1]);
+        $configuration = $entityManager->getRepository('UVDeskSupportCenterBundle:KnowledgebaseWebsite')->findOneBy(['website' => $website->getId(), 'isActive' => 1]);
         $params = $request->request->all();
 
         
         if ($request->getMethod() == 'POST') {
             $configuration->setWhiteList($request->request->get('whiteList'));
             $configuration->setBlackList($request->request->get('blackList'));
-            $em->persist($configuration);
-            $em->flush();
+            $entityManager->persist($configuration);
+            $entityManager->flush();
 
             $this->addFlash('success', 'Spam setting saved successfully.');
 
