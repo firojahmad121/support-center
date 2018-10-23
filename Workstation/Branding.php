@@ -32,7 +32,6 @@ class Branding extends Controller
                         $fileName  = $this->container->get('uvdesk.service')->getFileUploadManager()->upload($parmsFile['logo']);
                         $website->setLogo($fileName);
                     }
-                    $website->setLocal($params['defaultLocal']);
                     $entityManager->persist($website);
                     $entityManager->flush(); 
                     

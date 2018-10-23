@@ -126,22 +126,6 @@
 					</div>
 					<!-- //Field -->
 
-				
-
-					<!-- Field -->
-					<div class="uv-element-block">
-					  	<label class="uv-field-label">{{ 'Default Language (Optional)'|trans }}</label>
-					  	<div class="uv-field-block">
-                            <select name="defaultLocal" class="uv-select">
-                                <option value="">{{ 'Select default language'|trans }}</option>
-                              
-                                {% for localeCode, localeName in uvdesk_service.getLocales() %}
-                                    
-                                    <option value="{{ localeCode }}" {% if localeCode == website.local %}selected="selected"{% endif %}>{{ localeName }}</option>
-                                {% endfor %}
-                            </select>
-					  	</div>
-					</div>
 					<!--CTA-->
 					<input class="uv-btn general-btn" href="#" value="{{ 'Save Changes'|trans }}" type="button">
 					<!--//CTA-->

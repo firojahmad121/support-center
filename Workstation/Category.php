@@ -29,7 +29,6 @@ class Category extends Controller
             $categories = $this->getDoctrine()
                                 ->getRepository('UVDeskSupportCenterBundle:SolutionCategory')
                                 ->createQueryBuilder('a')
-                                // ->select('a.id, a.solutionId, a.companyId')
                                 ->getQuery()
                                 ->getResult()
                         ;

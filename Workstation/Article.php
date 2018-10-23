@@ -182,8 +182,8 @@ class Article extends Controller
                             ->getAllCategories(null, $this->container, 'a.id, a.name');
 
         if ($request->attributes->get('id')) {
-            $message = 'Success!  Article add successfully.';
-            $this->addFlash('success', $message);
+            $this->addFlash('success', 'Success!  Article add successfully.');
+            
             return  $this->render('@UVDeskSupportCenter/Staff/Articles/articleForm.html.twig', [
                 'article' => $article,
                 'articleCategory' => $articleCategory,
@@ -193,7 +193,6 @@ class Article extends Controller
             ]);
         }
       
-
         return $this->render('@UVDeskSupportCenter/Staff/Articles/articleAddForm.html.twig', [
             'article' => $article,
         ]);
@@ -429,13 +428,11 @@ class Article extends Controller
         $em = $this->getDoctrine()->getManager();
         //entry for Article History
         $articleHistory = new ArticleHistory;
-       
         $articleHistory->setUserId($this->getUser()->getId());
         $articleHistory->setArticleId($articleBase->getId());
         $articleHistory->setContent($articleBase->getContent());
 
         if ($updateArticle) {
-            
             $articleBase->setContent($content);
             $em->persist($articleBase);
         }

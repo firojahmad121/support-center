@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Webkul\UVDesk\SupportCenterBundle\Entity\Solutions;
 
-
 class Folder extends Controller
 {  
     public function listFolders(Request $request)
@@ -25,27 +24,23 @@ class Folder extends Controller
         ]);
     }
    
-
     public function createFolder(Request $request)
     {
         $folder = new Solutions();
         $errors = [];
 
         if ($request->getMethod() == "POST") {
-
             $entityManager = $this->getDoctrine()->getManager();
             $solutionImage = $request->files->get('solutionImage');
-            if($imageFile = $request->files->get('solutionImage'))
-            {
-                if(!preg_match('#^(image/)(?!(tif)|(svg) )#', $imageFile->getMimeType()) && !preg_match('#^(image/)(?!(tif)|(svg))#', $imageFile->getClientMimeType()) )
-                {
-                   
+            
+            if($imageFile = $request->files->get('solutionImage')) {
+                if (!preg_match('#^(image/)(?!(tif)|(svg) )#', $imageFile->getMimeType()) && !preg_match('#^(image/)(?!(tif)|(svg))#', $imageFile->getClientMimeType())) {
                     $message = 'Warning! Provide valid image file. (Recommened: PNG, JPG or GIF Format).';
                     $this->addFlash('warning', $message);
+                    
                     return $this->render('@UVDeskSupportCenter/Staff/Folders/createFolder.html.twig', [
                         'folder' => $folder
                     ]);
-                    
                 }
             }
               
@@ -90,10 +85,10 @@ class Folder extends Controller
             $solutionImage = $request->files->get('solutionImage');
           
             if ($imageFile = $request->files->get('solutionImage')) {
-                if(!preg_match('#^(image/)(?!(tif)|(svg) )#', $imageFile->getMimeType()) && !preg_match('#^(image/)(?!(tif)|(svg))#', $imageFile->getClientMimeType()) ) 
-                {
+                if (!preg_match('#^(image/)(?!(tif)|(svg) )#', $imageFile->getMimeType()) && !preg_match('#^(image/)(?!(tif)|(svg))#', $imageFile->getClientMimeType())) {
                     $message = 'Warning! Provide valid image file. (Recommened: PNG, JPG or GIF Format).';
                     $this->addFlash('warning', $message);
+                    
                     return $this->render('@UVDeskSupportCenter/Staff/Folders/updateFolder.html.twig', [
                         'folder' => $folder
                     ]);
@@ -116,7 +111,6 @@ class Folder extends Controller
             
             $this->addFlash('success', 'Folder updated successfully.');
             return $this->redirect($this->generateUrl('helpdesk_member_knowledgebase_folders_collection'));
-          
         }
 
         return $this->render('@UVDeskSupportCenter/Staff/Folders/updateFolder.html.twig', [

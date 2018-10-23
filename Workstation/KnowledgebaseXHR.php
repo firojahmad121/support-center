@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-
 class KnowledgebaseXHR extends Controller
 {
     public function listFoldersXHR(Request $request)

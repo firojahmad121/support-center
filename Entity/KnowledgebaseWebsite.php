@@ -92,7 +92,6 @@ class KnowledgebaseWebsite
      */
     private $updatedAt;
 
-
     /**
      * @var string
      */
@@ -852,7 +851,7 @@ class KnowledgebaseWebsite
     }
 
 
-/**
+    /**
      * Set brandIsActive
      *
      * @param string $customCSS
@@ -874,7 +873,6 @@ class KnowledgebaseWebsite
     {
         return $this->brandIsActive;
     }
-    
 
     /**
      * @var integer

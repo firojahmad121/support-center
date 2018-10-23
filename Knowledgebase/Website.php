@@ -98,6 +98,7 @@ class Website extends Controller
     public function listCategories(Request $request)
     {
         $this->isWebsiteActive();
+
         $solutionRepository = $this->getDoctrine()->getRepository('WebkulSupportCenterBundle:Solutions');
         $categoryCollection = $solutionRepository->getAllCategories($this->getCompany()->getId(), null, 0);
 
@@ -143,20 +144,16 @@ class Website extends Controller
             ];
         }
 
-
-
-        return $this->render('@UVDeskSupportCenter//Knowledgebase//folder.html.twig',
-                        array(
-                                'folder' => $solution,
-                                'categoryCount' => $this->getDoctrine()
-                                    ->getRepository('UVDeskSupportCenterBundle:Solutions')
-                                    ->getCategoriesCountBySolution($solution->getId()),
-                                'categories' => $this->getDoctrine()
-                                    ->getRepository('UVDeskSupportCenterBundle:Solutions')
-                                    ->getCategoriesWithCountBySolution($solution->getId()),,
-                                'breadcrumbs' => $breadcrumbs
-                            )
-                    );
+        return $this->render('@UVDeskSupportCenter//Knowledgebase//folder.html.twig', [
+            'folder' => $solution,
+            'categoryCount' => $this->getDoctrine()
+                ->getRepository('UVDeskSupportCenterBundle:Solutions')
+                ->getCategoriesCountBySolution($solution->getId()),
+            'categories' => $this->getDoctrine()
+                ->getRepository('UVDeskSupportCenterBundle:Solutions')
+                ->getCategoriesWithCountBySolution($solution->getId()),
+            'breadcrumbs' => $breadcrumbs
+        ]);
     }
 
     public function viewFolderArticle(Request $request)
