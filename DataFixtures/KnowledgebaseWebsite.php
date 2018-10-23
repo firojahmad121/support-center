@@ -36,6 +36,7 @@ class KnowledgebaseWebsite extends DoctrineFixture
                 ->setName('Knowledgebase')
                 ->setCode('knowledgebase')
                 ->setLogo('#7E91F0')
+                ->setThemeColor('#7E91F0')
                 ->setCreatedAt(new \DateTime())
                 ->setUpdatedAt(new \DateTime());
 
