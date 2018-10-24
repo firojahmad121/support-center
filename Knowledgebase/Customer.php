@@ -5,6 +5,7 @@ namespace Webkul\UVDesk\SupportCenterBundle\Knowledgebase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Security;
+use Webkul\UVDesk\CoreBundle\Entity\User;
 
 Class Customer extends Controller
 {
@@ -31,12 +32,8 @@ Class Customer extends Controller
 
     protected function encodePassword(User $user, $plainPassword)
     {
-        $encoder = $this->container->get('security.encoder_factory')
-                   ->getEncoder($user);
-
-        return $encoder->encodePassword($plainPassword, $user->getSalt());
+      return  $encodedPassword = $this->container->get('security.password_encoder')->encodePassword($user, $plainPassword);
     }
-
     protected function isLoginDisabled()
     {
         $error = false;
@@ -79,9 +76,138 @@ Class Customer extends Controller
             ]);
     }
 
-    public function forgotPasswordAction()
+    public function forgotPassword(Request $request)
     {
-        dump("sdf");
-        die;
-    }
+      
+        if($this->isLoginDisabled()) {
+            $this->addFlash('warning','Warning ! Customer Login disabled by admin.');
+            return $this->redirect($this->generateUrl('webkul_support_center_front_solutions'));
+        }
+
+        $errors = [];
+        if($request->getMethod() == 'POST') {
+            $entityManager = $this->getDoctrine()->getManager();
+            $user = new User();
+            $data = $request->request->all();
+            $repository = $this->getDoctrine()->getRepository('UVDeskCoreBundle:User');
+            $user = $entityManager->getRepository('UVDeskCoreBundle:User')->findOneBy(array('email' => $data['email']));
+            
+            if($user) { 
+                   
+                    $key = time();
+                    $request->getSession()->getFlashBag()->set(
+                            'success',$this->get('translator')->trans('Please check your mail for password update.')
+                        );
+                return $this->redirect($this->generateUrl('helpdesk_customer_account_validation')."/".$data['email']."/".$key);
+
+                    // return $this->redirect($this->generateUrl('webkul_support_center_front_forgot_password'));
+                } else {
+                    $request->getSession()->getFlashBag()->set('warning', $this->get('translator')->trans('This Email is not registered with us.'));
+                }
+            }
+            else{
+                $request->getSession()->getFlashBag()->set('warning', $this->get('translator')->trans('This Email is not registered with us.'));
+                return $this->render('@UVDeskSupportCenter/Knowledgebase/forgotPassword.html.twig', [
+                    'searchDisable' => true,
+                    'errors' => json_encode($errors),
+                    'breadcrumbs' => [
+                        [
+                            'label' => 'Support Center',
+                            'url' => 'webkul_support_center_front_solutions'
+                        ], [
+                            'label' => 'Forgot Password',
+                            'url' => '#'
+                        ]
+                    ]
+                ]);
+            } 
+            return $this->render('@UVDeskSupportCenter/Knowledgebase/forgotPassword.html.twig', [
+                'searchDisable' => true,
+                'errors' => json_encode($errors),
+                'breadcrumbs' => [
+                    [
+                        'label' => 'Support Center',
+                        'url' => 'webkul_support_center_front_solutions'
+                    ], [
+                        'label' => 'Forgot Password',
+                        'url' => '#'
+                    ]
+                ]
+            ]);
+        }
+
+        public function AccountValidation(Request $request)
+        {
+           
+            if($this->isLoginDisabled()) {
+                $this->addFlash('warning','Warning ! Customer Login disabled by admin.');
+                return $this->redirect($this->generateUrl('webkul_support_center_front_solutions'));
+            }
+            $errors = [];
+           
+            if($request->attributes->get('email') && $request->attributes->get('key'))
+            {
+                $entityManager = $this->getDoctrine()->getManager();
+                $user = new User();
+                $repository = $this->getDoctrine()->getRepository('UVDeskCoreBundle:User');
+                $user = $entityManager->getRepository('UVDeskCoreBundle:User')->findOneBy(array('email' => $request->attributes->get('email')));
+                
+                if($user) 
+                {
+                    if($request->getMethod() == 'POST') 
+                    {
+
+                    $data = $request->request->all();
+                    if($data['password']['first']===$data['password']['second'])
+                    {
+                        $user->setPassword($this->encodePassword($user, $data['password']['first']));
+                        $entityManager->persist($user);
+                        $entityManager->flush();            
+                        $request->getSession()->getFlashBag()->set('success', 'Your password changed.');
+                        return  $this->redirect($this->generateUrl('helpdesk_customer_login'));
+
+                    } else {
+                            $request->getSession()->getFlashBag()->set('warning', 'Password does not match.');
+                            return $this->render('@UVDeskSupportCenter/Knowledgebase/resetPassword.html.twig', [
+                                'searchDisable' => true,
+                                'errors' => json_encode($errors),
+                                'breadcrumbs' => [
+                                    [
+                                        'label' =>'Support Center',
+                                        'url' => 'webkul_support_center_front_solutions'
+                                    ], [
+                                        'label' => 'Account Validation',
+                                        'url' => '#'
+                                    ]
+                                ]
+                            ]);
+                        }
+                    }
+                } else {
+                    
+                }
+
+                 return $this->render('@UVDeskSupportCenter/Knowledgebase/resetPassword.html.twig', [
+                        'searchDisable' => true,
+                        'errors' => json_encode($errors),
+                        'breadcrumbs' => [
+                            [
+                                'label' =>'Support Center',
+                                'url' => 'webkul_support_center_front_solutions'
+                            ], [
+                                'label' => 'Account Validation',
+                                'url' => '#'
+                            ]
+                        ]
+                    ]);
+
+            }
+            else {
+                $request->getSession()->getFlashBag()->set('warning','Warning! This request is not validated !! This request has been processed, already.');
+                return $this->redirect($this->generateUrl('helpdesk_customer_login'));                
+            }
+             
+        }
+        
+     
 }

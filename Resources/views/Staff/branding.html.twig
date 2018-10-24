@@ -116,6 +116,17 @@
 					  	</div>
 					</div>
 					<!-- //Field -->
+                    
+                    {# 
+                    <!-- Field -->
+					<div class="uv-element-block">
+					  	<label class="uv-field-label">{{ 'Theme Color'|trans }}</label>
+					  	<div class="uv-field-block">
+					    	<input name="website[brandColor]" class="uv-field uv-color-field" type="text" value="{{ configuration.brandColor ?: '#7C70F4' }}" style="background: {{ configuration.brandColor ?: '#7C70F4' }}" placeholder="#7C70F4">
+					  	</div>
+					</div>
+					<!-- //Field -->
+                    #}
 
 					<!-- Field -->
 					<div class="uv-element-block">
@@ -126,22 +137,6 @@
 					</div>
 					<!-- //Field -->
 
-				
-
-					<!-- Field -->
-					<div class="uv-element-block">
-					  	<label class="uv-field-label">{{ 'Default Language (Optional)'|trans }}</label>
-					  	<div class="uv-field-block">
-                            <select name="defaultLocal" class="uv-select">
-                                <option value="">{{ 'Select default language'|trans }}</option>
-                              
-                                {% for localeCode, localeName in uvdesk_service.getLocales() %}
-                                    
-                                    <option value="{{ localeCode }}" {% if localeCode == website.local %}selected="selected"{% endif %}>{{ localeName }}</option>
-                                {% endfor %}
-                            </select>
-					  	</div>
-					</div>
 					<!--CTA-->
 					<input class="uv-btn general-btn" href="#" value="{{ 'Save Changes'|trans }}" type="button">
 					<!--//CTA-->
@@ -185,8 +180,25 @@
 					</div>
 					<!-- //Field -->
 
-                   
+                    <!-- Field -->
+                    <div class="uv-element-block">
+                    {##564DA8#}
+                        <label class="uv-field-label">{{ 'Nav Text Color'|trans }}</label>
+                        <div class="uv-field-block"> 
+                            <input name="website[navTextColor]" class="uv-field uv-color-field" type="text" value="{{ configuration.navTextColor ? configuration.navTextColor : '#70B5F4' }}" style="background: {{ configuration.navTextColor ? configuration.navTextColor : '#FFFFFF' }}">
+                        </div>
+                    </div>
+                    <!-- //Field -->
 
+                    <!-- Field -->
+                    <div class="uv-element-block">
+                    {##564DA8#}
+                        <label class="uv-field-label">{{ 'Nav Active Color'|trans }}</label>
+                        <div class="uv-field-block"> 
+                            <input name="website[navActiveColor]" class="uv-field uv-color-field" type="text" value="{{ configuration.navActiveColor ? configuration.navActiveColor : '#70B5F4' }}" style="background: {{ configuration.navActiveColor ? configuration.navActiveColor : '#FFFFFF' }}">
+                        </div>
+                    </div>
+                    <!-- //Field -->
 
                     <!-- Field -->
 					<div class="uv-element-block">

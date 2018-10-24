@@ -75,7 +75,12 @@
 
     {% set bodyClass = '' %}
     {% set bodySkinClass = '' %}
-  
+    {# {% if websiteConfiguration and default_service.isDarkSkin(websiteConfiguration.brandColor) %}
+        {% set bodySkinClass = 'uv-skin-dark' %}
+    {% endif %}
+     {% if app.request.locale in default_service.getRTLLocale() %}
+        {% set bodyClass = 'uv-rtl' %}
+    {% endif %} #}
     <body class="{{ bodySkinClass ~ ' ' ~ bodyClass }}">
         {% set broadcastMessage = uvdesk_service.getValidBroadcastMessage(websiteConfiguration.broadcastMessage is defined ? websiteConfiguration.broadcastMessage : '') %}
         {% if broadcastMessage %}
@@ -85,17 +90,45 @@
             </div>
         {% endif %}
 
-        <div class="uv-notifications-wrapper">           
+        <div class="uv-notifications-wrapper">
+            {% if uvdesk_service.requestHeadersSent() == false %}
+                {% for flashMessage in app.session.flashbag.get('success') %}
+                    <div class="uv-notification page-load uv-success">
+                        <span class="uv-notification-close"></span>
+                        <p>{{ flashMessage|raw }}</p>
+                    </div>
+                {% endfor %}
+                {% for flashMessage in app.session.flashbag.get('warning') %}
+                    <div class="uv-notification page-load uv-error">
+                        <span class="uv-notification-close"></span>
+                        <p>{{ flashMessage|raw }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
             <noscript>
                 <div class="uv-notification uv-error">
                     <p>{% trans %}Your browser does not support JavaScript or You disabled JavaScript, Please enable those !{% endtrans %}</p>
                 </div>
                 <style>.uv-loader-view {display: none;}</style>
             </noscript>
-        </div>  
+        </div>
+
+        {# {% set fileDefaultImages = [] %}
+        {% for key, img in file_service.getFileDefaultImages() %}
+            {% set image = asset('bundles/webkuldefault/images/' ~ img) %}
+            {% set fileDefaultImages = fileDefaultImages|merge({(key): image}) %}
+        {% endfor %}
+        <script type="text/javascript">
+            var fileDefaultImages = {{ fileDefaultImages|json_encode|raw }}
+        </script> #}
 
         {% block header %}
-        
+            {# header.twig #}
+            {# {% if searchDisable is defined %}
+                {{ render_esi(url('helpdesk_knowledgebase_header', { 'searchDisable': searchDisable })) }}
+            {% else %}
+                {{ render_esi(url('helpdesk_knowledgebase_header', { 'searchDisable': true })) }}
+            {% endif %} #}
             {% include "@UVDeskSupportCenter/Templates/header.html.twig" %}
         {% endblock %}
 
@@ -118,11 +151,11 @@
                                 </svg>
                             </div>
                             <div class="uv-cta-rt">
-                                <h2>{{"Unable to find an answer?"}}</h2>
+                                <h2>{{"Unable to find an answer?"|trans}}</h2>
                                 <p>{{"Looking for anything specific article which resides in general queries? Just browse the various relevant folders and categories and then you will find the desired article."|trans}}
                                 </p>
             					{% if websiteConfiguration is defined and websiteConfiguration.ticketCreateOption is defined %}
-                                    <a href="{{ path('helpdesk_customer_create_ticket') }}" class="uv-btn uv-margin-top-15">{{'Contact Us'}}</a>
+                                    <a href="{{ path('helpdesk_customer_create_ticket') }}" class="uv-btn uv-margin-top-15">{{'Contact Us'|trans}}</a>
                                 {% endif %}
                             </div>
                         </div>
@@ -171,6 +204,20 @@
                     'alertMessage' : '{{ "Error : Something went wrong, please try again later"|trans }}',
                 };
             </script>
+
+            {# <div class="uv-pop-up-overlay" id="confirm-modal">
+                <div class="uv-pop-up-box uv-pop-up-slim">
+                    <span class="uv-pop-up-close"></span>
+                    <h2>{{ 'Confirm Action'|trans }}</h2>
+                    <p>{{ 'Are you sure? You want to perform this action.'|trans }}</p>
+
+                    <div class="uv-pop-up-actions">
+                        <a href="#" class="uv-btn uv-btn-error confirm">{{ 'Confirm'|trans }}</a>
+                        <a href="#" class="uv-btn cancel">{{ 'Cancel'|trans }}</a>
+                    </div>
+                </div>
+            </div> #}
+            {# {{ include('@UVDeskSupportCenter//cookiePolicy.html.twig') }} #}
         {% endblock %}
     </body>
 </html>

@@ -17,4 +17,6 @@ security:
     access_control:
         - { path: /customer/login, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: /customer/create-ticket, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
+        - { path: /customer/forgot-password, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
+        - { path: /customer/account-confirmation, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: /customer/, roles: ROLE_CUSTOMER }
