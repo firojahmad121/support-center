@@ -91,7 +91,7 @@
         {% endif %}
 
         <div class="uv-notifications-wrapper">
-            {# {% if default_service.requestHeadersSent() == false %}
+            {% if uvdesk_service.requestHeadersSent() == false %}
                 {% for flashMessage in app.session.flashbag.get('success') %}
                     <div class="uv-notification page-load uv-success">
                         <span class="uv-notification-close"></span>
@@ -104,7 +104,7 @@
                         <p>{{ flashMessage|raw }}</p>
                     </div>
                 {% endfor %}
-            {% endif %} #}
+            {% endif %}
             <noscript>
                 <div class="uv-notification uv-error">
                     <p>{% trans %}Your browser does not support JavaScript or You disabled JavaScript, Please enable those !{% endtrans %}</p>
