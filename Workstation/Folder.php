@@ -8,10 +8,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Webkul\UVDesk\SupportCenterBundle\Entity\Solutions;
 
+
 class Folder extends Controller
 {  
     public function listFolders(Request $request)
     {
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
         $entityManager = $this->getDoctrine()->getManager();
         $totalKnowledgebaseFolders = $entityManager->getRepository('UVDeskSupportCenterBundle:Solutions')->getTotalSolutionCount();
         $totalKnowledgebaseCategories = $entityManager->getRepository('UVDeskSupportCenterBundle:SolutionCategory')->getTotalCategoryCount();
@@ -24,23 +29,31 @@ class Folder extends Controller
         ]);
     }
    
+
     public function createFolder(Request $request)
     {
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
         $folder = new Solutions();
         $errors = [];
 
         if ($request->getMethod() == "POST") {
+
             $entityManager = $this->getDoctrine()->getManager();
             $solutionImage = $request->files->get('solutionImage');
-            
-            if($imageFile = $request->files->get('solutionImage')) {
-                if (!preg_match('#^(image/)(?!(tif)|(svg) )#', $imageFile->getMimeType()) && !preg_match('#^(image/)(?!(tif)|(svg))#', $imageFile->getClientMimeType())) {
+            if($imageFile = $request->files->get('solutionImage'))
+            {
+                if(!preg_match('#^(image/)(?!(tif)|(svg) )#', $imageFile->getMimeType()) && !preg_match('#^(image/)(?!(tif)|(svg))#', $imageFile->getClientMimeType()) )
+                {
+                   
                     $message = 'Warning! Provide valid image file. (Recommened: PNG, JPG or GIF Format).';
                     $this->addFlash('warning', $message);
-                    
                     return $this->render('@UVDeskSupportCenter/Staff/Folders/createFolder.html.twig', [
                         'folder' => $folder
                     ]);
+                    
                 }
             }
               
@@ -72,6 +85,10 @@ class Folder extends Controller
 
     public function updateFolder($folderId)
     {
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
         $entityManager = $this->getDoctrine()->getManager();
         $request = $this->container->get('request_stack')->getCurrentRequest();
         $knowledgebaseFolder = $entityManager->getRepository('UVDeskSupportCenterBundle:Solutions')->findSolutionById(['id' => $folderId]);
@@ -85,10 +102,10 @@ class Folder extends Controller
             $solutionImage = $request->files->get('solutionImage');
           
             if ($imageFile = $request->files->get('solutionImage')) {
-                if (!preg_match('#^(image/)(?!(tif)|(svg) )#', $imageFile->getMimeType()) && !preg_match('#^(image/)(?!(tif)|(svg))#', $imageFile->getClientMimeType())) {
+                if(!preg_match('#^(image/)(?!(tif)|(svg) )#', $imageFile->getMimeType()) && !preg_match('#^(image/)(?!(tif)|(svg))#', $imageFile->getClientMimeType()) ) 
+                {
                     $message = 'Warning! Provide valid image file. (Recommened: PNG, JPG or GIF Format).';
                     $this->addFlash('warning', $message);
-                    
                     return $this->render('@UVDeskSupportCenter/Staff/Folders/updateFolder.html.twig', [
                         'folder' => $folder
                     ]);
@@ -111,6 +128,7 @@ class Folder extends Controller
             
             $this->addFlash('success', 'Folder updated successfully.');
             return $this->redirect($this->generateUrl('helpdesk_member_knowledgebase_folders_collection'));
+          
         }
 
         return $this->render('@UVDeskSupportCenter/Staff/Folders/updateFolder.html.twig', [

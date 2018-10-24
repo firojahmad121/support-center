@@ -40,13 +40,14 @@
 		}
 	{% endif %}
     {% if websiteConfiguration is defined and websiteConfiguration.linkColor is defined %}
-        a:not(.uv-btn):not(.uv-btn-small):not(.uv-btn-social):not(.uv-table):not(.goog-te-menu-value):not(.not-shiny):not([data-page]):not(.uv-page-active):not(.uv-dropdown-container a) {
-            color: {{ websiteConfiguration.linkColor }} !important;
+    a:not(.uv-btn):not(.uv-btn-small):not(.uv-btn-social):not(.uv-table):not(.not-shiny) {
+           
+            color: {{ websiteConfiguration.linkColor }}!important;
         }
     {% endif %}
     {% if websiteConfiguration is defined and websiteConfiguration.linkHoverColor is defined %}
         a:not(.uv-btn):not(.uv-btn-small):not(.uv-btn-social):not(.uv-table):not(.not-shiny):hover {
-            color: {{ websiteConfiguration.linkHoverColor }} !important;
+            color: {{ websiteConfiguration.linkHoverColor }}!important;
         }
     {% endif %}
     .goog-te-gadget-simple .goog-te-menu-value, .goog-te-gadget-simple .goog-te-menu-value:hover {
@@ -101,7 +102,7 @@
                         </div>
                     </span>
                 {% else %}
-                    <nav>
+                    <nav id="front_nav">
                         <ul>
                             <li><a href="{{path('helpdesk_knowledgebase_folder')}}">{{"Home"|trans}}</a></li>
                             {% for headerLink in websiteConfiguration.headerLinks %}

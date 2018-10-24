@@ -37,16 +37,7 @@ Webkul\UVDesk\SupportCenterBundle\Entity\KnowledgebaseWebsite:
             length: 255
             nullable: true
             column: banner_background_color
-        navTextColor:
-            type: string
-            length: 255
-            column: nav_text_color
-            nullable: true
-        navActiveColor:
-            type: string
-            length: 255
-            column: nav_active_color
-            nullable: true
+      
         linkColor:
             type: string
             length: 255

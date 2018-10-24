@@ -97,8 +97,11 @@ class Website extends Controller
 
     public function listCategories(Request $request)
     {
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
         $this->isWebsiteActive();
-
         $solutionRepository = $this->getDoctrine()->getRepository('WebkulSupportCenterBundle:Solutions');
         $categoryCollection = $solutionRepository->getAllCategories($this->getCompany()->getId(), null, 0);
 
@@ -110,8 +113,11 @@ class Website extends Controller
 
     public function viewFolder(Request $request)
     {
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
         $this->isWebsiteActive();
-
         if(!$request->attributes->get('solution'))
             return $this->redirect($this->generateUrl('helpdesk_knowledgebase'));
 
@@ -144,20 +150,28 @@ class Website extends Controller
             ];
         }
 
-        return $this->render('@UVDeskSupportCenter//Knowledgebase//folder.html.twig', [
-            'folder' => $solution,
-            'categoryCount' => $this->getDoctrine()
-                ->getRepository('UVDeskSupportCenterBundle:Solutions')
-                ->getCategoriesCountBySolution($solution->getId()),
-            'categories' => $this->getDoctrine()
-                ->getRepository('UVDeskSupportCenterBundle:Solutions')
-                ->getCategoriesWithCountBySolution($solution->getId()),
-            'breadcrumbs' => $breadcrumbs
-        ]);
+
+
+        return $this->render('@UVDeskSupportCenter//Knowledgebase//folder.html.twig',
+                        array(
+                                'folder' => $solution,
+                                'categoryCount' => $this->getDoctrine()
+                                    ->getRepository('UVDeskSupportCenterBundle:Solutions')
+                                    ->getCategoriesCountBySolution($solution->getId()),
+                                'categories' => $this->getDoctrine()
+                                    ->getRepository('UVDeskSupportCenterBundle:Solutions')
+                                    ->getCategoriesWithCountBySolution($solution->getId()),,
+                                'breadcrumbs' => $breadcrumbs
+                            )
+                    );
     }
 
     public function viewFolderArticle(Request $request)
     {
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
         $this->isWebsiteActive();
 
         if(!$request->attributes->get('solution'))
@@ -205,8 +219,16 @@ class Website extends Controller
 
     public function viewCategory(Request $request)
     {
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
+       
         $this->isWebsiteActive();
-
         if(!$request->attributes->get('category'))
             return $this->redirect($this->generateUrl('helpdesk_knowledgebase'));
 
@@ -255,7 +277,10 @@ class Website extends Controller
    
     public function viewArticle(Request $request)
     {
-       
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
         $this->isWebsiteActive();
 
         if (!$request->attributes->get('article') && !$request->attributes->get('slug')) {
@@ -320,6 +345,10 @@ class Website extends Controller
 
     public function searchKnowledgebase(Request $request)
     {
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
         $this->isWebsiteActive();
 
         $searchQuery = $request->query->get('s');
@@ -344,6 +373,10 @@ class Website extends Controller
 
     public function viewTaggedResources(Request $request)
     {
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
         $this->isWebsiteActive();
 
         $tagQuery = $request->attributes->get('tag');

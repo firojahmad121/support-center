@@ -19,7 +19,10 @@ class Article extends Controller
 {
     public function articleList(Request $request)
     {
-       
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
         $solutions = $this->getDoctrine()
                            ->getRepository('UVDeskSupportCenterBundle:Solutions')
                            ->getAllSolutions(null, $this->container, 'a.id, a.name');
@@ -39,7 +42,10 @@ class Article extends Controller
 
     public function articleListByCategory(Request $request)
     {
-      
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
 
         $category = $this->getDoctrine()
                             ->getRepository('UVDeskSupportCenterBundle:SolutionCategory')
@@ -64,7 +70,10 @@ class Article extends Controller
 
     public function ArticleListBySolution(Request $request)
     {
-        
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
 
         $solution = $this->getDoctrine()
                             ->getRepository('UVDeskSupportCenterBundle:Solutions')
@@ -86,6 +95,10 @@ class Article extends Controller
 
     public function articleListXhr(Request $request)
     {
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
         $json = array();
        
         $repository = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:Article');
@@ -146,6 +159,10 @@ class Article extends Controller
 
     protected function getArticle($filterArray = array())
     {
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
         if($filterArray)
             return $this->getDoctrine()
                         ->getRepository('UVDeskSupportCenterBundle:Article')
@@ -182,8 +199,8 @@ class Article extends Controller
                             ->getAllCategories(null, $this->container, 'a.id, a.name');
 
         if ($request->attributes->get('id')) {
-            $this->addFlash('success', 'Success!  Article add successfully.');
-            
+            $message = 'Success!  Article add successfully.';
+            $this->addFlash('success', $message);
             return  $this->render('@UVDeskSupportCenter/Staff/Articles/articleForm.html.twig', [
                 'article' => $article,
                 'articleCategory' => $articleCategory,
@@ -193,12 +210,17 @@ class Article extends Controller
             ]);
         }
       
+
         return $this->render('@UVDeskSupportCenter/Staff/Articles/articleAddForm.html.twig', [
             'article' => $article,
         ]);
     }
     public function articleXhr(Request $request)
     {
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
     
         $json = array();
        
@@ -425,14 +447,20 @@ class Article extends Controller
 
     private function updateContent($articleBase, $content, $updateArticle = true)
     {
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
         $em = $this->getDoctrine()->getManager();
         //entry for Article History
         $articleHistory = new ArticleHistory;
+       
         $articleHistory->setUserId($this->getUser()->getId());
         $articleHistory->setArticleId($articleBase->getId());
         $articleHistory->setContent($articleBase->getContent());
 
         if ($updateArticle) {
+            
             $articleBase->setContent($content);
             $em->persist($articleBase);
         }
@@ -443,6 +471,10 @@ class Article extends Controller
 
     private function removeArticle($article)
     {
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
         $this->getDoctrine()
             ->getRepository('UVDeskSupportCenterBundle:Article')
             ->removeEntryByArticle($article->getId());
@@ -450,6 +482,10 @@ class Article extends Controller
 
     public function articleRelatedXhr2(Request $request)
     {
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
         $json = array();       
         if($request->getMethod() == "GET") {
 

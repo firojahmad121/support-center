@@ -6,10 +6,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+
 class KnowledgebaseXHR extends Controller
 {
     public function listFoldersXHR(Request $request)
     {  
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
         $response = new Response();
         $folderCollection = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:Solutions')->getAllSolutions($request->query, $this->container);
 
@@ -20,6 +25,10 @@ class KnowledgebaseXHR extends Controller
 
     public function updateFolderXHR(Request $request)
     {
+        if(!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+            exit;
+        }
         $json = array();
 
         $entityManager = $this->getDoctrine()->getManager();

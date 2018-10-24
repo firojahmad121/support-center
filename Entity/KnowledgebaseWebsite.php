@@ -32,15 +32,7 @@ class KnowledgebaseWebsite
      */
     private $headerBackgroundColor;
 
-    /**
-     * @var string
-     */
-    private $navTextColor;
-
-    /**
-     * @var string
-     */
-    private $navActiveColor;
+   
 
     /**
      * @var string
@@ -91,6 +83,7 @@ class KnowledgebaseWebsite
      * @var \DateTime
      */
     private $updatedAt;
+
 
     /**
      * @var string
@@ -487,53 +480,6 @@ class KnowledgebaseWebsite
     
 
 
-
-    /**
-     * Set navTextColor
-     *
-     * @param string $navTextColor
-     * @return Website
-     */
-    public function setNavTextColor($navTextColor)
-    {
-        $this->navTextColor = $navTextColor;
-
-        return $this;
-    }
-
-    /**
-     * Get navTextColor
-     *
-     * @return string 
-     */
-    public function getNavTextColor()
-    {
-        return $this->navTextColor;
-    }
-
-    /**
-     * Set navActiveColor
-     *
-     * @param string $navActiveColor
-     * @return Website
-     */
-    public function setNavActiveColor($navActiveColor)
-    {
-        $this->navActiveColor = $navActiveColor;
-
-        return $this;
-    }
-
-    /**
-     * Get navActiveColor
-     *
-     * @return string 
-     */
-    public function getNavActiveColor()
-    {
-        return $this->navActiveColor;
-    }
-
     /**
      * Set linkColor
      *
@@ -851,7 +797,7 @@ class KnowledgebaseWebsite
     }
 
 
-    /**
+/**
      * Set brandIsActive
      *
      * @param string $customCSS
@@ -873,6 +819,7 @@ class KnowledgebaseWebsite
     {
         return $this->brandIsActive;
     }
+    
 
     /**
      * @var integer
