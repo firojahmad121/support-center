@@ -151,8 +151,7 @@ class Ticket extends Controller
                             $data['customer'] = $this->get('user.service')->getUserDetails($data);
                         } else {
                             $userDetail = $em->getRepository('UVDeskCoreBundle:User')->find($data['customer']->getId());
-                            $data['email'] = $custom$request->getSession()->getFlashBag()->set('success', $this->get('translator')->trans('Success ! Ticket has been created successfully.'));erEmail = $data['customer']->getEmail();
-
+                            $data['email'] = $customerEmail = $data['customer']->getEmail();
                             $nameCollection = [$userDetail->getFirstName(), $userDetail->getLastName()];
                             $name = implode(' ', $nameCollection);
                             $data['fullname'] = $name;
