@@ -19,21 +19,20 @@ class Ticket extends Controller
     {
         $error = false;
 
-        $currentWebsite = $this->getWebsiteDetails();
-        $isWebsiteActive = $currentWebsite->getIsActive();
+        $currentKnowledgebase = $this->getWebsiteDetails();
         
-        $currentWebsite->getIsActive() ?: ($error = true);
-
-        if($error)
+        if(!$currentKnowledgebase)
             $this->noResultFound();
     }
 
     protected function getWebsiteDetails()
     {
         $em = $this->getDoctrine()->getManager();
-        $websiteRepo = $em->getRepository('UVDeskCoreBundle:Website');
 
-        return $currentWebsite = $websiteRepo->findOneBy(['code' => 'knowledgebase']);
+        $KnowledgebaseRepo = $em->getRepository('UVDeskSupportCenterBundle:KnowledgebaseWebsite');
+        $currentKnowledgebase = $KnowledgebaseRepo->findOneBy(['website' => 2, 'isActive' => true]);
+
+        return $currentKnowledgebase;
     }
 
     /**
