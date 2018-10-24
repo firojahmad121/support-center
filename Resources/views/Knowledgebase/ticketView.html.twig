@@ -479,11 +479,6 @@
 {% block footer %}
     {{ parent() }}
     {{ include('@UVDeskCore/Templates/attachment.html.twig') }}
-    {# {{ include('WebkulDefaultBundle:Default:attachment.html.twig') }} #}
-    {% if customFieldCollection is defined %}
-        {% include('WebkulCoreBundle:Default:ticketSidebarCustomFieldValidation.html.twig') with {'headerCustomFields':  customFieldCollection} %}
-        {# {{ application_service.getCustomerTicketPageAppSnippet|raw }} #}
-    {% endif %}
 
     <script id="thread_list_item_tmp" type="text/template">
         <div class="uv-ticket-strip">

@@ -19,6 +19,7 @@ Class Customer extends Controller
     protected function isWebsiteActive()
     {
         $error = false;
+
         if($error)
             $this->noResultFound();
     }
@@ -82,7 +83,7 @@ Class Customer extends Controller
     {
 
     }
-    // Customer Profile 
+
     public function Account(Request $request)
     {
         $this->isWebsiteActive();
@@ -154,9 +155,10 @@ Class Customer extends Controller
                 return $this->redirect($this->generateUrl('helpdesk_customer_account'));
             }
         }
+        
         return $this->render('@UVDeskSupportCenter/Knowledgebase/customerAccount.html.twig', [
-                'searchDisable' => true,
-                'user' => $user,
+            'searchDisable' => true,
+            'user' => $user,
         ]);
     }
     
