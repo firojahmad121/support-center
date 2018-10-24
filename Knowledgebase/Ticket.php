@@ -252,13 +252,14 @@ class Ticket extends Controller
     public function saveReply(int $id, Request $request)
     {
         $this->isWebsiteActive();
-
+        
         $data = $request->request->all();
+
         $ticket = $this->getDoctrine()->getRepository('UVDeskCoreBundle:Ticket')->find($id);
 
         if($_POST) {
             if(str_replace(' ','',str_replace('&nbsp;','',trim(strip_tags($data['message'], '<img>')))) != "") {
-                if($this->get('file.service')->validateAttachmentsSize($request->files->get('attachments'))) {
+                // if($this->get('file.service')->validateAttachmentsSize($request->files->get('attachments'))) {
 
                     if(!$ticket)
                         $this->noResultFound();
@@ -269,8 +270,9 @@ class Ticket extends Controller
                     $data['fullname'] = $userDetail['name'];
 
                     $data['userType'] = 'customer';
-                    $data['source'] = 'website';
-                    $data['createdBy'] = $userDetail['email'];
+                    $data['source']   = 'website';
+                    $data['createdBy']   = $userDetail['email'];
+                    $data['attachments'] = $request->files->get('attachments');
 
                     $thread = $this->get('ticket.service')->createThread($ticket, $data);
                     // $this->get('ticket.service')->removeDraft($data);
@@ -299,15 +301,15 @@ class Ticket extends Controller
                         'success',
                         $this->get('translator')->trans("Success ! Reply added successfully.")
                     );
-                } else {
-                    $this->addFlash(
-                        'warning',
-                        $this->get('translator')->trans("Warning ! Files size can not exceed %size% MB",
-                            [
-                                "%size%" => $this->container->getParameter('max_upload_size')
-                            ])
-                    );
-                }
+                // } else {
+                //     $this->addFlash(
+                //         'warning',
+                //         $this->get('translator')->trans("Warning ! Files size can not exceed %size% MB",
+                //             [
+                //                 "%size%" => $this->container->getParameter('max_upload_size')
+                //             ])
+                //     );
+                // }
             } else {
                 $this->addFlash(
                     'warning',
