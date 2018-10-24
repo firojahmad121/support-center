@@ -433,11 +433,11 @@
 
         <div class="uv-kudo-plank">
             {% set count = 0 %}
-            {# {% for rating in ticket.ratings %}
+            {% for rating in ticket.ratings %}
                 {% if rating.ratedCustomer.id == app.user.id %}
                     {% set count = rating.count %}
                 {% endif %}
-            {% endfor %} #}
+            {% endfor %}
             <div class="uv-kudo-response-wrapper">
                 <span class="uv-kudo-response uv-kudo-very-sad {% if count == 1 %}uv-kudo-done{% endif %}" data-id="1"></span>
                 <span class="uv-kudo-response uv-kudo-sad {% if count == 2 %}uv-kudo-done{% endif %}" data-id="2"></span>
@@ -478,11 +478,7 @@
 
 {% block footer %}
     {{ parent() }}
-    {# {{ include('WebkulDefaultBundle:Default:attachment.html.twig') }} #}
-    {% if customFieldCollection is defined %}
-        {% include('WebkulCoreBundle:Default:ticketSidebarCustomFieldValidation.html.twig') with {'headerCustomFields':  customFieldCollection} %}
-        {# {{ application_service.getCustomerTicketPageAppSnippet|raw }} #}
-    {% endif %}
+    {{ include('@UVDeskCore/Templates/attachment.html.twig') }}
 
     <script id="thread_list_item_tmp" type="text/template">
         <div class="uv-ticket-strip">
