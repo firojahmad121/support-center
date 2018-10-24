@@ -350,7 +350,7 @@ class Ticket extends Controller
         if($request->isXmlHttpRequest()) {
             $repository = $this->getDoctrine()->getRepository('UVDeskCoreBundle:Ticket');
     
-            $json = $repository->getAllTickets($request->query, $this->container);
+            $json = $repository->getAllCustomerTickets($request->query, $this->container);
         }
 
         $response = new Response(json_encode($json));
@@ -358,7 +358,6 @@ class Ticket extends Controller
 
         return $response;
     }
-
 
     /**
      * threadListXhrAction "Filter and sort user collection on ajx request"
