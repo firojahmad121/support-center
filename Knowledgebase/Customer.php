@@ -19,7 +19,6 @@ Class Customer extends Controller
     protected function isWebsiteActive()
     {
         $error = false;
-        $this->getCompany(true) ? ($error = !$this->getCompany(true)->getStatus()) : ($error = true);
 
         if($error)
             $this->noResultFound();
@@ -78,6 +77,7 @@ Class Customer extends Controller
 
     public function forgotPassword(Request $request)
     {
+<<<<<<< HEAD
       
         if($this->isLoginDisabled()) {
             $this->addFlash('warning','Warning ! Customer Login disabled by admin.');
@@ -210,4 +210,87 @@ Class Customer extends Controller
         }
         
      
+=======
+
+    }
+
+    public function Account(Request $request)
+    {
+        $this->isWebsiteActive();
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+
+        $errors = [];
+        if($request->getMethod() == 'POST') {
+
+            $data     = $request->request->all();
+            $dataFiles = $request->files->get('user_form');
+            $data = $data['user_form'];
+
+            $checkUser = $em->getRepository('UVDeskCoreBundle:User')->findOneBy(array('email'=>$data['email']));
+            $errorFlag = 0;
+            if($checkUser) {
+                if($checkUser->getId() != $user->getId())
+                    $errorFlag = 1;
+            }
+            if(!$errorFlag) {
+
+                $password = $user->getPassword();
+                $form = $this->createForm(UserProfile::class, $user);
+                $form->handleRequest($request);
+                $form->submit(true);
+                $encodedPassword = $this->container->get('security.password_encoder')->encodePassword($user, $data['password']['first']);
+                if ($form->isValid()) {
+                    if($data != null) {
+                        if(!empty($encodedPassword) ) {
+                            $user->setPassword($encodedPassword);
+                        } else {
+                            $this->addFlash(
+                                'warning',
+                                'Error! Given current password is incorrect.'
+                            );
+                            return $this->redirect($this->generateUrl('helpdesk_customer_account'));
+                        }
+                    } else {
+                        $user->setPassword($password);
+                    }
+                   
+                    $user->setFirstName($data['firstName']);
+                    $user->setLastName($data['lastName']);
+                    $user->setEmail($data['email']);
+                    $em->persist($user);
+                    $em->flush();
+
+                    $userInstance = $em->getRepository('UVDeskCoreBundle:UserInstance')->findOneBy(array('user' => $user->getId()));
+                    if(isset($dataFiles['profileImage'])){
+                        $fileName  = $this->container->get('uvdesk.service')->getFileUploadManager()->upload($dataFiles['profileImage']);
+                        $userInstance->setProfileImagePath($fileName);
+                    }
+
+                    $userInstance  = $userInstance->setContactNumber($data['contactNumber']);
+                    $em->persist($userInstance);
+                    $em->flush();
+
+                    $this->addFlash('success','Success ! Profile updated successfully.');
+                    return $this->redirect($this->generateUrl('helpdesk_customer_account'));
+
+                } else {
+                    $errors = $form->getErrors();
+                    dump($errors);
+                    die;
+                    $errors = $this->getFormErrors($form);
+                }
+            } else {
+                $this->addFlash('warning','Error ! User with same email is already exist.');
+                return $this->redirect($this->generateUrl('helpdesk_customer_account'));
+            }
+        }
+        
+        return $this->render('@UVDeskSupportCenter/Knowledgebase/customerAccount.html.twig', [
+            'searchDisable' => true,
+            'user' => $user,
+        ]);
+    }
+    
+>>>>>>> 05a36fdd099d6db05a224d81374786a7f2b5ff8a
 }
