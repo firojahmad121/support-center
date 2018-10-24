@@ -50,6 +50,7 @@ class Ticket extends Controller
         $this->isWebsiteActive();
 
         $websiteConfiguration = $this->get('uvdesk.service')->getActiveConfiguration($this->getWebsiteDetails()->getId());
+        
         $formErrors = $errors = array();
         if(!$websiteConfiguration || !$websiteConfiguration->getTicketCreateOption() || ($websiteConfiguration->getLoginRequiredToCreate() && !$this->getUser()))
             return $this->redirect($this->generateUrl('helpdesk_knowledgebase'));
@@ -58,17 +59,19 @@ class Ticket extends Controller
         $post = $request->request->all();
 
         if($request->getMethod() == "POST") {
-            if('.uvdesk.com' == $this->container->getParameter('site.url') && strpos($this->container->get('router')->getContext()->getHost(), $this->container->getParameter('site.url')) && $this->get('reCaptcha.service')->getReCaptchaResponse($request->request->get('g-recaptcha-response'))){
-                $this->addFlash(
-                    'warning',
-                    $this->get('translator')->trans("Warning ! Please select correct CAPTCHA !")
-                );
+            
+            // if('.uvdesk.com' == $this->container->getParameter('site.url') && strpos($this->container->get('router')->getContext()->getHost(), $this->container->getParameter('site.url')) && $this->get('reCaptcha.service')->getReCaptchaResponse($request->request->get('g-recaptcha-response'))){
+            //     $this->addFlash(
+            //         'warning',
+            //         $this->get('translator')->trans("Warning ! Please select correct CAPTCHA !")
+            //     );
 
-            } else {
+           // } else {
                 if($_POST) {
                     $error = false;
                     $message = '';
                     $ticketType = $em->getRepository('UVDeskCoreBundle:TicketType')->find($request->request->get('type'));
+                    
                     if($request->files->get('customFields') && !$this->get('file.service')->validateAttachmentsSize($request->files->get('customFields'))) {
                         $error = true;
                         $this->addFlash(
@@ -79,19 +82,21 @@ class Ticket extends Controller
                             );
                     }
 
-                    if(!$this->get('file.service')->validateAttachmentsSize($request->files->get('attachments'))) {
-                        $error = true;
-                        $this->addFlash(
-                                'warning',
-                                $this->get('translator')->trans("Warning ! Files size can not exceed %size% MB", [
-                                    '%size%' => $this->container->getParameter('max_upload_size')
-                                ])
-                            );
-                    }
+                    // if(!$this->get('file.service')->validateAttachmentsSize($request->files->get('attachments'))) {
+                    //     $error = true;
+                    //     $this->addFlash(
+                    //             'warning',
+                    //             $this->get('translator')->trans("Warning ! Files size can not exceed %size% MB", [
+                    //                 '%size%' => $this->container->getParameter('max_upload_size')
+                    //             ])
+                    //         );
+                    // }
 
                     $ticket = new TicketEntity();
                     $loggedUser = $this->get('security.token_storage')->getToken()->getUser();
+                    
                     if(!empty($loggedUser) && $loggedUser != 'anon.') {
+                        
                         $form = $this->createForm(TicketForm::class, $ticket, [
                             'container' => $this->container,
                             'entity_manager' => $em,
@@ -110,7 +115,6 @@ class Ticket extends Controller
                         $email = $request->request->get('from');
                         $name = explode(' ', $request->request->get('name'));
                     }
-
                     if($request->request->all())
                         $form->submit($request->request->all());
                     
@@ -121,12 +125,14 @@ class Ticket extends Controller
 
                     if ($form->isValid() && !count($formErrors) && !$error) {
                         $data = array(
-                            'from' => $email, //email
+                            'from' => $email, //email$request->getSession()->getFlashBag()->set('success', $this->get('translator')->trans('Success ! Ticket has been created successfully.'));
                             'subject' => $request->request->get('subject'),
                             'reply' => $request->request->get('reply'),
                             'firstName' => $name[0],
                             'lastName' => isset($name[1]) ? $name[1] : '',
-                            'role' => 4
+                            'role' => 4,
+                            'active' => true
+                        
                         );
 
                         $em = $this->getDoctrine()->getManager();
@@ -135,7 +141,7 @@ class Ticket extends Controller
                         if(!is_object($data['customer'] = $this->container->get('security.token_storage')->getToken()->getUser()) == "anon.") {
                             $customerEmail = $params['email'] = $request->request->get('from');
                             $customer = $em->getRepository('UVDeskCoreBundle:User')->findOneBy(array('email' => $customerEmail));
-                            $params['flag'] = (!$customer) ? 1 : 0;
+                            $params['flag'] = (!$customer) ? 1 : 0;$request->getSession()->getFlashBag()->set('success', $this->get('translator')->trans('Success ! Ticket has been created successfully.'));
 
                             $data['firstName'] = current($nameDetails = explode(' ', $request->request->get('name')));
                             $data['fullname'] = $request->request->get('name');
@@ -145,7 +151,7 @@ class Ticket extends Controller
                             $data['customer'] = $this->get('user.service')->getUserDetails($data);
                         } else {
                             $userDetail = $em->getRepository('UVDeskCoreBundle:User')->find($data['customer']->getId());
-                            $data['email'] = $customerEmail = $data['customer']->getEmail();
+                            $data['email'] = $custom$request->getSession()->getFlashBag()->set('success', $this->get('translator')->trans('Success ! Ticket has been created successfully.'));erEmail = $data['customer']->getEmail();
 
                             $nameCollection = [$userDetail->getFirstName(), $userDetail->getLastName()];
                             $name = implode(' ', $nameCollection);
@@ -158,6 +164,7 @@ class Ticket extends Controller
                         $data['userType'] = 'customer';
                         $data['message'] = htmlentities($data['reply']);
                         $data['createdBy'] = $customerEmail;
+                        $data['attachments'] = $request->files->get('attachments');
 
                         if(!empty($request->server->get("HTTP_CF_CONNECTING_IP") )) {
                             $data['ipAddress'] = $request->server->get("HTTP_CF_CONNECTING_IP");
@@ -178,11 +185,11 @@ class Ticket extends Controller
                             //         'user' => $thread->getUser(),
                             //         'userType' => 'customer'
                             //     ]);
-                            $request->getSession()->getFlashBag()->set('success', $this->get('translator')->trans('Success ! Ticket has been created successfully.'));
+                        $request->getSession()->getFlashBag()->set('success', $this->get('translator')->trans('Success ! Ticket has been created successfully.'));
                         } else {
                             $request->getSession()->getFlashBag()->set('warning', $this->get('translator')->trans('Warning ! Can not create ticket, invalid details.'));
                         }
-
+                        $request->getSession()->getFlashBag()->set('success', $this->get('translator')->trans('Success ! Ticket has been created successfully.'));
                         return $this->redirect($this->generateUrl('helpdesk_customer_create_ticket'));
                     } else {
                         $errors = $this->getFormErrors($form);
@@ -194,7 +201,7 @@ class Ticket extends Controller
                         $this->get('translator')->trans("Warning ! Post size can not exceed 25MB")
                     );
                 }
-            }
+           // }
 
             if(isset($errors) && count($errors)) {
                 $this->addFlash(
@@ -229,7 +236,7 @@ class Ticket extends Controller
     public function ticketList(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $ticketRepo = $em->getRepository('UVDeskSupportCenterBundle:Wicket');
+        $ticketRepo = $em->getRepository('UVDeskCoreBundle:Ticket');
 
         $currentUser = $this->get('security.token_storage')->getToken()->getUser();
         if(!$currentUser || $currentUser == "anon.") {
