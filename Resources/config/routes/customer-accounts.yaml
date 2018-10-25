@@ -15,7 +15,7 @@ helpdesk_customer_forgot_password:
     controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Customer::forgotPassword
 
 helpdesk_customer_update_account_credentials:
-    path:     /update-credentials/{email}/{key}
+    path:     /update-credentials/{email}/{verificationCode}
     controller: Webkul\UVDesk\SupportCenterBundle\Knowledgebase\Customer::updateCredentials
-    defaults: { email: 0, key: 0 }
+    defaults: { email: 0, verificationCode: 0 }
 
