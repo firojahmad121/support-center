@@ -53,7 +53,6 @@ class KnowledgebaseWebsite extends DoctrineFixture
                 ->setPageBackgroundColor(self::$websiteConfigurationSeed['page_background_color'])
                 ->setHeaderBackgroundColor(self::$websiteConfigurationSeed['page_background_color'])
                 ->setBannerBackgroundColor(self::$websiteConfigurationSeed['banner_background_color'])
-                ->setNavActiveColor(self::$websiteConfigurationSeed['nav_active_color'])
                 ->setLinkColor(self::$websiteConfigurationSeed['page_link_color'])
                 ->setLinkHoverColor(self::$websiteConfigurationSeed['page_link_hover_color'])
                 ->setArticleTextColor(self::$websiteConfigurationSeed['article_text_color'])
