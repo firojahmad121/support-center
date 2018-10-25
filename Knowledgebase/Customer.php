@@ -192,7 +192,6 @@ Class Customer extends Controller
 
         if ($request->getMethod() == 'POST') {
             $data     = $request->request->all();
-            
             $dataFiles = $request->files->get('user_form');
             $data = $data['user_form'];
 
@@ -212,14 +211,16 @@ Class Customer extends Controller
                 $form->submit(true);
                 
                 if ($form->isValid()) {
-                    if($data != null && (!empty($data['password']['first']))) {
+                    if ($data != null && (!empty($data['password']['first']))) {
                         $encodedPassword = $this->container->get('security.password_encoder')->encodePassword($user, $data['password']['first']);
-                        if(!empty($encodedPassword) ) {
+                        
+                        if (!empty($encodedPassword) ) {
                             $user->setPassword($encodedPassword);
                         }
-                    }else{
+                    } else {
                         $user->setPassword($password);
                     }
+
                     $user->setFirstName($data['firstName']);
                     $user->setLastName($data['lastName']);
                     $user->setEmail($data['email']);
