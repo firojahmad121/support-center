@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\HttpFoundation\Request;
 
+
 class Article extends EntityRepository
 {
     const LIMIT = 10;
@@ -51,22 +52,22 @@ class Article extends EntityRepository
         $qbS = $this->getEntityManager()->createQueryBuilder();
 
         $results = $qbS->select('a.id, a.dateAdded, a.content')
-            ->from('Webkul\UVDesk\SupportCenterBundle\Entity\ArticleHistory', 'a')
-            ->leftJoin('Webkul\UVDesk\CoreBundle\Entity\User','u','WITH', 'a.userId = u.id')
-            ->leftJoin('u.userInstance', 'ud')
-            ->addSelect("CONCAT(u.firstName,' ',u.lastName) AS name")
-            ->andwhere('a.articleId = :articleId')
-            ->andwhere('ud.supportRole IN (:roleId)')
-            ->orderBy(
-                'a.id',
-                Criteria::DESC
-            )
-            ->setParameters([
-                'articleId' => $params['articleId'],
-                'roleId' => [1, 2, 3],
-            ])
-            ->getQuery()
-            ->getResult();
+                        ->from('Webkul\UVDesk\SupportCenterBundle\Entity\ArticleHistory', 'a')
+                        ->leftJoin('Webkul\UVDesk\CoreBundle\Entity\User','u','WITH', 'a.userId = u.id')
+                        ->leftJoin('u.userInstance', 'ud')
+                        ->addSelect("CONCAT(u.firstName,' ',u.lastName) AS name")
+                        ->andwhere('a.articleId = :articleId')
+                        ->andwhere('ud.supportRole IN (:roleId)')
+                        ->orderBy(
+                            'a.id',
+                            Criteria::DESC
+                        )
+                        ->setParameters([
+                            'articleId' => $params['articleId'],
+                            'roleId' => [1, 2, 3],
+                        ])
+                        ->getQuery()
+                        ->getResult();
 
 
         return $results;
@@ -118,7 +119,8 @@ class Article extends EntityRepository
             $articles = $articles ? $articles : [0];
         }
         
-        if(isset($data['solutionId'])){
+        if(isset($data['solutionId']))
+        {
             $qbS = $this->getEntityManager()->createQueryBuilder();
             $qbS->select('DISTINCT ac.articleId')->from('Webkul\UVDesk\SupportCenterBundle\Entity\SolutionCategoryMapping', 'scm');
             $qbS->leftJoin('Webkul\UVDesk\SupportCenterBundle\Entity\ArticleCategory', 'ac', 'with', 'scm.categoryId = ac.categoryId');
@@ -136,12 +138,8 @@ class Article extends EntityRepository
                 if(in_array($search[0], $this->searchAllowed)){
                     if($search[0] == 'tag'){
                         $qbS = $this->getEntityManager()->createQueryBuilder();
-                        $qbS->select('at.articleId')->from('Webkul\UVDesk\SupportCenterBundle\Entity\ArticleTags', 'at')
-                            // ->leftJoin('Webkul\UVDesk\CoreBundle\Entity\Tag','t','WITH', 'at.tagId = t.id')
-                            // ->andwhere('t.name = :name')
-                            // ->setParameter('name', urldecode($search[1]))
-                        ;
-
+                        $qbS->select('at.articleId')->from('Webkul\UVDesk\SupportCenterBundle\Entity\ArticleTags', 'at');
+                          
                         $articlesTag = $qbS->getQuery()->getResult();
 
                         if($articlesTag){
@@ -294,16 +292,12 @@ class Article extends EntityRepository
 
         $queryBuilder = $this->createQueryBuilder('ac');
 
-        $queryBuilder->delete('SupportCenterBundle:ArticleTags','ac')
+        $queryBuilder->delete('UVDeskSupportCenterBundle:ArticleTags','ac')
                  ->andwhere('ac.articleId = :articleId')
                  ->andwhere($where)
-                 ->setParameters([
-                     'articleId' => $articleId,
-                     'id' => $tags ,
-                 ])
+                 ->setParameters(['articleId' => $articleId,'id' => $tags])
                  ->getQuery()
-                 ->execute()
-        ;
+                 ->execute();
     }
 
     public function removeRelatedByArticle($articleId, $ids = [])
@@ -312,16 +306,12 @@ class Article extends EntityRepository
 
         $queryBuilder = $this->createQueryBuilder('ac');
 
-        $queryBuilder->delete('SupportCenterBundle:ArticleRelatedArticle','ac')
+        $queryBuilder->delete('UVDeskSupportCenterBundle:ArticleRelatedArticle','ac')
                  ->andwhere('ac.articleId = :articleId')
                  ->andwhere($where)
-                 ->setParameters([
-                     'articleId' => $articleId,
-                     'id' => $ids ,
-                 ])
+                 ->setParameters(['articleId' => $articleId,'id' => $ids])
                  ->getQuery()
-                 ->execute()
-        ;
+                 ->execute();
     }
 
     public function removeEntryByArticle($id)
