@@ -35,16 +35,6 @@ class KnowledgebaseWebsite
     /**
      * @var string
      */
-    private $navTextColor;
-
-    /**
-     * @var string
-     */
-    private $navActiveColor;
-
-    /**
-     * @var string
-     */
     private $linkColor;
 
     /**
@@ -121,6 +111,24 @@ class KnowledgebaseWebsite
      * @var bool
      */
     private $isActive;
+
+    /**
+     * @var array
+     */
+    private $headerLinks;
+
+    /**
+     * @var array
+     */
+    private $footerLinks;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->website = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -226,16 +234,6 @@ class KnowledgebaseWebsite
     {
         return $this->headerBackgroundColor;
     }
-/**
-     * @var array
-     */
-    private $headerLinks;
-
-    /**
-     * @var array
-     */
-    private $footerLinks;
-
 
     /**
      * Set headerLinks
@@ -448,13 +446,6 @@ class KnowledgebaseWebsite
     {
         return $this->website;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->website = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Add website.
@@ -481,58 +472,7 @@ class KnowledgebaseWebsite
     {
         return $this->website->removeElement($website);
     }
-    /**
-     * @var string
-     */
-    
 
-
-
-    /**
-     * Set navTextColor
-     *
-     * @param string $navTextColor
-     * @return Website
-     */
-    public function setNavTextColor($navTextColor)
-    {
-        $this->navTextColor = $navTextColor;
-
-        return $this;
-    }
-
-    /**
-     * Get navTextColor
-     *
-     * @return string 
-     */
-    public function getNavTextColor()
-    {
-        return $this->navTextColor;
-    }
-
-    /**
-     * Set navActiveColor
-     *
-     * @param string $navActiveColor
-     * @return Website
-     */
-    public function setNavActiveColor($navActiveColor)
-    {
-        $this->navActiveColor = $navActiveColor;
-
-        return $this;
-    }
-
-    /**
-     * Get navActiveColor
-     *
-     * @return string 
-     */
-    public function getNavActiveColor()
-    {
-        return $this->navActiveColor;
-    }
 
     /**
      * Set linkColor
@@ -851,7 +791,7 @@ class KnowledgebaseWebsite
     }
 
 
-    /**
+/**
      * Set brandIsActive
      *
      * @param string $customCSS
@@ -873,7 +813,7 @@ class KnowledgebaseWebsite
     {
         return $this->brandIsActive;
     }
-
+    
     /**
      * @var integer
      */

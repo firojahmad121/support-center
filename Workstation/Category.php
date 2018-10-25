@@ -14,10 +14,13 @@ use Webkul\UVDesk\SupportCenterBundle\Form\Category as CategoryForm;
 class Category extends Controller
 {
     const LIMIT = 10;
- 
 
     private function syncDbForSolutionAndCategory()
     {   
+        if (!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+        }
+
         $categoriesMapping = $this->getDoctrine()
                                     ->getRepository('UVDeskSupportCenterBundle:SolutionCategoryMapping')
                                     ->createQueryBuilder('a')
@@ -46,7 +49,10 @@ class Category extends Controller
 
     public function categoryList(Request $request)    
     {
-               
+        if (!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+        }
+        
         $solutions = $this->getDoctrine()
                            ->getRepository('UVDeskSupportCenterBundle:Solutions')
                            ->getAllSolutions(null, $this->container, 'a.id, a.name');
@@ -67,7 +73,10 @@ class Category extends Controller
 
     public function categoryListBySolution(Request $request)    
     {
-       
+        if (!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+        }
+
         $solution = $this->getDoctrine()
                             ->getRepository('UVDeskSupportCenterBundle:Solutions')
                             ->findSolutionById(['id' => $request->attributes->get('solution')]);
@@ -88,6 +97,10 @@ class Category extends Controller
 
     public function categoryListXhr(Request $request)
     {
+        if (!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+        }
+
         $json = array();
         $repository = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:SolutionCategory');
 
@@ -103,6 +116,10 @@ class Category extends Controller
 
     public function category(Request $request)
     {
+        if (!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+        }
+
         if($request->attributes->get('id')){
             $category = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:SolutionCategory')
                                             ->findCategoryById(['id' => $request->attributes->get('id')]);
@@ -186,6 +203,10 @@ class Category extends Controller
 
     public function categoryXhr(Request $request)
     {
+        if (!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+        }
+
         $json = array();
       
         if($request->getMethod() == "POST") {
@@ -311,6 +332,10 @@ class Category extends Controller
 
     private function removeCategory($category)
     {
+        if (!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+        }
+
         $this->getDoctrine()
             ->getRepository('UVDeskSupportCenterBundle:SolutionCategory')
             ->removeEntryByCategory($category);

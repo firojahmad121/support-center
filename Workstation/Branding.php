@@ -12,6 +12,10 @@ class Branding extends Controller
 {  
     public function theme(Request $request)
     {
+        if (!$this->get('user.service')->checkPermission('ROLE_ADMIN')) {
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+        }
+
         $errors = [];
         $entityManager = $this->getDoctrine()->getManager();
         $settingType = $request->attributes->get('type');
@@ -28,10 +32,12 @@ class Branding extends Controller
                 case "general":
                     $website->setName($params['website']['name']);
                     $status = array_key_exists("status",$params['website']) ? 1 : 0;
+                    
                     if(isset($parmsFile['logo'])){
                         $fileName  = $this->container->get('uvdesk.service')->getFileUploadManager()->upload($parmsFile['logo']);
                         $website->setLogo($fileName);
                     }
+
                     $entityManager->persist($website);
                     $entityManager->flush(); 
                     
@@ -49,8 +55,6 @@ class Branding extends Controller
                     $configuration->setArticleTextColor($params['website']['articleTextColor']);  
                     $configuration->setSiteDescription($params['website']['siteDescription']);  
                     $configuration->setBannerBackgroundColor($params['website']['bannerBackgroundColor']);  
-                    $configuration->setNavTextColor($params['website']['navTextColor']);
-                    $configuration->setNavActiveColor($params['website']['navActiveColor']);
                     $configuration->setHomepageContent($params['website']['homepageContent']);
 
 
@@ -135,6 +139,10 @@ class Branding extends Controller
 
     public function spam(Request $request)
     {
+        if (!$this->get('user.service')->checkPermission('ROLE_ADMIN')) {
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+        }
+
         $entityManager = $this->getDoctrine()->getManager();
         $website = $entityManager->getRepository('UVDeskCoreBundle:Website')->findOneBy(['code'=>"knowledgebase"]);
         if(!$website) {

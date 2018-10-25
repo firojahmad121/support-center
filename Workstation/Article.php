@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Webkul\UVDesk\SupportCenterBundle\Entity\Article as ArticleEntity;
 use Webkul\UVDesk\SupportCenterBundle\Entity\ArticleCategory;
+use Webkul\UVDesk\SupportCenterBundle\Entity\ArticleRelatedArticle;
 use Webkul\UVDesk\SupportCenterBundle\Entity\ArticleHistory;
 use Webkul\UVDesk\SupportCenterBundle\Entity\SolutionCategory;
 use Webkul\UVDesk\SupportCenterBundle\Form;
@@ -86,8 +87,7 @@ class Article extends Controller
 
     public function articleListXhr(Request $request)
     {
-        $json = array();
-       
+        $json = array();       
         $repository = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:Article');
         
         if($request->attributes->get('category'))
@@ -97,8 +97,7 @@ class Article extends Controller
         $request->query->set('solutionId', $request->attributes->get('solution'));
 
         $json = $repository->getAllArticles($request->query, $this->container);
-        
-  
+
         $response = new Response(json_encode($json));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
@@ -183,7 +182,7 @@ class Article extends Controller
 
         if ($request->attributes->get('id')) {
             $this->addFlash('success', 'Success!  Article add successfully.');
-            
+          
             return  $this->render('@UVDeskSupportCenter/Staff/Articles/articleForm.html.twig', [
                 'article' => $article,
                 'articleCategory' => $articleCategory,
@@ -316,11 +315,9 @@ class Article extends Controller
                             $json['alertClass'] = 'success';
                             $json['alertMessage'] = 'Success ! Article Related removed successfully.';
                         }elseif($data['action'] == 'add'){
-                            $company = $this->container->get('user.service')->getCurrentCompany();
 
                             $relatedArticles = $em->getRepository('UVDeskSupportCenterBundle:ArticleRelatedArticle')->findBy([
                                 'articleId' => $data['ids'][0],
-                                'companyId' => $company->getId(),
                                 'relatedArticleId' => $data['entityId'],
                             ]);
 
@@ -334,7 +331,6 @@ class Article extends Controller
                                 $articleRelatedMapping = new ArticleRelatedArticle();
                                 $articleRelatedMapping->setArticleId($data['ids'][0]);
                                 $articleRelatedMapping->setRelatedArticleId($data['entityId']);
-                                $articleRelatedMapping->setCompanyId($company->getId());
                                 $em->persist($articleRelatedMapping);
                                 $em->flush();
 
