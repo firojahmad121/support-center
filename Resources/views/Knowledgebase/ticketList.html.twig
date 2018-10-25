@@ -32,7 +32,6 @@
 			color: #333;
 		}
 	</style>
-
 	<div class="uv-nav-tab-view">
 		<h1>{{ 'Ticket Requests'|trans }}</h1>
 		<div class="uv-action-view">
@@ -141,7 +140,7 @@
         </td>
         <td data-value="{{ 'Timestamp'|trans }}">
 	       	<a class="not-shiny" href="<%- path %>">
-	       		currentdate
+	       		<%= formatedCreatedAt %>
 	    	</a>
         </td>
         <td data-value="{{ 'Agent'|trans }}">
