@@ -16,14 +16,6 @@ Class Customer extends Controller
             return true;
     }
 
-    protected function isWebsiteActive()
-    {
-        $error = false;
-        $this->getCompany(true) ? ($error = !$this->getCompany(true)->getStatus()) : ($error = true);
-
-        if($error)
-            $this->noResultFound();
-    }
 
     protected function noResultFound()
     {
@@ -168,23 +160,9 @@ Class Customer extends Controller
 
                     } else {
                             $request->getSession()->getFlashBag()->set('warning', 'Password does not match.');
-                            return $this->render('@UVDeskSupportCenter/Knowledgebase/resetPassword.html.twig', [
-                                'searchDisable' => true,
-                                'errors' => json_encode($errors),
-                                'breadcrumbs' => [
-                                    [
-                                        'label' =>'Support Center',
-                                        'url' => 'webkul_support_center_front_solutions'
-                                    ], [
-                                        'label' => 'Account Validation',
-                                        'url' => '#'
-                                    ]
-                                ]
-                            ]);
+                           
                         }
                     }
-                } else {
-                    
                 }
 
                  return $this->render('@UVDeskSupportCenter/Knowledgebase/resetPassword.html.twig', [
