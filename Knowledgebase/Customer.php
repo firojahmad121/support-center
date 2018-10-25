@@ -192,6 +192,7 @@ Class Customer extends Controller
 
         if ($request->getMethod() == 'POST') {
             $data     = $request->request->all();
+            
             $dataFiles = $request->files->get('user_form');
             $data = $data['user_form'];
 
@@ -205,26 +206,20 @@ Class Customer extends Controller
 
             if (!$errorFlag) {
                 $password = $user->getPassword();
+                
                 $form = $this->createForm(UserProfile::class, $user);
                 $form->handleRequest($request);
                 $form->submit(true);
-                $encodedPassword = $this->container->get('security.password_encoder')->encodePassword($user, $data['password']['first']);
                 
                 if ($form->isValid()) {
-                    if($data != null) {
+                    if($data != null && (!empty($data['password']['first']))) {
+                        $encodedPassword = $this->container->get('security.password_encoder')->encodePassword($user, $data['password']['first']);
                         if(!empty($encodedPassword) ) {
                             $user->setPassword($encodedPassword);
-                        } else {
-                            $this->addFlash(
-                                'warning',
-                                'Error! Given current password is incorrect.'
-                            );
-                            return $this->redirect($this->generateUrl('helpdesk_customer_account'));
                         }
-                    } else {
+                    }else{
                         $user->setPassword($password);
                     }
-                   
                     $user->setFirstName($data['firstName']);
                     $user->setLastName($data['lastName']);
                     $user->setEmail($data['email']);
