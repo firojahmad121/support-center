@@ -17,6 +17,14 @@ Class Customer extends Controller
             return true;
     }
 
+    protected function isWebsiteActive()
+    {
+        $error = false;
+
+        if($error)
+            $this->noResultFound();
+    }
+
     protected function noResultFound()
     {
         throw new NotFoundHttpException('Permission Denied !');
@@ -71,8 +79,7 @@ Class Customer extends Controller
 
     public function forgotPassword(Request $request)
     {
-      
-        if($this->isLoginDisabled()) {
+        if ($this->isLoginDisabled()) {
             $this->addFlash('warning','Warning ! Customer Login disabled by admin.');
             return $this->redirect($this->generateUrl('webkul_support_center_front_solutions'));
         }
@@ -85,37 +92,34 @@ Class Customer extends Controller
             $repository = $this->getDoctrine()->getRepository('UVDeskCoreBundle:User');
             $user = $entityManager->getRepository('UVDeskCoreBundle:User')->findOneBy(array('email' => $data['email']));
             
-            if($user) { 
-                   
-                    $key = time();
-                    $request->getSession()->getFlashBag()->set(
-                            'success',$this->get('translator')->trans('Please check your mail for password update.')
-                        );
-                return $this->redirect($this->generateUrl('helpdesk_customer_account_validation')."/".$data['email']."/".$key);
+            if ($user) { 
+                $key = time();
+                $request->getSession()->getFlashBag()->set(
+                    'success',$this->get('translator')->trans('Please check your mail for password update.')
+                );
 
-                    // return $this->redirect($this->generateUrl('webkul_support_center_front_forgot_password'));
-                } else {
-                    $request->getSession()->getFlashBag()->set('warning', $this->get('translator')->trans('This Email is not registered with us.'));
-                }
+                return $this->redirect($this->generateUrl('helpdesk_customer_account_validation')."/".$data['email']."/".$key);
+            } else {
+                $request->getSession()->getFlashBag()->set('warning', $this->get('translator')->trans('This Email is not registered with us.'));
             }
-            else{
-                $request->getSession()->getFlashBag()->set('warning', 'This Email is not registered with us.');
-              
-            } 
-            return $this->render('@UVDeskSupportCenter/Knowledgebase/forgotPassword.html.twig', [
-                'searchDisable' => true,
-                'errors' => json_encode($errors),
-                'breadcrumbs' => [
-                    [
-                        'label' => 'Support Center',
-                        'url' => 'webkul_support_center_front_solutions'
-                    ], [
-                        'label' => 'Forgot Password',
-                        'url' => '#'
-                    ]
-                ]
-            ]);
+        } else {
+            $request->getSession()->getFlashBag()->set('warning', 'This Email is not registered with us.');
         }
+        
+        return $this->render('@UVDeskSupportCenter/Knowledgebase/forgotPassword.html.twig', [
+            'searchDisable' => true,
+            'errors' => json_encode($errors),
+            'breadcrumbs' => [
+                [
+                    'label' => 'Support Center',
+                    'url' => 'webkul_support_center_front_solutions'
+                ], [
+                    'label' => 'Forgot Password',
+                    'url' => '#'
+                ]
+            ]
+        ]);
+    }
 
 
     public function updateCredentials($email, $verificationCode)

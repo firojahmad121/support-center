@@ -148,6 +148,7 @@ class Article extends Controller
                         ->getRepository('UVDeskSupportCenterBundle:Article')
                         ->findOneBy($filterArray);
         }
+
         return false;
     }
 
@@ -161,7 +162,7 @@ class Article extends Controller
             $article = new ArticleEntity;
 
         $articleCategory = $articleTags = [];
-        if($article->getId()) {
+        if ($article->getId()) {
              $articleCategory = $this->getDoctrine()
                              ->getRepository('UVDeskSupportCenterBundle:Article')
                              ->getCategoryByArticle($article->getId());
@@ -191,20 +192,18 @@ class Article extends Controller
     public function articleXhr(Request $request)
     {    
         $json = array();       
-        if ($request->getMethod() == "POST") {
 
+        if ($request->getMethod() == "POST") {
             $data = $request->request->get("data");
             $entityManager = $this->getDoctrine()->getManager();
 
             if (isset($data['actionType'])) {
-
-                switch($data['actionType']) 
-                {
+                switch ($data['actionType']) {
                     case 'articleUpdate':
                     case 'articleSave': 
-
                         if ('articleSave' == $data['actionType']  && !empty($resources['articles']['showAlert']) ) {
                             $json['alertClass'] = 'danger';
+
                             return new JsonResponse($json);
                         }
 
@@ -213,6 +212,7 @@ class Article extends Controller
                         } else {
                             $article = new ArticleEntity;
                         }
+
                         $json['errors'] = [];
 
                         if ($article) {
@@ -262,23 +262,20 @@ class Article extends Controller
                         $json['alertMessage'] = 'Success ! Article updated successfully.';
                         break;
                     case 'tagUpdate':
-
                         if ($data['action'] == 'remove') {                            
                             $entityManager->getRepository('UVDeskSupportCenterBundle:Article')->removeTagByArticle($data['ids'][0], [$data['entityId']]);
 
                         } elseif ($data['action'] == 'add') {
-                           
                             $articleTagMapping = new ArticleTags();
                             $articleTagMapping->setArticleId($data['ids'][0]);
                             $articleTagMapping->setTagId($data['entityId']);
+
                             $entityManager->persist($articleTagMapping);
                             $entityManager->flush();
-
                         } elseif ($data['action'] == 'create') {
-                          
                             $tag = $entityManager->getRepository('UVDeskCoreBundle:Tag')->findOneBy(['name' => $data['name']]);
 
-                            if(!$tag){
+                            if (!$tag) {
                                 $tag = new Tag();
                                 $tag->setName($data['name']);
                                 $entityManager->persist($tag);
@@ -295,6 +292,7 @@ class Article extends Controller
                             $json['tagId'] = $tag->getId();
                             $json['tagName'] = $tag->getName();
                         }
+
                         $json['alertClass'] = 'success';
                         $json['alertMessage'] = 'Success ! Tags updated successfully.';
                         break;
@@ -318,11 +316,11 @@ class Article extends Controller
                                 ->getRepository('UVDeskSupportCenterBundle:Article')
                                 ->removeCategoryByArticle($data['ids'][0], [$data['entityId']]);
 
-                        } elseif ($data['action'] == 'add') {
-                           
+                        } else if ($data['action'] == 'add') {
                             $articleCategoryMapping = new ArticleCategory();
                             $articleCategoryMapping->setArticleId($data['ids'][0]);
                             $articleCategoryMapping->setCategoryId($data['entityId']);
+                            
                             $entityManager->persist($articleCategoryMapping);
                             $entityManager->flush();
                         }
@@ -332,13 +330,11 @@ class Article extends Controller
                         break;
                     case 'relatedUpdate':
                         if ($data['action'] == 'remove') {
-
                             $entityManager->getRepository('UVDeskSupportCenterBundle:Article')->removeRelatedByArticle($data['ids'][0], [$data['entityId']]);
+
                             $json['alertClass'] = 'success';
                             $json['alertMessage'] = 'Success ! Article Related removed successfully.';
-
-                        } elseif($data['action'] == 'add') {
-
+                        } else if($data['action'] == 'add') {
                             $relatedArticles = $entityManager->getRepository('UVDeskSupportCenterBundle:ArticleRelatedArticle')->findBy([
                                 'articleId' => $data['ids'][0],
                                 'relatedArticleId' => $data['entityId'],
@@ -470,5 +466,4 @@ class Article extends Controller
             ->getRepository('UVDeskSupportCenterBundle:Article')
             ->removeEntryByArticle($article->getId());
     }
-
 }

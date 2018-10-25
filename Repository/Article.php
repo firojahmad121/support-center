@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\HttpFoundation\Request;
 
-
 class Article extends EntityRepository
 {
     const LIMIT = 10;
@@ -119,8 +118,7 @@ class Article extends EntityRepository
             $articles = $articles ? $articles : [0];
         }
         
-        if(isset($data['solutionId']))
-        {
+        if (isset($data['solutionId'])) {
             $qbS = $this->getEntityManager()->createQueryBuilder();
             $qbS->select('DISTINCT ac.articleId')->from('Webkul\UVDesk\SupportCenterBundle\Entity\SolutionCategoryMapping', 'scm');
             $qbS->leftJoin('Webkul\UVDesk\SupportCenterBundle\Entity\ArticleCategory', 'ac', 'with', 'scm.categoryId = ac.categoryId');
@@ -293,11 +291,11 @@ class Article extends EntityRepository
         $queryBuilder = $this->createQueryBuilder('ac');
 
         $queryBuilder->delete('UVDeskSupportCenterBundle:ArticleTags','ac')
-                 ->andwhere('ac.articleId = :articleId')
-                 ->andwhere($where)
-                 ->setParameters(['articleId' => $articleId,'id' => $tags])
-                 ->getQuery()
-                 ->execute();
+            ->andwhere('ac.articleId = :articleId')
+            ->andwhere($where)
+            ->setParameters(['articleId' => $articleId,'id' => $tags])
+            ->getQuery()
+            ->execute();
     }
 
     public function removeRelatedByArticle($articleId, $ids = [])
@@ -307,11 +305,11 @@ class Article extends EntityRepository
         $queryBuilder = $this->createQueryBuilder('ac');
 
         $queryBuilder->delete('UVDeskSupportCenterBundle:ArticleRelatedArticle','ac')
-                 ->andwhere('ac.articleId = :articleId')
-                 ->andwhere($where)
-                 ->setParameters(['articleId' => $articleId,'id' => $ids])
-                 ->getQuery()
-                 ->execute();
+            ->andwhere('ac.articleId = :articleId')
+            ->andwhere($where)
+            ->setParameters(['articleId' => $articleId,'id' => $ids])
+            ->getQuery()
+            ->execute();
     }
 
     public function removeEntryByArticle($id)
