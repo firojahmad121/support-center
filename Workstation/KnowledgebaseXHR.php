@@ -10,6 +10,10 @@ class KnowledgebaseXHR extends Controller
 {
     public function listFoldersXHR(Request $request)
     {  
+        if (!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+        }
+
         $response = new Response();
         $folderCollection = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:Solutions')->getAllSolutions($request->query, $this->container);
 
@@ -20,6 +24,10 @@ class KnowledgebaseXHR extends Controller
 
     public function updateFolderXHR(Request $request)
     {
+        if (!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {
+            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
+        }
+
         $json = array();
 
         $entityManager = $this->getDoctrine()->getManager();

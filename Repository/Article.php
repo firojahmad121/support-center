@@ -2,10 +2,10 @@
 
 namespace Webkul\UVDesk\SupportCenterBundle\Repository;
 
-use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Collections\Criteria;
+use Symfony\Component\HttpFoundation\Request;
 
 class Article extends EntityRepository
 {
