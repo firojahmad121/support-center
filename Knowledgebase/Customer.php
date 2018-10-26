@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Webkul\UVDesk\CoreBundle\Utils\TokenGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Webkul\UVDesk\CoreBundle\Form\UserProfile;
 
 Class Customer extends Controller
 {
@@ -83,8 +84,6 @@ Class Customer extends Controller
             $this->addFlash('warning','Warning ! Customer Login disabled by admin.');
             return $this->redirect($this->generateUrl('webkul_support_center_front_solutions'));
         }
-
-        $errors = [];
         if($request->getMethod() == 'POST') {
             $entityManager = $this->getDoctrine()->getManager();
             $user = new User();
@@ -94,29 +93,21 @@ Class Customer extends Controller
             
             if ($user) { 
                 $key = time();
-                $request->getSession()->getFlashBag()->set(
-                    'success',$this->get('translator')->trans('Please check your mail for password update.')
-                );
+                $request->getSession()->getFlashBag()->set('success','Please check your mail for password update.');
+                return $this->redirect($this->generateUrl('helpdesk_customer_login'));
+                //@TODO: NEEDS TO SEND EMAIL FOR CHANGE PASSWORD URL.
+                // return $this->redirect($this->generateUrl('helpdesk_customer_update_account_credentials')."/".$data['email']."/".$key);
 
-                return $this->redirect($this->generateUrl('helpdesk_customer_account_validation')."/".$data['email']."/".$key);
             } else {
-                $request->getSession()->getFlashBag()->set('warning', $this->get('translator')->trans('This Email is not registered with us.'));
+                $request->getSession()->getFlashBag()->set('warning','This Email is not registered with us.');
             }
-        } else {
-            $request->getSession()->getFlashBag()->set('warning', 'This Email is not registered with us.');
         }
         
         return $this->render('@UVDeskSupportCenter/Knowledgebase/forgotPassword.html.twig', [
             'searchDisable' => true,
-            'errors' => json_encode($errors),
             'breadcrumbs' => [
-                [
-                    'label' => 'Support Center',
-                    'url' => 'webkul_support_center_front_solutions'
-                ], [
-                    'label' => 'Forgot Password',
-                    'url' => '#'
-                ]
+                ['label' => 'Support Center', 'url' => 'webkul_support_center_front_solutions'],
+                ['label' => 'Forgot Password','url' => '#']
             ]
         ]);
     }

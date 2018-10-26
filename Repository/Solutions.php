@@ -47,9 +47,10 @@ class Solutions extends \Doctrine\ORM\EntityRepository
     {
         $categoryResponse = [];
         $categoryQB = $this->getEntityManager()->createQueryBuilder()->select('sc.id, sc.name, sc.description')
-            ->from('SupportCenterBundle:SolutionCategory', 'sc')
+            ->from('UVDeskSupportCenterBundle:SolutionCategory', 'sc')
             ->andWhere('sc.status = :status')->setParameter('status', true)
-            ->orderBy('sc.dateAdded', 'DESC');       
+            ->orderBy('sc.dateAdded', 'DESC');            
+        return $categoryQB->getQuery()->getResult();
     }
 
     public function getAllSolutions(\Symfony\Component\HttpFoundation\ParameterBag $obj = null, $container, $allResult = false, $status = [0, 1])
@@ -206,6 +207,23 @@ class Solutions extends \Doctrine\ORM\EntityRepository
 
         return $result;
     }
+    // public function getArticlesBySolution($id, $status = [0, 1])
+    // {
+    //     $queryBuilder = $this->createQueryBuilder('a');
+    //     $result = $queryBuilder->select('COUNT(DISTINCT aa.id)')
+    //              ->leftJoin('Webkul\UVDesk\SupportCenterBundle\Entity\SolutionCategoryMapping','sac','WITH', 'sac.solutionId = a.id')
+    //              ->leftJoin('Webkul\UVDesk\SupportCenterBundle\Entity\ArticleCategory','ac','WITH', 'sac.categoryId = ac.categoryId')
+    //              ->leftJoin('Webkul\UVDesk\SupportCenterBundle\Entity\Article','aa','WITH', 'ac.articleId = aa.id')
+    //              ->where('sac.solutionId = :solutionId')
+    //              ->andwhere('ac.id IS NOT NULL')
+    //              ->setParameters([
+    //                 'solutionId' => $id,
+    //              ])
+    //              ->getQuery()
+    //              ->getSingleScalarResult();
+
+    //     return $result;
+    // }
     public function removeEntryBySolution($id)
     {
         $where = is_array($id) ? 'ac.solutionId IN (:id)' : 'ac.solutionId = :id';

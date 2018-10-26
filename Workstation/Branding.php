@@ -21,6 +21,7 @@ class Branding extends Controller
         $settingType = $request->attributes->get('type');
         $userService = $this->container->get('user.service');
         $website = $entityManager->getRepository('UVDeskCoreBundle:Website')->findOneBy(['code'=>"knowledgebase"]);
+      
         $configuration = $entityManager->getRepository('UVDeskSupportCenterBundle:KnowledgebaseWebsite')->findOneBy(['website' => $website->getId(),'isActive' => 1]);
         
         if ($request->getMethod() == 'POST') {
@@ -29,17 +30,16 @@ class Branding extends Controller
             $parmsFile = ($request->files->get('website'));
 
             switch($settingType) {
-                case "general":
+                case "general":                    
                     $website->setName($params['website']['name']);
                     $status = array_key_exists("status",$params['website']) ? 1 : 0;
-                    
-                    if(isset($parmsFile['logo'])){
-                        $fileName  = $this->container->get('uvdesk.service')->getFileUploadManager()->upload($parmsFile['logo']);
-                        $website->setLogo($fileName);
-                    }
+                  
+                    // if(isset($parmsFile['logo'])) {
+                    //     $fileName  = $this->container->get('uvdesk.service')->getFileUploadManager()->upload($parmsFile['logo']);
+                    //     $website->setLogo($fileName);
+                    // }
 
                     $entityManager->persist($website);
-                    $entityManager->flush(); 
                     
                     $configuration->setStatus($status);
                     $configuration->setBrandColor($params['website']['brandColor']);
@@ -109,11 +109,9 @@ class Branding extends Controller
                     $entityManager->flush();
                     break;
                 case "broadcasting":
-                    $isActive = array_key_exists('isActive',$params['broadcasting']) ? []  : ["isActive"=>0];
+                    $isActive = array_key_exists('isActive',$params['broadcasting']) ? ["isActive"=>1]  : ["isActive"=>0];
                     $broadcast = json_encode(array_merge($params['broadcasting'],$isActive));
-                    $active = array_key_exists('isActive',$params['broadcasting']) ? 1 : 0;
                     $configuration->setBroadcastMessage($broadcast);
-                    $configuration->setBrandIsActive($active);
                     $configuration->setUpdatedAt(new \DateTime());
                     $entityManager->persist($configuration);
                     $entityManager->flush();
@@ -125,11 +123,16 @@ class Branding extends Controller
                     $entityManager->flush();
                     break;
                 default:
+                    $errors = [
+                        'message'=>"invalid request setting please check !"
+                    ];
                     break;
             }
         }
+        
+        // dump($website);die;
         return $this->render('@UVDeskSupportCenter/Staff/branding.html.twig', [
-            'website' => $website,
+            'websitedata' => $website,
             'type' => $settingType,
             'configuration' => $configuration,
             'broadcast' => json_decode($configuration->getBroadcastMessage()),

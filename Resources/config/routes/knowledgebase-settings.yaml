@@ -6,7 +6,7 @@ helpdesk_member_knowledgebase_theme:
 helpdesk_member_knowledgebase_spam:
     path:     /block/spam
     controller: Webkul\UVDesk\SupportCenterBundle\Workstation\Branding::spam
-    defaults: { panelId: 'themes', type: '' }
+    defaults: { panelId: 'settings', type: '' }
 
 helpdesk_member_knowledgebase_update_theme_xhr:
     path:     /branding/ajax
