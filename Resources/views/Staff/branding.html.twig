@@ -82,7 +82,7 @@
                                             <path fill="#7c74f1" fill-rule="evenodd" d="M26.516,22.252H21.477V17.226h-3.75L24,11.031l6.269,6.195h-3.75v5.026ZM29.973,8.138A9.1,9.1,0,0,0,24,6.005a8.947,8.947,0,0,0-4.863,1.4,9.78,9.78,0,0,0-3.457,3.682A7.494,7.494,0,0,0,9,18.512a7.2,7.2,0,0,0,2.2,5.289,7.234,7.234,0,0,0,5.3,2.192H32.727A6.294,6.294,0,0,0,39,19.739,5.933,5.933,0,0,0,37.3,15.5a6.113,6.113,0,0,0-4.1-1.958A9.112,9.112,0,0,0,29.973,8.138Z"/>
                                         </svg>
                                     </div>
-                                    <img id="dynamic-image-upload" {% if isLogo %}src="{{ website.logo }}"{% endif %}>
+                                    <img id="dynamic-image-upload" {% if isLogo %} src="{{ websitedata.logo }}" {% endif %}>
 
                                 </div>
                                 <div class="uv-image-info-brick">
@@ -446,39 +446,7 @@
                 </div>
                 <!--//Tab View-->
         
-            <!--Tab View-->
-            <div class="uv-tab-view {% if type == 'advanced' %}uv-tab-view-active{% endif %}" id="advanced">
-                <form method="post" action="{{ path('helpdesk_member_knowledgebase_theme', {'type': 'advanced'}) }}" id="advancedForm">
-                    <!-- Field -->
-                    <div class="uv-element-block">
-                        <label class="uv-field-label">{{ 'Custom CSS (Optional)'|trans }}</label>
-                        <div class="uv-field-block">
-                            <textarea name="customCSS" class="uv-field">{{ configuration.customCSS }}</textarea>
-                        </div>
-                        <span class="uv-field-info">{{ 'It will be add to the frontend knowledgebase only'|trans }}</span>
-                    </div>
-                    <!-- //Field -->
-
-                    <!-- Field -->
-                    <div class="uv-element-block">
-                        <label class="uv-field-label">{{ 'Custom Javascript (Optional)'|trans }}</label>
-                        <div class="uv-field-block">
-                            <textarea name="script" class="uv-field">{{ configuration.script }}</textarea>
-                        </div>
-                        <span class="uv-field-info">{{ 'It will be add to the frontend knowledgebase only'|trans }}</span>
-                    </div>
-                    <!-- //Field -->
-
-                    <!-- CSRF token Field -->
-                    <input type="hidden" name="form[_token]" value="{{ uvdesk_service.generateCsrfToken('form') }}"/>
-                    <!-- //CSRF token Field -->
-
-                    <!--CTA-->
-                    <input class="uv-btn advanced-btn" href="#" value="{{ 'Save Changes'|trans }}" type="button">
-                    <!--//CTA-->
-                </form>
-            </div>
-            <!--//Tab View-->
+           
 
             <!--Tab View-->
             <div class="uv-tab-view {% if type == 'broadcasting' %}uv-tab-view-active{% endif %}" id="broadcasting">
@@ -748,8 +716,6 @@
 		        el: 'form',
 		        model: new BrandingModel()
 		    });
-
-            {# for broadcasting form #}
             var BroadcastModel = Backbone.Model.extend({
 			    validation: {
 			    	'broadcasting[message]': {

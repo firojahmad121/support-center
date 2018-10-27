@@ -133,9 +133,13 @@
 						required: true,
 						msg: "{{ 'This field is mandatory'|trans }}"
 					}, {
-						pattern: '^((?![$%<]).)*$',
+						pattern: '^[ a-zA-z ]*$',
 						msg: "{{ 'This field must have valid characters only'|trans }}"
-					}],
+					},{
+						maxLength:50,
+						msg:"This field contain maximum 50 charectures."
+					}
+					],
                     'sortOrder': {
                         pattern: '^[0-9]*$',
                         msg: "{{ 'This field must be a number'|trans }}"

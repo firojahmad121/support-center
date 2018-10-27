@@ -58,8 +58,8 @@
         <header>
             <div class="uv-header-lt">
                 <a class="uv-logo" href="{{path('helpdesk_knowledgebase_folder')}}">
-                    {% if websiteConfiguration is defined and websiteConfiguration.logoThumbnail is defined %}
-                        <img src="{{ websiteConfiguration.logoThumbnail }}" alt="{{websiteConfiguration.name}}" />
+                    {% if websiteConfiguration is defined and websiteConfiguration.website.logo is defined %}
+                        <img src="{{ websiteConfiguration.website.logo }}" alt="{{ websiteConfiguration.website.name}}" />
                     {% else %}
                             <img src="{{ asset('../bundles/uvdeskcore/images/uvdesk-gray-logo.svg') }}" alt="UVdesk" />
                     {% endif %}
@@ -141,8 +141,8 @@
             <div class="uv-container">
                 <article>
                     <h1>
-                        {% if websiteConfiguration is defined and websiteConfiguration.siteDescritption is defined %}
-                            {{ websiteConfiguration.siteDescritption }}
+                        {% if websiteConfiguration is defined and websiteConfiguration.siteDescription is defined %}
+                            {{ websiteConfiguration.siteDescription }}
                         {% else %}
                             {% trans %}Hi! how can we help?{% endtrans %}
                         {% endif %}

@@ -33,11 +33,11 @@ class Branding extends Controller
                 case "general":                    
                     $website->setName($params['website']['name']);
                     $status = array_key_exists("status",$params['website']) ? 1 : 0;
-                  
-                    // if(isset($parmsFile['logo'])) {
-                    //     $fileName  = $this->container->get('uvdesk.service')->getFileUploadManager()->upload($parmsFile['logo']);
-                    //     $website->setLogo($fileName);
-                    // }
+                //   dump($parmsFile);die;
+                    if(isset($parmsFile['logo'])) {
+                        $fileName  = $this->container->get('uvdesk.service')->getFileUploadManager()->upload($parmsFile['logo']);
+                        $website->setLogo($fileName);
+                    }
 
                     $entityManager->persist($website);
                     
@@ -129,8 +129,7 @@ class Branding extends Controller
                     break;
             }
         }
-        
-        // dump($website);die;
+      
         return $this->render('@UVDeskSupportCenter/Staff/branding.html.twig', [
             'websitedata' => $website,
             'type' => $settingType,
