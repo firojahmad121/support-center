@@ -2,18 +2,15 @@
 
 namespace Webkul\UVDesk\SupportCenterBundle\Knowledgebase;
 
-use Webkul\UVDesk\CoreBundle\Entity\Ticket as TicketEntity;
 use Webkul\UVDesk\CoreBundle\Entity\Thread;
-use Webkul\UVDesk\CoreBundle\Entity\TicketRating;
-use Webkul\UVDesk\SupportCenterBundle\Services\UVdeskSupport;
-use Webkul\UVDesk\SupportCenterBundle\Form\Ticket as TicketForm;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Webkul\UVDesk\CoreBundle\Entity\TicketRating;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Webkul\UVDesk\CoreBundle\Entity\Ticket as TicketEntity;
+use Webkul\UVDesk\SupportCenterBundle\Form\Ticket as TicketForm;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 
 class Ticket extends Controller
 {
@@ -27,11 +24,9 @@ class Ticket extends Controller
     }
     protected function getWebsiteDetails()
     {
-        $em = $this->getDoctrine()->getManager();
-        $KnowledgebaseRepo = $em->getRepository('UVDeskCoreBundle:Website');
-        $currentKnowledgebase = $KnowledgebaseRepo->findOneBy(['code' => 'knowledgebase']);
+        $knowledgebaseWebsite = $this->getDoctrine()->getManager()->getRepository('UVDeskCoreBundle:Website')->findOneByCode('knowledgebase');
         
-        return $currentKnowledgebase;
+        return $knowledgebaseWebsite;
     }
 
     /**
@@ -363,6 +358,7 @@ class Ticket extends Controller
         $data = json_decode($request->getContent(), true);
         $id = $data['id'];
         $count = intval($data['rating']);
+        
         if($count > 0 || $count < 6) {
             $ticket = $em->getRepository('UVDeskCoreBundle:Ticket')->find($id);
             $customer = $this->get('user.service')->getCurrentUser();
@@ -386,6 +382,7 @@ class Ticket extends Controller
             $json['alertClass'] = 'danger';
             $json['alertMessage'] = $this->get('translator')->trans('Warning ! Invalid rating.');
         }
+
         $response = new Response(json_encode($json));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
