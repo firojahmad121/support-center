@@ -4,6 +4,7 @@ namespace Webkul\UVDesk\SupportCenterBundle\Knowledgebase;
 
 use Webkul\UVDesk\CoreBundle\Entity\Ticket as TicketEntity;
 use Webkul\UVDesk\CoreBundle\Entity\Thread;
+use Webkul\UVDesk\CoreBundle\Entity\TicketRating;
 use Webkul\UVDesk\SupportCenterBundle\Services\UVdeskSupport;
 use Webkul\UVDesk\SupportCenterBundle\Form\Ticket as TicketForm;
 
@@ -13,25 +14,23 @@ use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+
 class Ticket extends Controller
 {
     protected function isWebsiteActive()
     {
         $error = false;
-
         $currentKnowledgebase = $this->getWebsiteDetails();
         
         if(!$currentKnowledgebase)
             $this->noResultFound();
     }
-
     protected function getWebsiteDetails()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $KnowledgebaseRepo = $em->getRepository('UVDeskSupportCenterBundle:KnowledgebaseWebsite');
-        $currentKnowledgebase = $KnowledgebaseRepo->findOneBy(['website' => 2, 'isActive' => true]);
-
+        $KnowledgebaseRepo = $em->getRepository('UVDeskCoreBundle:Website');
+        $currentKnowledgebase = $KnowledgebaseRepo->findOneBy(['code' => 'knowledgebase']);
+        
         return $currentKnowledgebase;
     }
 
@@ -47,10 +46,10 @@ class Ticket extends Controller
     public function ticketadd(Request $request)
     {
         $this->isWebsiteActive();
-
+        
         $formErrors = $errors = array();
         $websiteConfiguration = $this->get('uvdesk.service')->getActiveConfiguration($this->getWebsiteDetails()->getId());
-        
+
         if(!$websiteConfiguration || !$websiteConfiguration->getTicketCreateOption() || ($websiteConfiguration->getLoginRequiredToCreate() && !$this->getUser()))
             return $this->redirect($this->generateUrl('helpdesk_knowledgebase'));
 
@@ -354,5 +353,41 @@ class Ticket extends Controller
         ];
 
         return $this->render('@UVDeskSupportCenter/Knowledgebase/ticketView.html.twig', $twigResponse);
+    }
+    // Ticket rating
+    public function rateTicket(Request $request) {
+
+        $this->isWebsiteActive();
+        $json = array();
+        $em = $this->getDoctrine()->getManager();
+        $data = json_decode($request->getContent(), true);
+        $id = $data['id'];
+        $count = intval($data['rating']);
+        if($count > 0 || $count < 6) {
+            $ticket = $em->getRepository('UVDeskCoreBundle:Ticket')->find($id);
+            $customer = $this->get('user.service')->getCurrentUser();
+            $rating = $em->getRepository('UVDeskCoreBundle:TicketRating')->findOneBy(array('ticket' => $id,'customer'=>$customer->getId()));
+            if($rating) {
+                $rating->setcreatedAt(new \DateTime);
+                $rating->setStars($count);
+                $em->persist($rating);
+                $em->flush();
+            } else {
+                $rating = new TicketRating();
+                $rating->setStars($count);
+                $rating->setCustomer($customer);
+                $rating->setTicket($ticket);
+                $em->persist($rating);
+                $em->flush();
+            }
+            $json['alertClass'] = 'success';
+            $json['alertMessage'] = $this->get('translator')->trans('Success ! Rating has been successfully added.');
+        } else {
+            $json['alertClass'] = 'danger';
+            $json['alertMessage'] = $this->get('translator')->trans('Warning ! Invalid rating.');
+        }
+        $response = new Response(json_encode($json));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 }

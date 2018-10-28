@@ -446,34 +446,7 @@ class KnowledgebaseWebsite
     {
         return $this->website;
     }
-
-    /**
-     * Add website.
-     *
-     * @param \Webkul\UVDesk\SupportCenterBundle\Entity\Website $website
-     *
-     * @return KnowledgebaseWebsite
-     */
-    public function addWebsite(\Webkul\UVDesk\SupportCenterBundle\Entity\Website $website)
-    {
-        $this->website[] = $website;
-
-        return $this;
-    }
-
-    /**
-     * Remove website.
-     *
-     * @param \Webkul\UVDesk\SupportCenterBundle\Entity\Website $website
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeWebsite(\Webkul\UVDesk\SupportCenterBundle\Entity\Website $website)
-    {
-        return $this->website->removeElement($website);
-    }
-
-
+    
     /**
      * Set linkColor
      *
