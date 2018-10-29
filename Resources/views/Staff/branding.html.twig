@@ -647,11 +647,7 @@
                         $(this).css('color', textColor)
                     });
 
-			        Backbone.Validation.bind(this);
-			        var jsonContext = JSON.parse('{{ errors|raw }}');
-		    		for (var field in jsonContext) {
-		    			Backbone.Validation.callbacks.invalid(this, 'website[' + field + ']', jsonContext[field], 'input');
-					}
+			        Backbone.Validation.bind(this);			      
 			    },
 			    formChanegd: function(e) {
                     if(!Backbone.$(e.currentTarget).parents('.links').length) {
@@ -665,8 +661,7 @@
                         console.log("form_submited fail");
                     
 			        if(this.model.isValid(true)) {
-						$('.general-btn').attr('disabled', 'disabled');
-                        {# console.log("form_submited"); #}
+						
 			           $("#generalSettingForm").submit();
 			        }
 			    },

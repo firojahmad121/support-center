@@ -17,10 +17,10 @@ class Folder extends Controller
         }
 
         $entityManager = $this->getDoctrine()->getManager();
-        $totalKnowledgebaseFolders = $entityManager->getRepository('UVDeskSupportCenterBundle:Solutions')->getTotalSolutionCount();
-        $totalKnowledgebaseCategories = $entityManager->getRepository('UVDeskSupportCenterBundle:SolutionCategory')->getTotalCategoryCount();
-        $totalKnowledgebaseArticles = $entityManager->getRepository('UVDeskSupportCenterBundle:Article')->getTotalArticleCount();
-
+        $totalKnowledgebaseFolders = count($entityManager->getRepository('UVDeskSupportCenterBundle:Solutions')->findAll());
+        $totalKnowledgebaseCategories = count($entityManager->getRepository('UVDeskSupportCenterBundle:SolutionCategory')->findAll());
+        $totalKnowledgebaseArticles = count($entityManager->getRepository('UVDeskSupportCenterBundle:Article')->findAll());
+       
         return $this->render('@UVDeskSupportCenter/Staff/Folders/listFolders.html.twig', [
             'articleCount' => $totalKnowledgebaseArticles,
             'categoryCount' => $totalKnowledgebaseCategories,
@@ -46,10 +46,9 @@ class Folder extends Controller
                    
                     $message = 'Warning! Provide valid image file. (Recommened: PNG, JPG or GIF Format).';
                     $this->addFlash('warning', $message);
+
+                    return $this->redirect($this->generateUrl('helpdesk_member_knowledgebase_create_folder'));
                     
-                    return $this->render('@UVDeskSupportCenter/Staff/Folders/createFolder.html.twig', [
-                        'folder' => $folder
-                    ]);
                 }
             }
               

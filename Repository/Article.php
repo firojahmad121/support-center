@@ -336,17 +336,7 @@ class Article extends EntityRepository
         $this->getEntityManager()->createQuery($query)->execute();
     }
 
-    public function getTotalArticleCount()
-    {
-        $queryBuilder = $this->createQueryBuilder('s');
-
-        $result = $queryBuilder->select('COUNT(DISTINCT s.id)')
-                 ->getQuery()
-                 ->getSingleScalarResult();
-
-        return $result;
-    }
-
+  
     private function getStringToOrder($string)
     {
         Switch($string){

@@ -180,16 +180,7 @@ class Solutions extends \Doctrine\ORM\EntityRepository
 
         return $result;
     }
-    public function getTotalSolutionCount()
-    {
-        $queryBuilder = $this->createQueryBuilder('s');
 
-        $result = $queryBuilder->select('COUNT(DISTINCT s.id)')
-                 ->getQuery()
-                 ->getSingleScalarResult();
-
-        return $result;
-    }
     public function getArticlesCountBySolution($id, $status = [0, 1])
     {
         $queryBuilder = $this->createQueryBuilder('a');

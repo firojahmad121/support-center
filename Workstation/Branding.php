@@ -4,7 +4,6 @@ namespace Webkul\UVDesk\SupportCenterBundle\Workstation;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Webkul\UVDesk\CoreBundle\Form\BrandingGeneral;
 use Webkul\UVDesk\SupportCenterBundle\Entity\Website;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -30,11 +29,11 @@ class Branding extends Controller
             $parmsFile = ($request->files->get('website'));
 
             switch($settingType) {
-                case "general":                    
+                case "general": 
+
                     $website->setName($params['website']['name']);
                     $status = array_key_exists("status",$params['website']) ? 1 : 0;
-                //   dump($parmsFile);die;
-                    if(isset($parmsFile['logo'])) {
+                    if (isset($parmsFile['logo'])) {
                         $fileName  = $this->container->get('uvdesk.service')->getFileUploadManager()->upload($parmsFile['logo']);
                         $website->setLogo($fileName);
                     }
@@ -46,7 +45,9 @@ class Branding extends Controller
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
+
                 case "knowledgebase":
+
                     $configuration->setPageBackgroundColor($params['website']['pageBackgroundColor']);
                     $configuration->setHeaderBackgroundColor($params['website']['headerBackgroundColor']); 
 
@@ -75,14 +76,18 @@ class Branding extends Controller
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
+
                 case "seo":
+
                     $configuration->setMetaDescription($params['metaDescription']);  
                     $configuration->setMetaKeywords($params['metaKeywords']);  
                     $configuration->setUpdatedAt(new \DateTime());
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
+
                 case "links":
+
                     $footerLinks=[];
                     $headerLinks=[];
                     $headerLinks = $params['headerLinks'];                    
@@ -108,7 +113,9 @@ class Branding extends Controller
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
+
                 case "broadcasting":
+
                     $isActive = array_key_exists('isActive',$params['broadcasting']) ? ["isActive"=>1]  : ["isActive"=>0];
                     $broadcast = json_encode(array_merge($params['broadcasting'],$isActive));
                     $configuration->setBroadcastMessage($broadcast);
@@ -116,16 +123,17 @@ class Branding extends Controller
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
+
                 case 'advanced':
+
                     $configuration->setCustomCSS($request->request->get('customCSS'));
                     $configuration->setScript($request->request->get('script'));
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
+                    
                 default:
-                    $errors = [
-                        'message'=>"invalid request setting please check !"
-                    ];
+                    
                     break;
             }
         }
@@ -135,7 +143,6 @@ class Branding extends Controller
             'type' => $settingType,
             'configuration' => $configuration,
             'broadcast' => json_decode($configuration->getBroadcastMessage()),
-            'errors' => json_encode($errors),
         ]);
     }
 
