@@ -5,7 +5,7 @@
 UVDeskSupportCenterBundle
 --------------
 
-The **UVDeskSupportCenterBundle** introduces the Support Center portal to the UVDesk Community Helpdesk, a nifty solution to provide your customers with an easy interface to manage their tickets and easily engage with your support staff. The Support Center also includes a Knowledgebase that can be easily managed by your support staff.
+The **UVDeskSupportCenterBundle** introduces the Support Center portal to the [UVDesk Community][1] helpdesk, a nifty solution to provide your customers with an easy interface to manage their tickets and easily engage with your support staff. The Support Center also includes a Knowledgebase that can be easily managed by your support staff.
 
 The support center bundle comes loaded with the following features:
 
@@ -16,7 +16,7 @@ The support center bundle comes loaded with the following features:
 Installation
 --------------
 
-Before installing, make sure that you have [Composer][1] installed.
+Before installing, make sure that you have [Composer][2] installed.
 
 To require the support center bundle into your uvdesk community helpdesk project, simply run the following from your project root:
 
@@ -29,4 +29,5 @@ License
 
 The **UVDeskSupportCenterBundle** and libraries included within the bundle are released under the MIT or BSD license.
 
-[1]: https://getcomposer.org/
+[1]: https://www.uvdesk.com/
+[2]: https://getcomposer.org/
