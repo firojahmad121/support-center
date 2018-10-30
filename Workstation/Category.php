@@ -89,14 +89,13 @@ class Category extends Controller
         }
 
         if ($request->attributes->get('id')) {
-            $category = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:SolutionCategory')
-                                            ->findCategoryById(['id' => $request->attributes->get('id')]);
-            if(!$category)
+            if (!$category) {
                 $this->noResultFound();
-
+            }
         } else {
             $category = new SolutionCategory;
         }
+
         $categorySolutions = [];
         if($category->getId())
             $categorySolutions = $this->getDoctrine()
@@ -179,7 +178,6 @@ class Category extends Controller
         $json = array();
       
         if($request->getMethod() == "POST") {
-
             $em = $this->getDoctrine()->getManager();
 
             $data = $request->request->get("data");

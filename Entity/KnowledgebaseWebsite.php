@@ -82,7 +82,6 @@ class KnowledgebaseWebsite
      */
     private $updatedAt;
 
-
     /**
      * @var string
      */
@@ -758,7 +757,6 @@ class KnowledgebaseWebsite
     {
         return $this->customCSS;
     }
-
 
     /**
      * @var integer

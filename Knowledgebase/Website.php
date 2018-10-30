@@ -34,7 +34,6 @@ class Website extends Controller
         throw new NotFoundHttpException('Permission Denied !');
     }
 
-
     public function home(Request $request)
     {
         $this->isWebsiteActive();
@@ -45,8 +44,8 @@ class Website extends Controller
             'direction' => 'desc'
         ];
 
+        $articleRepository = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:Article');
         $solutionRepository = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:Solutions');
-        $categoryCollection = $solutionRepository->getAllCategories(10, 2);
 
         $twigResponse = [
             'searchDisable' => false,
@@ -70,8 +69,7 @@ class Website extends Controller
         }
 
         $twigResponse['solutions']['results'] = $newResult;
-        $twigResponse['solutions']['categories'] = $categoryCollection;
-        $articles = array_map(function($category){
+        $twigResponse['solutions']['categories'] = array_map(function($category) use ($articleRepository) {
             $parameterBag = [
                 'categoryId' => $category['id'],
                 'status' => 1,
@@ -79,36 +77,29 @@ class Website extends Controller
                 'limit'=>10,
                 'direction' => 'desc'
             ];
-          $article =  $this->getDoctrine()
-                ->getRepository('UVDeskSupportCenterBundle:Article')
-                ->getAllArticles(new ParameterBag($parameterBag), $this->container, 'a.id, a.name, a.slug, a.stared');
+
+            $article =  $articleRepository->getAllArticles(new ParameterBag($parameterBag), $this->container, 'a.id, a.name, a.slug, a.stared');
              
-        return [
-            'id'=>$category['id'],
-            'name'=>$category['name'],
-            'description'=>$category['description'],
-            'articles'=>$article
-        ];
-
-
-
-        },$categoryCollection);
+            return [
+                'id' => $category['id'],
+                'name' => $category['name'],
+                'description' => $category['description'],
+                'articles' => $article
+            ];
+        }, $solutionRepository->getAllCategories(10, 2));
 
         $twigResponse['solutions']['categories'] = $articles;
 
-        // dump($twigResponse);die;
         return $this->render('@UVDeskSupportCenter//Knowledgebase//index.html.twig', $twigResponse);
     }
 
     public function listCategories(Request $request)
     {
-       $this->isWebsiteActive();
+        $this->isWebsiteActive();
 
         $solutionRepository = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:Solutions');
-     
         $categoryCollection = $solutionRepository->getAllCategories(10, 4);
         
-    //    dump($categoryCollection);die;
         return $this->render('@UVDeskSupportCenter/Knowledgebase/categoryListing.html.twig', [
             'categories' => $categoryCollection,
             'categoryCount' => count($categoryCollection),
@@ -117,7 +108,6 @@ class Website extends Controller
 
     public function viewFolder(Request $request)
     {
-       
         $this->isWebsiteActive();
         
         if(!$request->attributes->get('solution'))
@@ -217,7 +207,6 @@ class Website extends Controller
 
     public function viewCategory(Request $request)
     {
-    
         $this->isWebsiteActive();
 
         if(!$request->attributes->get('category'))
@@ -246,6 +235,7 @@ class Website extends Controller
             'sort' => 'id',
             'direction' => 'desc'
         ];
+
         $category_data=  array(
             'category' => $category,
             'articlesCount' => $this->getDoctrine()
@@ -263,7 +253,6 @@ class Website extends Controller
     public function viewArticle(Request $request)
     {
         $this->isWebsiteActive();
-
 
         if (!$request->attributes->get('article') && !$request->attributes->get('slug')) {
             return $this->redirect($this->generateUrl('helpdesk_knowledgebase'));
@@ -308,14 +297,13 @@ class Website extends Controller
             }
         }
 
-
+        // @TODO: App popular articles
         $article_details = [
             'article' => $article,
             'breadcrumbs' => [
                 ['label' => $this->get('translator')->trans('Support Center'), 'url' => $this->generateUrl('helpdesk_knowledgebase')],
                 ['label' => $article->getName(), 'url' => '#']
             ],
-            // 'popArticles' => $this->get('uvdesk.service')->getPopularArticles(), @TODO: NEEDS IMPLEMENTATION LATER
             'dateAdded' => $this->get('user.service')->convertToTimezone($article->getDateAdded()),
             'articleTags' => $articleRepository->getTagsByArticle($article->getId()),
             'articleAuthor' => $articleRepository->getArticleAuthorDetails($article->getId()),
@@ -343,16 +331,11 @@ class Website extends Controller
         return $this->render('@UVDeskSupportCenter/Knowledgebase/search.html.twig', [
             'search' => $searchQuery,
             'articles' => $articleCollection,
-            // 'breadcrumbs' => [
-            //     ['label' => $this->get('translator')->trans('Support Center'), 'url' => $this->generateUrl('helpdesk_knowledgebase')],
-            //     ['label' => $searchQuery, 'url' => '#'],
-            // ],
         ]);
     }
 
     public function viewTaggedResources(Request $request)
     {
-        
         $this->isWebsiteActive();
 
         $tagQuery = $request->attributes->get('tag');

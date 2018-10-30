@@ -336,7 +336,6 @@ class Article extends EntityRepository
         $this->getEntityManager()->createQuery($query)->execute();
     }
 
-  
     private function getStringToOrder($string)
     {
         Switch($string){

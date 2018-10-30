@@ -265,5 +265,4 @@ class SolutionCategory extends EntityRepository
 
         $this->getEntityManager()->createQuery($query)->execute();
     }
-
 }

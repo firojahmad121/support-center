@@ -446,8 +446,6 @@
                 </div>
                 <!--//Tab View-->
         
-           
-
             <!--Tab View-->
             <div class="uv-tab-view {% if type == 'broadcasting' %}uv-tab-view-active{% endif %}" id="broadcasting">
                 {# {% set broadcastMessage = website.broadcastMessage|json_decode %} #}
@@ -661,7 +659,6 @@
                         console.log("form_submited fail");
                     
 			        if(this.model.isValid(true)) {
-						
 			           $("#generalSettingForm").submit();
 			        }
 			    },
@@ -711,6 +708,7 @@
 		        el: 'form',
 		        model: new BrandingModel()
 		    });
+            
             var BroadcastModel = Backbone.Model.extend({
 			    validation: {
 			    	'broadcasting[message]': {

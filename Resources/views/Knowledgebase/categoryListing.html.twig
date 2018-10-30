@@ -1,9 +1,7 @@
 {% extends "@UVDeskSupportCenter/Templates/layout.html.twig" %}
-{# {% block title %}{{category.name}}{% endblock %}
-{% block ogtitle %}{{category.name}}{% endblock %}
-{% block twtitle %}{{category.name}}{% endblock %}
-{% block metaDescription %}{{category.description}}{% endblock %}
-{% block metaKeywords %}{{uvdesk_service.createConentToKeywords(category.description)}}{% endblock %} #}
+{% block title %}Categories{% endblock %}
+{% block ogtitle %}Categories{% endblock %}
+{% block twtitle %}Categories{% endblock %}
 
 {% block body %}
 	<div class="uv-paper-article">
@@ -31,6 +29,7 @@
 			</section>
 		</div>
 
+		{# TODO: Implement popular articles }
 		{# {% include "WebkulDefaultBundle:Front:popularArticle.html.twig" %} #}
 	</div>
 	{{parent()}}

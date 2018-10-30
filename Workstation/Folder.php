@@ -48,7 +48,6 @@ class Folder extends Controller
                     $this->addFlash('warning', $message);
 
                     return $this->redirect($this->generateUrl('helpdesk_member_knowledgebase_create_folder'));
-                    
                 }
             }
               

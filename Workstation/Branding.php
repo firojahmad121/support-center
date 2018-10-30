@@ -20,7 +20,6 @@ class Branding extends Controller
         $settingType = $request->attributes->get('type');
         $userService = $this->container->get('user.service');
         $website = $entityManager->getRepository('UVDeskCoreBundle:Website')->findOneBy(['code'=>"knowledgebase"]);
-      
         $configuration = $entityManager->getRepository('UVDeskSupportCenterBundle:KnowledgebaseWebsite')->findOneBy(['website' => $website->getId(),'isActive' => 1]);
         
         if ($request->getMethod() == 'POST') {
@@ -30,24 +29,22 @@ class Branding extends Controller
 
             switch($settingType) {
                 case "general": 
-
                     $website->setName($params['website']['name']);
                     $status = array_key_exists("status",$params['website']) ? 1 : 0;
+                    
                     if (isset($parmsFile['logo'])) {
                         $fileName  = $this->container->get('uvdesk.service')->getFileUploadManager()->upload($parmsFile['logo']);
                         $website->setLogo($fileName);
                     }
 
-                    $entityManager->persist($website);
-                    
                     $configuration->setStatus($status);
                     $configuration->setBrandColor($params['website']['brandColor']);
+                    
+                    $entityManager->persist($website);
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
-
                 case "knowledgebase":
-
                     $configuration->setPageBackgroundColor($params['website']['pageBackgroundColor']);
                     $configuration->setHeaderBackgroundColor($params['website']['headerBackgroundColor']); 
 
@@ -76,18 +73,14 @@ class Branding extends Controller
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
-
                 case "seo":
-
                     $configuration->setMetaDescription($params['metaDescription']);  
                     $configuration->setMetaKeywords($params['metaKeywords']);  
                     $configuration->setUpdatedAt(new \DateTime());
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
-
                 case "links":
-
                     $footerLinks=[];
                     $headerLinks=[];
                     $headerLinks = $params['headerLinks'];                    
@@ -113,27 +106,21 @@ class Branding extends Controller
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
-
                 case "broadcasting":
-
-                    $isActive = array_key_exists('isActive',$params['broadcasting']) ? ["isActive"=>1]  : ["isActive"=>0];
-                    $broadcast = json_encode(array_merge($params['broadcasting'],$isActive));
-                    $configuration->setBroadcastMessage($broadcast);
+                    $params['isActive'] = array_key_exists('isActive', $params['broadcasting']) ? true  : false;
+                    $configuration->setBroadcastMessage(json_encode($params['broadcasting']));
                     $configuration->setUpdatedAt(new \DateTime());
+                    
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
-
                 case 'advanced':
-
                     $configuration->setCustomCSS($request->request->get('customCSS'));
                     $configuration->setScript($request->request->get('script'));
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
-                    
                 default:
-                    
                     break;
             }
         }
