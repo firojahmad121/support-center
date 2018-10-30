@@ -16,15 +16,19 @@
 		.grammarly-fix-message {
 			max-width: 158%;
 		}
+		.uv-field-success-icon {
+			display: none !important;
+		}
 	</style>
+
 	{% set isTicketViewPage = (app.user.id is defined ? true : false) %}
 	<div class="uv-paper-article uv-paper-form">
 		<div class="uv-paper-section">
 			<section>
 				<h1>{{ 'Create Ticket Request'|trans }}</h1>
+
 				<div class="uv-form">
 					<form action="{{ path('helpdesk_customer_create_ticket') }}" method="post" id="create-ticket-form" enctype="multipart/form-data">
-						{# <input type="hidden" name="_token" value="{{ default_service.generateCsrfToken('') }}"/> #}
 						{% if not isTicketViewPage %}
 							<!-- Field -->
 							<div class="uv-element-block">
@@ -101,93 +105,96 @@
 {% endblock %}
 
 {% block footer %}
-{{ parent() }}
-{{ include('@UVDeskCore/Templates/attachment.html.twig') }}
-
-<script type="text/javascript">
-
 	{% set isTicketViewPage = (app.user.id is defined ? true : false) %}
+	{{ parent() }}
+	{{ include('@UVDeskCore/Templates/attachment.html.twig') }}
 
-	$(function () {
-		if(typeof(customFieldValidation) == 'undefined') {
-			customFieldValidation = {};
-		}
-		var CreateTicketModel = Backbone.Model.extend({
-			idAttribute : "id",
-			defaults : {
-				path : "",
-			},
-			validation: jQuery.extend(customFieldValidation, {
-				{% if not isTicketViewPage %}
-					'name' : {
+	<script src='https://www.google.com/recaptcha/api.js'></script>
+
+	<script type="text/javascript">
+		$(function () {
+			{% if(removeMe is defined) %}
+				$.each({{ removeMe | json_encode |raw }}, function(key, value){
+					$('label[for="' + value + '"]').parent().hide();
+				});
+			{% endif %}
+
+			var CreateTicketModel = Backbone.Model.extend({
+				idAttribute : "id",
+				defaults : {
+					path : "",
+				},
+				validation: {
+					{% if not isTicketViewPage %}
+						'name' : {
+							required : true,
+							msg : '{{ "This field is mandatory"|trans }}'
+						},
+						'from' :
+						[{
+							required : true,
+							msg : '{{ "This field is mandatory"|trans }}'
+						},{
+							pattern : 'email',
+							msg : '{{ "Email address is invalid"|trans }}'
+						}],
+					{% endif %}
+					'type' : {
 						required : true,
 						msg : '{{ "This field is mandatory"|trans }}'
 					},
-					'from' :
-					[{
+					'subject' : {
 						required : true,
 						msg : '{{ "This field is mandatory"|trans }}'
-					},{
-						pattern : 'email',
-						msg : '{{ "Email address is invalid"|trans }}'
-					}],
-				{% endif %}
-				'type' : {
-					required : true,
-					msg : '{{ "This field is mandatory"|trans }}'
+					},
+					'reply' : {
+						required : true,
+						msg : '{{ "This field is mandatory"|trans }}'
+					},
 				},
-				'subject' : {
-					required : true,
-					msg : '{{ "This field is mandatory"|trans }}'
-				},
-				'reply' : {
-					required : true,
-					msg : '{{ "This field is mandatory"|trans }}'
-				},
-			}),
-			urlRoot : "{{ path('helpdesk_customer_create_ticket') }}"
-		});
+				urlRoot : "{{ path('helpdesk_customer_create_ticket') }}"
+			});
 
-		var CreateTicketForm = Backbone.View.extend({
-			initialize : function() {
-				Backbone.Validation.bind(this);
-				
-				for (var field in jsonContext) {
-					Backbone.Validation.callbacks.invalid(this, field, jsonContext[field], 'input');
+			var CreateTicketForm = Backbone.View.extend({
+				initialize : function() {
+					Backbone.Validation.bind(this);
+					var jsonContext = JSON.parse('{{ errors is defined ? errors|raw : "{}"  }}');
+					for (var field in jsonContext) {
+						Backbone.Validation.callbacks.invalid(this, field, jsonContext[field], 'input');
+					}
+				},
+				events : {
+					'click #create-ticket-btn' : "saveTicket",
+					'change #type' : "updateCustomFields",
+					'blur input:not(input[type=file]), textarea, select, checkbox': 'formChanegd',
+					'change input[type=file]': 'formChanegd',
+				},
+				formChanegd: function(e) {
+					this.model.set(Backbone.$(e.currentTarget).attr('name'), Backbone.$(e.currentTarget).val())
+					this.model.isValid([Backbone.$(e.currentTarget).attr('name')])
+				},
+				saveTicket : function (e) {
+					e.preventDefault();
+					var currentElement = Backbone.$(e.currentTarget);
+					var data = currentElement.closest('form').serializeObject();
+					this.model.set(data);
+
+					if(this.model.isValid(true)) {
+						$('#create-ticket-form').submit();
+						$('form').find('#create-ticket-btn').attr('disabled', 'disabled');
+					}
+				},
+				updateCustomFields : function (e) {
+					var dependentFields = e.currentTarget.value;
+					this.$('.dependent').hide();
+					this.$('.dependency' + dependentFields).show();
 				}
-			},
-			events : {
-				'click #create-ticket-btn' : "saveTicket",
-				'change #type' : "updateCustomFields",
-				'blur input:not(input[type=file]), textarea, select, checkbox': 'formChanegd',
-				'change input[type=file]': 'formChanegd',
-			},
-			formChanegd: function(e) {
-				this.model.set(Backbone.$(e.currentTarget).attr('name'), Backbone.$(e.currentTarget).val())
-				this.model.isValid([Backbone.$(e.currentTarget).attr('name')])
-			},
-			saveTicket : function (e) {
-				e.preventDefault();
-				var currentElement = Backbone.$(e.currentTarget);
-				var data = currentElement.closest('form').serializeObject();
-				this.model.set(data);
+			});
 
-				if(this.model.isValid(true)) {
-					$('#create-ticket-form').submit();
-					$('form').find('#create-ticket-btn').attr('disabled', 'disabled');
-				}
-			},
-			updateCustomFields : function (e) {
-				var dependentFields = e.currentTarget.value;
-				this.$('.dependent').hide();
-				this.$('.dependency' + dependentFields).show();
-			}
+			var createticketForm = new CreateTicketForm({
+				el : $("#create-ticket-form"),
+				model : new CreateTicketModel()
+			});
 		});
-
-		var createticketForm = new CreateTicketForm({
-			el : $("#create-ticket-form"),
-			model : new CreateTicketModel()
-		});
-	});
-</script>
+	</script>
 {% endblock %}
