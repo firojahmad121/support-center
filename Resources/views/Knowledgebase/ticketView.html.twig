@@ -305,7 +305,7 @@
                                                             {% if fileDefaultImages[file.contentType] is defined %}
                                                                 <img src="{{ fileDefaultImages[file.contentType] }}" class="file-icon"/>
                                                             {% else %}
-                                                                <img src="{{ fileDefaultImages['unknown'] }}" class="file-icon"/>
+                                                                {# <img src="{{ fileDefaultImages['unknown'] }}" class="file-icon"/> #}
                                                             {% endif %}
                                                         </a>
                                                     {% endif %}
