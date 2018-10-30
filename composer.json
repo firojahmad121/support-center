@@ -1,5 +1,5 @@
 {
-    "name": "uvdesk/support-center",
+    "name": "uvdesk/support-center-bundle",
     "description": "Customer Support System Bundle",
     "type": "symfony-bundle",
     "license": "MIT",
