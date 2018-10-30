@@ -75,6 +75,9 @@
 					}, {
 						pattern: '^((?![$%<]).)*$',
 						msg: "{{ 'This field must have valid characters only'|trans }}"						
+					},{
+						maxLength:40,
+						msg:"This field contain maximum 40 charectures."
 					}],
 					'description': {
 						required: true,

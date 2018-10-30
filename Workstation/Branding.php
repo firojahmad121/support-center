@@ -4,7 +4,6 @@ namespace Webkul\UVDesk\SupportCenterBundle\Workstation;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Webkul\UVDesk\CoreBundle\Form\BrandingGeneral;
 use Webkul\UVDesk\SupportCenterBundle\Entity\Website;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -21,6 +20,7 @@ class Branding extends Controller
         $settingType = $request->attributes->get('type');
         $userService = $this->container->get('user.service');
         $website = $entityManager->getRepository('UVDeskCoreBundle:Website')->findOneBy(['code'=>"knowledgebase"]);
+      
         $configuration = $entityManager->getRepository('UVDeskSupportCenterBundle:KnowledgebaseWebsite')->findOneBy(['website' => $website->getId(),'isActive' => 1]);
         
         if ($request->getMethod() == 'POST') {
@@ -29,24 +29,25 @@ class Branding extends Controller
             $parmsFile = ($request->files->get('website'));
 
             switch($settingType) {
-                case "general":
+                case "general": 
+
                     $website->setName($params['website']['name']);
                     $status = array_key_exists("status",$params['website']) ? 1 : 0;
-                    
-                    if(isset($parmsFile['logo'])){
+                    if (isset($parmsFile['logo'])) {
                         $fileName  = $this->container->get('uvdesk.service')->getFileUploadManager()->upload($parmsFile['logo']);
                         $website->setLogo($fileName);
                     }
 
                     $entityManager->persist($website);
-                    $entityManager->flush(); 
                     
                     $configuration->setStatus($status);
                     $configuration->setBrandColor($params['website']['brandColor']);
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
+
                 case "knowledgebase":
+
                     $configuration->setPageBackgroundColor($params['website']['pageBackgroundColor']);
                     $configuration->setHeaderBackgroundColor($params['website']['headerBackgroundColor']); 
 
@@ -75,14 +76,18 @@ class Branding extends Controller
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
+
                 case "seo":
+
                     $configuration->setMetaDescription($params['metaDescription']);  
                     $configuration->setMetaKeywords($params['metaKeywords']);  
                     $configuration->setUpdatedAt(new \DateTime());
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
+
                 case "links":
+
                     $footerLinks=[];
                     $headerLinks=[];
                     $headerLinks = $params['headerLinks'];                    
@@ -108,32 +113,36 @@ class Branding extends Controller
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
+
                 case "broadcasting":
-                    $isActive = array_key_exists('isActive',$params['broadcasting']) ? []  : ["isActive"=>0];
+
+                    $isActive = array_key_exists('isActive',$params['broadcasting']) ? ["isActive"=>1]  : ["isActive"=>0];
                     $broadcast = json_encode(array_merge($params['broadcasting'],$isActive));
-                    $active = array_key_exists('isActive',$params['broadcasting']) ? 1 : 0;
                     $configuration->setBroadcastMessage($broadcast);
-                    $configuration->setBrandIsActive($active);
                     $configuration->setUpdatedAt(new \DateTime());
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
+
                 case 'advanced':
+
                     $configuration->setCustomCSS($request->request->get('customCSS'));
                     $configuration->setScript($request->request->get('script'));
                     $entityManager->persist($configuration);
                     $entityManager->flush();
                     break;
+                    
                 default:
+                    
                     break;
             }
         }
+      
         return $this->render('@UVDeskSupportCenter/Staff/branding.html.twig', [
-            'website' => $website,
+            'websitedata' => $website,
             'type' => $settingType,
             'configuration' => $configuration,
             'broadcast' => json_decode($configuration->getBroadcastMessage()),
-            'errors' => json_encode($errors),
         ]);
     }
 

@@ -336,17 +336,7 @@ class Article extends EntityRepository
         $this->getEntityManager()->createQuery($query)->execute();
     }
 
-    public function getTotalArticleCount()
-    {
-        $queryBuilder = $this->createQueryBuilder('s');
-
-        $result = $queryBuilder->select('COUNT(DISTINCT s.id)')
-                 ->getQuery()
-                 ->getSingleScalarResult();
-
-        return $result;
-    }
-
+  
     private function getStringToOrder($string)
     {
         Switch($string){
@@ -489,21 +479,17 @@ class Article extends EntityRepository
         return $results;
     }
 
-    public function getArticleByTags($companyId = null, array $tagList = [], $sort = null, $direction = null)
+    public function getArticleByTags(array $tagList = [], $sort = null, $direction = null)
     {
-        if (empty($companyId))
-            throw new \Exception("Article::getArticleByTags() expects parameter 1 to be defined.");
-
-        // List of tags to search for
+      
         if (empty($tagList))
             return [];
 
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
             ->select('a')
-            ->from('SupportCenterBundle:Article', 'a')
-            ->leftJoin('SupportCenterBundle:ArticleTags', 'at', 'WITH', 'at.articleId = a.id')
-            ->leftJoin('WebkulCoreBundle:Tag', 't', 'WITH', 't.id = at.tagId')
-            ->where('t.company = :company')->setParameter('company', $companyId)
+            ->from('UVDeskSupportCenterBundle:Article', 'a')
+            ->leftJoin('UVDeskSupportCenterBundle:ArticleTags', 'at', 'WITH', 'at.articleId = a.id')
+            ->leftJoin('UVDeskCoreBundle:Tag', 't', 'WITH', 't.id = at.tagId')
             ->andwhere('a.status = :status')->setParameter('status', 1)
             ->orderBy(
                 (!empty($sort)) ? 'a.' . $sort : 'a.id',

@@ -14,39 +14,7 @@ use Webkul\UVDesk\SupportCenterBundle\Form\Category as CategoryForm;
 class Category extends Controller
 {
     const LIMIT = 10;
-
-    private function syncDbForSolutionAndCategory()
-    {   
-        if (!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {
-            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
-        }
-
-        $categoriesMapping = $this->getDoctrine()
-                                    ->getRepository('UVDeskSupportCenterBundle:SolutionCategoryMapping')
-                                    ->createQueryBuilder('a')
-                                    ->select('COUNT(a.id)')
-                                    ->getQuery()
-                                    ->getSingleScalarResult()
-                            ;
-        if(!$categoriesMapping){
-            $categories = $this->getDoctrine()
-                                ->getRepository('UVDeskSupportCenterBundle:SolutionCategory')
-                                ->createQueryBuilder('a')
-                                ->getQuery()
-                                ->getResult()
-                        ;
-            foreach($categories as $category){
-                $em = $this->getDoctrine()->getManager();
-                $categoryMap = new SolutionCategoryMapping();
-                $categoryMap->setCategoryId($category['id']);
-                $categoryMap->setSolutionId($category['solutionId']);
-                $categoryMap->setCompanyId($category['companyId']);
-                $em->persist($categoryMap);
-                $em->flush();
-            }
-        }
-    }
-
+  
     public function categoryList(Request $request)    
     {
         if (!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {
@@ -120,14 +88,15 @@ class Category extends Controller
             return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
         }
 
-        if($request->attributes->get('id')){
+        if ($request->attributes->get('id')) {
             $category = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:SolutionCategory')
                                             ->findCategoryById(['id' => $request->attributes->get('id')]);
             if(!$category)
                 $this->noResultFound();
-        } else
-            $category = new SolutionCategory;
 
+        } else {
+            $category = new SolutionCategory;
+        }
         $categorySolutions = [];
         if($category->getId())
             $categorySolutions = $this->getDoctrine()
@@ -210,10 +179,10 @@ class Category extends Controller
         $json = array();
       
         if($request->getMethod() == "POST") {
+
             $em = $this->getDoctrine()->getManager();
 
             $data = $request->request->get("data");
-
             $dataIds = array_map('intval', $data['ids']);
 
             switch($data['actionType']){

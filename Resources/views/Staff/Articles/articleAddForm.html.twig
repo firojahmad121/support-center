@@ -224,18 +224,28 @@
 				validation: {
 					'name': [{
 						required: true,
-						msg: "{{ 'This field is mandatory'|trans }}"
+						msg: 'This field is mandatory'
+					},{
+						maxLength:200,
+						msg: 'This field contain maximum 200 charecters only'
 					}, {
 						pattern: '^((?![$%<]).)*$',
-						msg: "{{ 'This field must have valid characters only'|trans }}"
+						msg: 'This field must have valid characters only'
 					}],
 					'slug': function(val, attr, computed) {
 						var elSlug = $("[name=" + attr + "]");
 						var elSlugValue = '';
 						elSlug.val(elSlugValue = app.appView.convertToSlug(val))
-						if(elSlugValue.trim() == '')
+						
+						if(elSlugValue.trim() == ''){
 							return '{{ "This field is mandatory"|trans }}';
-							//return '{{ "Only valid syntax is allowed"|trans }}';
+						}
+						
+						if(elSlugValue.length > 100) {
+							console.log("invalid lenth");
+							return "This field slug contains maximum 100 charecters only.";
+
+						}
 					}
 				},
                 urlRoot : "{{ path('helpdesk_member_knowledgebase_update_article_xhr') }}"

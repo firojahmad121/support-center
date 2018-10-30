@@ -218,7 +218,8 @@
                     </div>
                 </div>
             </div> #}
-            {# {{ include('@UVDeskSupportCenter//cookiePolicy.html.twig') }} #}
+            {# {% include "@UVDeskSupportCenter/Templates/pagination.html.twig" %} #}
+            {% include('@UVDeskSupportCenter/Themes/cookiePolicy.html.twig') %}
         {% endblock %}
     </body>
 </html>
