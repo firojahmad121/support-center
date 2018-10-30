@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": "^7.0",
-        "uvdesk/core": "dev-master"
+        "uvdesk/core-framework": "dev-master"
     },
     "autoload": {
         "psr-4": { "Webkul\\UVDesk\\SupportCenterBundle\\": "" }
