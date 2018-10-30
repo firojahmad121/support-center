@@ -5,6 +5,7 @@ namespace Webkul\UVDesk\SupportCenterBundle\Knowledgebase;
 use Webkul\UVDesk\CoreBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
+use Webkul\UVDesk\CoreBundle\Form\UserProfile;
 use Webkul\UVDesk\CoreBundle\Utils\TokenGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -84,7 +85,6 @@ Class Customer extends Controller
             return $this->redirect($this->generateUrl('webkul_support_center_front_solutions'));
         }
 
-        $errors = [];
         if($request->getMethod() == 'POST') {
             $entityManager = $this->getDoctrine()->getManager();
             $user = new User();
@@ -94,29 +94,20 @@ Class Customer extends Controller
             
             if ($user) { 
                 $key = time();
-                $request->getSession()->getFlashBag()->set(
-                    'success',$this->get('translator')->trans('Please check your mail for password update.')
-                );
-
-                return $this->redirect($this->generateUrl('helpdesk_customer_account_validation')."/".$data['email']."/".$key);
+                $request->getSession()->getFlashBag()->set('success', 'Please check your mail for password update.');
+                
+                return $this->redirect($this->generateUrl('helpdesk_customer_login'));
+                //@TODO: NEEDS TO SEND EMAIL FOR CHANGE PASSWORD URL.
             } else {
-                $request->getSession()->getFlashBag()->set('warning', $this->get('translator')->trans('This Email is not registered with us.'));
+                $request->getSession()->getFlashBag()->set('warning','This Email is not registered with us.');
             }
-        } else {
-            $request->getSession()->getFlashBag()->set('warning', 'This Email is not registered with us.');
         }
         
         return $this->render('@UVDeskSupportCenter/Knowledgebase/forgotPassword.html.twig', [
             'searchDisable' => true,
-            'errors' => json_encode($errors),
             'breadcrumbs' => [
-                [
-                    'label' => 'Support Center',
-                    'url' => 'webkul_support_center_front_solutions'
-                ], [
-                    'label' => 'Forgot Password',
-                    'url' => '#'
-                ]
+                ['label' => 'Support Center', 'url' => 'webkul_support_center_front_solutions'],
+                ['label' => 'Forgot Password','url' => '#']
             ]
         ]);
     }

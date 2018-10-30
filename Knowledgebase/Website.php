@@ -29,30 +29,9 @@ class Website extends Controller
        return $frontWebsite ? $frontWebsite->getIsActive() : false;
     }
 
-    protected function getWebsiteDetails($needWebsite = false)
-    {
-        
-        if($needWebsite)
-            return $this->get('user.service')->getCurrentCompany($needWebsite);
-        else
-            return $this->company ? $this->company : ($this->company = $this->get('user.service')->getCurrentCompany());
-    }
-
-    /**
-     * If customer is playing with url and no result is found then what will happen
-     * @return
-     */
     protected function noResultFound()
     {
         throw new NotFoundHttpException('Permission Denied !');
-    }
-
-   
-    protected function admin()
-    {
-        dump("adminAction called");
-        die;
-        return true;
     }
 
     public function home(Request $request)
@@ -65,8 +44,8 @@ class Website extends Controller
             'direction' => 'desc'
         ];
 
+        $articleRepository = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:Article');
         $solutionRepository = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:Solutions');
-        $categoryCollection = $solutionRepository->getAllCategories(10, 4);
 
         $twigResponse = [
             'searchDisable' => false,
@@ -90,23 +69,38 @@ class Website extends Controller
         }
 
         $twigResponse['solutions']['results'] = $newResult;
-        $twigResponse['solutions']['categories'] = $categoryCollection;
+        $twigResponse['solutions']['categories'] = array_map(function($category) use ($articleRepository) {
+            $parameterBag = [
+                'categoryId' => $category['id'],
+                'status' => 1,
+                'sort' => 'id',
+                'limit'=>10,
+                'direction' => 'desc'
+            ];
+
+            $article =  $articleRepository->getAllArticles(new ParameterBag($parameterBag), $this->container, 'a.id, a.name, a.slug, a.stared');
+             
+            return [
+                'id' => $category['id'],
+                'name' => $category['name'],
+                'description' => $category['description'],
+                'articles' => $article
+            ];
+        }, $solutionRepository->getAllCategories(10, 2));
+
+        $twigResponse['solutions']['categories'] = $articles;
 
         return $this->render('@UVDeskSupportCenter//Knowledgebase//index.html.twig', $twigResponse);
     }
 
     public function listCategories(Request $request)
     {
-        if (!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {
-            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
-        }
-
         $this->isWebsiteActive();
 
-        $solutionRepository = $this->getDoctrine()->getRepository('WebkulSupportCenterBundle:Solutions');
-        $categoryCollection = $solutionRepository->getAllCategories($this->getCompany()->getId(), null, 0);
-
-        return $this->render('@UVDeskSupportCenterBundle/Knowledgebase/categoryListing.html.twig', [
+        $solutionRepository = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:Solutions');
+        $categoryCollection = $solutionRepository->getAllCategories(10, 4);
+        
+        return $this->render('@UVDeskSupportCenter/Knowledgebase/categoryListing.html.twig', [
             'categories' => $categoryCollection,
             'categoryCount' => count($categoryCollection),
         ]);
@@ -114,10 +108,6 @@ class Website extends Controller
 
     public function viewFolder(Request $request)
     {
-        if (!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {          
-            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
-        }
-
         $this->isWebsiteActive();
         
         if(!$request->attributes->get('solution'))
@@ -217,10 +207,6 @@ class Website extends Controller
 
     public function viewCategory(Request $request)
     {
-        if (!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {
-            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
-        }
-       
         $this->isWebsiteActive();
 
         if(!$request->attributes->get('category'))
@@ -239,14 +225,8 @@ class Website extends Controller
             $this->noResultFound();
 
         $breadcrumbs = [
-            [
-                'label' => $this->get('translator')->trans('Support Center'),
-                'url' => $this->generateUrl('helpdesk_knowledgebase')
-            ],
-            [
-                'label' => $category->getName(),
-                'url' => '#'
-            ],
+            [ 'label' => $this->get('translator')->trans('Support Center'),'url' => $this->generateUrl('helpdesk_knowledgebase') ],
+            [ 'label' => $category->getName(),'url' => '#' ],
         ];
         
         $parameterBag = [
@@ -255,27 +235,24 @@ class Website extends Controller
             'sort' => 'id',
             'direction' => 'desc'
         ];
+
         $category_data=  array(
             'category' => $category,
             'articlesCount' => $this->getDoctrine()
-                    ->getRepository('UVDeskSupportCenterBundle:SolutionCategory')
-                    ->getArticlesCountByCategory($category->getId(), [1]),
+                            ->getRepository('UVDeskSupportCenterBundle:SolutionCategory')
+                            ->getArticlesCountByCategory($category->getId(), [1]),
             'articles' => $this->getDoctrine()
-                    ->getRepository('UVDeskSupportCenterBundle:Article')
-                    ->getAllArticles(new ParameterBag($parameterBag), $this->container, 'a.id, a.name, a.slug, a.stared'),
+                        ->getRepository('UVDeskSupportCenterBundle:Article')
+                        ->getAllArticles(new ParameterBag($parameterBag), $this->container, 'a.id, a.name, a.slug, a.stared'),
             'breadcrumbs' => $breadcrumbs
         );
-        // dump($category_data);die;
+
         return $this->render('@UVDeskSupportCenter/Knowledgebase/category.html.twig',$category_data);
     }
    
     public function viewArticle(Request $request)
     {
         $this->isWebsiteActive();
-
-        if (!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {
-            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
-        }
 
         if (!$request->attributes->get('article') && !$request->attributes->get('slug')) {
             return $this->redirect($this->generateUrl('helpdesk_knowledgebase'));
@@ -320,14 +297,13 @@ class Website extends Controller
             }
         }
 
-
+        // @TODO: App popular articles
         $article_details = [
             'article' => $article,
             'breadcrumbs' => [
                 ['label' => $this->get('translator')->trans('Support Center'), 'url' => $this->generateUrl('helpdesk_knowledgebase')],
                 ['label' => $article->getName(), 'url' => '#']
             ],
-            'popArticles' => $this->get('uvdesk.service')->getPopularArticles(),
             'dateAdded' => $this->get('user.service')->convertToTimezone($article->getDateAdded()),
             'articleTags' => $articleRepository->getTagsByArticle($article->getId()),
             'articleAuthor' => $articleRepository->getArticleAuthorDetails($article->getId()),
@@ -355,19 +331,11 @@ class Website extends Controller
         return $this->render('@UVDeskSupportCenter/Knowledgebase/search.html.twig', [
             'search' => $searchQuery,
             'articles' => $articleCollection,
-            // 'breadcrumbs' => [
-            //     ['label' => $this->get('translator')->trans('Support Center'), 'url' => $this->generateUrl('helpdesk_knowledgebase')],
-            //     ['label' => $searchQuery, 'url' => '#'],
-            // ],
         ]);
     }
 
     public function viewTaggedResources(Request $request)
     {
-        if (!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {
-            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
-        }
-
         $this->isWebsiteActive();
 
         $tagQuery = $request->attributes->get('tag');
@@ -376,9 +344,9 @@ class Website extends Controller
         }
 
         $tagLabel = $request->attributes->get('name');
-        $articleCollection = $this->getDoctrine()->getRepository('WebkulSupportCenterBundle:Article')->getArticleByTags($this->getCompany()->getId(), [$tagLabel]);
+        $articleCollection = $this->getDoctrine()->getRepository('UVDeskSupportCenterBundle:Article')->getArticleByTags([$tagLabel]);
 
-        return $this->render('WebkulSupportCenterBundle:Knowledgebase:search.html.twig', [
+        return $this->render('@UVDeskSupportCenter/Knowledgebase/search.html.twig', [
             'articles' => $articleCollection,
             'search' => $tagLabel,
             'breadcrumbs' => [

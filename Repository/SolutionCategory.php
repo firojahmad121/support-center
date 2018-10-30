@@ -154,10 +154,8 @@ class SolutionCategory extends EntityRepository
             $qb->setParameter($key, $value);
         }
 
-        $result = $qb->getQuery()->getOneOrNullResult();
-        // $result = $qb->getQuery()->getOneOrNullResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-
-        return($result);
+        return $qb->getQuery()->getOneOrNullResult();
+       
     }
 
     public function getArticlesCountByCategory($categoryId, $status = 1)
@@ -266,17 +264,5 @@ class SolutionCategory extends EntityRepository
         $query = "UPDATE Webkul\UVDesk\SupportCenterBundle\Entity\SolutionCategory sc SET sc.sortOrder = '". (int)$sort ."' WHERE sc.id = '". (int)$id ."'";
 
         $this->getEntityManager()->createQuery($query)->execute();
-    }
-
-    public function getTotalCategoryCount()
-    {
-        $queryBuilder = $this->createQueryBuilder('s');
-
-        $result = $queryBuilder->select('COUNT(DISTINCT s.id)')
-                 ->getQuery()
-                 ->getSingleScalarResult()
-        ;
-
-        return $result;
     }
 }

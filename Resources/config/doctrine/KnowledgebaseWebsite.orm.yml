@@ -100,12 +100,7 @@ Webkul\UVDesk\SupportCenterBundle\Entity\KnowledgebaseWebsite:
             type: string
             length: 255
             nullable: true
-            column: broadcast_message
-        brandIsActive:
-            type: boolean
-            length: 
-            nullable: true
-            column: broadcast_is_ative
+            column: broadcast_message       
         removeCustomerLoginButton:
             type: integer
             nullable: true

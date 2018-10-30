@@ -156,10 +156,12 @@ class Article extends Controller
     {
         if ($request->attributes->get('id')) {
             $article = $this->getArticle(['id' => $request->attributes->get('id')]);
+
             if(!$article)
                 $this->noResultFound();
-        } else
+        } else {
             $article = new ArticleEntity;
+        }
 
         $articleCategory = $articleTags = [];
         if ($article->getId()) {
@@ -172,7 +174,6 @@ class Article extends Controller
                              ->getTagsByArticle($article->getId());
         }
 
-        $errors = [];
         $categories = $this->getDoctrine()
                             ->getRepository('UVDeskSupportCenterBundle:SolutionCategory')
                             ->getAllCategories(null, $this->container, 'a.id, a.name');
@@ -182,8 +183,7 @@ class Article extends Controller
                 'article' => $article,
                 'articleCategory' => $articleCategory,
                 'articleTags' => $articleTags,
-                'categories' => $categories,
-                'errors' => json_encode($errors),
+                'categories' => $categories
             ]);
         }
       
