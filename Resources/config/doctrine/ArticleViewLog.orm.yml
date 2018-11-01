@@ -1,6 +1,6 @@
 Webkul\UVDesk\SupportCenterBundle\Entity\ArticleViewLog:
     type: entity
-    table: null
+    table: uv_article_view_log
     repositoryClass: null
     manyToOne:
         user:

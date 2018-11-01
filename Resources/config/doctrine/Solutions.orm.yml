@@ -1,6 +1,6 @@
 Webkul\UVDesk\SupportCenterBundle\Entity\Solutions:
     type: entity
-    table: null
+    table: uv_solutions
     repositoryClass: Webkul\UVDesk\SupportCenterBundle\Repository\Solutions
     id:
         id:

@@ -1,6 +1,6 @@
 Webkul\UVDesk\SupportCenterBundle\Entity\SolutionCategoryMapping:
     type: entity
-    table: null
+    table: uv_solution_category_mapping
     id:
         id:
             type: integer

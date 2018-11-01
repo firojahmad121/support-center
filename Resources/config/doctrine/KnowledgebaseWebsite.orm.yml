@@ -1,6 +1,6 @@
 Webkul\UVDesk\SupportCenterBundle\Entity\KnowledgebaseWebsite:
     type: entity
-    table: null
+    table: uv_website_knowledgebase
     repositoryClass: null
     manyToOne:
         website:

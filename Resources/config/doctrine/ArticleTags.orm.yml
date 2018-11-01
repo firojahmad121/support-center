@@ -1,6 +1,6 @@
 Webkul\UVDesk\SupportCenterBundle\Entity\ArticleTags:
     type: entity
-    table: null
+    table: uv_article_tags
     repositoryClass: null
     id:
         id:

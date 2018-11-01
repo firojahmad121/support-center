@@ -1,6 +1,6 @@
 Webkul\UVDesk\SupportCenterBundle\Entity\ArticleHistory:
     type: entity
-    table: null
+    table: uv_article_history
     repositoryClass: null
     id:
         id:

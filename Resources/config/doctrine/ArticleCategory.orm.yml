@@ -1,6 +1,6 @@
 Webkul\UVDesk\SupportCenterBundle\Entity\ArticleCategory:
     type: entity
-    table: null
+    table: uv_article_category
     repositoryClass: null
     id:
         id:
