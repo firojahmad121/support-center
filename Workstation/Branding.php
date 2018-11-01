@@ -107,7 +107,7 @@ class Branding extends Controller
                     $entityManager->flush();
                     break;
                 case "broadcasting":
-                    $params['isActive'] = array_key_exists('isActive', $params['broadcasting']) ? true  : false;
+                    $params['broadcasting']['isActive'] = array_key_exists('isActive', $params['broadcasting']) ? true  : false;
                     $configuration->setBroadcastMessage(json_encode($params['broadcasting']));
                     $configuration->setUpdatedAt(new \DateTime());
                     
@@ -124,7 +124,7 @@ class Branding extends Controller
                     break;
             }
         }
-      
+    
         return $this->render('@UVDeskSupportCenter/Staff/branding.html.twig', [
             'websitedata' => $website,
             'type' => $settingType,

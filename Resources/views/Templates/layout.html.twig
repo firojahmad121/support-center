@@ -75,12 +75,7 @@
 
     {% set bodyClass = '' %}
     {% set bodySkinClass = '' %}
-    {# {% if websiteConfiguration and default_service.isDarkSkin(websiteConfiguration.brandColor) %}
-        {% set bodySkinClass = 'uv-skin-dark' %}
-    {% endif %}
-     {% if app.request.locale in default_service.getRTLLocale() %}
-        {% set bodyClass = 'uv-rtl' %}
-    {% endif %} #}
+   
     <body class="{{ bodySkinClass ~ ' ' ~ bodyClass }}">
         {% set broadcastMessage = uvdesk_service.getValidBroadcastMessage(websiteConfiguration.broadcastMessage is defined ? websiteConfiguration.broadcastMessage : '') %}
         {% if broadcastMessage %}
@@ -114,22 +109,9 @@
             </noscript>
         </div>
 
-        {# {% set fileDefaultImages = [] %}
-        {% for key, img in file_service.getFileDefaultImages() %}
-            {% set image = asset('bundles/webkuldefault/images/' ~ img) %}
-            {% set fileDefaultImages = fileDefaultImages|merge({(key): image}) %}
-        {% endfor %}
-        <script type="text/javascript">
-            var fileDefaultImages = {{ fileDefaultImages|json_encode|raw }}
-        </script> #}
 
         {% block header %}
-            {# header.twig #}
-            {# {% if searchDisable is defined %}
-                {{ render_esi(url('helpdesk_knowledgebase_header', { 'searchDisable': searchDisable })) }}
-            {% else %}
-                {{ render_esi(url('helpdesk_knowledgebase_header', { 'searchDisable': true })) }}
-            {% endif %} #}
+         
             {% include "@UVDeskSupportCenter/Templates/header.html.twig" %}
         {% endblock %}
 

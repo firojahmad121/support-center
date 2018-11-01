@@ -55,12 +55,6 @@ SVG;
             ],
             HelpdeskSection::SETTINGS => [
                 [
-                    'name' => 'Branding',
-                    'route' => 'helpdesk_member_knowledgebase_theme',
-                    'brick_svg' => self::BRANDING_BRICK_SVG,
-                    'permission'=>'ROLE_ADMIN'
-                ],
-                [
                     'name' => 'Block Spam',
                     'route' => 'helpdesk_member_knowledgebase_spam',
                     'brick_svg' => self::BLOCK_SPAM_BRICK_SVG,

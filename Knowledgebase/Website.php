@@ -88,8 +88,6 @@ class Website extends Controller
             ];
         }, $solutionRepository->getAllCategories(10, 2));
 
-        $twigResponse['solutions']['categories'] = $articles;
-
         return $this->render('@UVDeskSupportCenter//Knowledgebase//index.html.twig', $twigResponse);
     }
 
@@ -156,10 +154,6 @@ class Website extends Controller
 
     public function viewFolderArticle(Request $request)
     {
-        if (!$this->get('user.service')->checkPermission('ROLE_AGENT_MANAGE_KNOWLEDGEBASE')) {
-            return $this->redirect($this->generateUrl('helpdesk_member_dashboard'));
-        }
-
         $this->isWebsiteActive();
 
         if(!$request->attributes->get('solution'))
