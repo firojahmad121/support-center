@@ -243,7 +243,6 @@ class Ticket extends Controller
                 if($status) {
                     $flag = 0;
                     if($ticket->getStatus() != $status) {
-                        // $notePlaceholders = $this->get('ticket.service')->getNotePlaceholderValues($ticket->getStatus()->getName(),$status->getName(),'status');
                         $flag = 1;
                     }
 
@@ -386,5 +385,35 @@ class Ticket extends Controller
         $response = new Response(json_encode($json));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
+    }
+    // download Zip attachments
+    public function downloadAttachmentZip(Request $request) {
+        
+        $response = new Response();
+        $em = $this->getDoctrine()->getManager();
+        $threadId = $request->attributes->get('threadId');
+        $attachment = $em->getRepository('UVDeskCoreBundle:Attachment')->findBy([
+            'thread' => $request->attributes->get('threadId'),
+        ]);
+        if (!$attachment) {
+            $this->noResultFound();
+        }
+        $zipname = 'attachments/' .$threadId.'.zip';
+        $zip = new \ZipArchive;
+
+        $zip->open($zipname, \ZipArchive::CREATE);
+        if(count($attachment)){
+            foreach ($attachment as $attach) {
+                $zip->addFile(substr($attach->getPath(), 1)); 
+            }
+        }
+        $zip->close();
+
+        $response = new Response();
+        $response->setStatusCode(200);
+        $response->headers->set('Content-type', 'application/zip');
+        $response->headers->set('Content-Disposition', 'attachment; filename=' . $threadId . '.zip');
+        $response->sendHeaders();
+        $response->setContent(readfile($zipname));
     }
 }
