@@ -154,8 +154,6 @@ class Website extends Controller
 
     public function viewFolderArticle(Request $request)
     {
-        
-
         $this->isWebsiteActive();
 
         if(!$request->attributes->get('solution'))
