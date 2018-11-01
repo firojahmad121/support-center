@@ -386,18 +386,18 @@ class Ticket extends Controller
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
-    // download Zip attachments
-    public function downloadAttachmentZip(Request $request) {
-        
-        $response = new Response();
-        $em = $this->getDoctrine()->getManager();
+
+    public function downloadAttachmentZip(Request $request)
+    {
         $threadId = $request->attributes->get('threadId');
-        $attachment = $em->getRepository('UVDeskCoreBundle:Attachment')->findBy([
-            'thread' => $request->attributes->get('threadId'),
-        ]);
+        $attachmentRepository = $this->getDoctrine()->getManager()->getRepository('UVDeskCoreBundle:Attachment');
+
+        $attachment = $attachmentRepository->findByThread($threadId);
+
         if (!$attachment) {
             $this->noResultFound();
         }
+
         $zipname = 'attachments/' .$threadId.'.zip';
         $zip = new \ZipArchive;
 
@@ -415,5 +415,7 @@ class Ticket extends Controller
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $threadId . '.zip');
         $response->sendHeaders();
         $response->setContent(readfile($zipname));
+
+        return $response;
     }
 }
